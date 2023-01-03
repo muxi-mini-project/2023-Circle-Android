@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">华小圈</string>
+<<<<<<< HEAD
     
     <string name="sign_in_button">登录</string>
     <string name="register_button">注册</string>
@@ -9,5 +10,18 @@
         测试测试测试测试测试测试测试测试测试测试测试测试</string>
     <string name="description_sign_in">登录</string>
     <string name="description_register">注册</string>
+=======
+>>>>>>> liz
 
+    <string name="test_text">测试测试测试测试测试测试测试测试测试测试
+    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
+
+    <string name="sign_in_tip">请输入您的用户名和密码.</string>
+    <string name="user_name_text">用户名</string>
+    <string name="password_text">密码</string>
+    <string name="sign_text">登录</string>
+    <string name="register_text">注册</string>
+    <string name="forgot_password_text">忘记密码</string>
+    
 </resources>

@@ -7,6 +7,7 @@
     android:background="@mipmap/background"
     tools:context=".MainActivity">
 
+<<<<<<< HEAD
 
 
     <ImageButton
@@ -29,6 +30,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/register_btn"/>
+=======
+    <Button
+        android:id="@+id/register"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/register_btn"
+        android:text="@string/register_text"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/sign_in"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/sign_in"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/sign_text"
+        android:textColor="@color/teal_700"
+        android:background="@drawable/sign_in_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/register" />
+>>>>>>> liz
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
