@@ -7,30 +7,7 @@
     android:background="@mipmap/background"
     tools:context=".MainActivity">
 
-<<<<<<< HEAD
 
-
-    <ImageButton
-        android:id="@+id/register_btn"
-        android:layout_width="175dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="10dp"
-        android:src="@mipmap/register_picture"
-        android:background="#05848E"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/sign_in_btn"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <ImageButton
-        android:id="@+id/sign_in_btn"
-        android:layout_width="175dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="10dp"
-        android:src="@mipmap/sign_in_picture"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/register_btn"/>
-=======
     <Button
         android:id="@+id/register"
         android:layout_width="150dp"
@@ -54,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/register" />
->>>>>>> liz
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
