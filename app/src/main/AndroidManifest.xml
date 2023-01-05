@@ -22,7 +22,7 @@
                 android:value=""/>
         </activity>
         <activity
-            android:name=".PostsActivity"
+            android:name=".PostsRecyclerView.PostsActivity"
             android:exported="false">
                 <meta-data
                     android:name="android.app.lib_name"

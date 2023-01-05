@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication;
+package android.bignerdranch.myapplication.PostsRecyclerView;
 
 import android.graphics.Rect;
 import android.view.View;
