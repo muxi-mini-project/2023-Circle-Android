@@ -6,6 +6,8 @@ import android.bignerdranch.myapplication.PostsRecyclerView.PostsLab;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Space;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
@@ -35,6 +37,7 @@ public class PostsActivity extends BaseActivity {
 
         mPostsRecyclerView = (RecyclerView) findViewById(R.id.posts_recyclerview);
         mPostsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mPostsRecyclerView.addItemDecoration(new SpaceItemDecoration(20));
         mPostsAdapter = new PostsAdapter(postsList);
         mPostsRecyclerView.setAdapter(mPostsAdapter);
     }

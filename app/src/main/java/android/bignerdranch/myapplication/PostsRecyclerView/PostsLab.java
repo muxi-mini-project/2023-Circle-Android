@@ -20,7 +20,7 @@ public class PostsLab {
 
     private PostsLab(){
         mPosts=new ArrayList<>();
-        for (int i=0;i<10;i++){
+        for (int i=0;i<20;i++){
             Posts posts=new Posts();
             posts.setName("复读机"+(i+1)+"号");
             posts.setContent("第"+(i+1)+"次测试");
