@@ -18,6 +18,5 @@ public class BaseActivity extends AppCompatActivity {
         //锁定竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        setContentView(R.layout.activity_main);
     }
 }

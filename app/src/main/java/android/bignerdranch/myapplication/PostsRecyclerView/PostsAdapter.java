@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,8 +25,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.posts_layout, parent, false);
-        RecyclerView.ViewHolder aHolder = new PostsHolder(layoutInflater, parent);;
+        RecyclerView.ViewHolder aHolder = new PostsHolder(layoutInflater, parent);//创建一个新的PostsHolder
         return aHolder;
     }
 
@@ -44,7 +44,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         private TextView mNameView;
         private TextView mDateView;
-        private Button mIsFollow;
+        private ImageButton mIsFollow;
         private TextView mContent;
 
         private Posts mPosts;
@@ -54,8 +54,8 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             mNameView=(TextView) itemView.findViewById(R.id.publisher_name);
             mDateView=(TextView) itemView.findViewById(R.id.publish_time);
-            mIsFollow=(Button) itemView.findViewById(R.id.is_follow);
             mContent=(TextView) itemView.findViewById(R.id.publish_content);
+            mIsFollow=(ImageButton) itemView.findViewById(R.id.is_followed_btn);
 
             mIsFollow.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,9 +71,9 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mNameView.setText(mPosts.getPublisherName());
             mDateView.setText(mPosts.getReleaseTime().toString());
             if (mPosts.isFollow()) {
-                mIsFollow.setText("已关注");
+                mIsFollow.setBackgroundResource(R.mipmap.followed);
             } else {
-                mIsFollow.setText("未关注");
+                mIsFollow.setBackgroundResource(R.mipmap.not_followed);
             }
             mContent.setText(mPosts.getContent());
         }

@@ -1,5 +1,6 @@
 package android.bignerdranch.myapplication;
 
+import android.bignerdranch.myapplication.PostsRecyclerView.PostsActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
