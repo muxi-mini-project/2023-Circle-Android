@@ -18,5 +18,11 @@ public class BaseActivity extends AppCompatActivity {
         //锁定竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        //去除顶上自带的标题
+        if (getSupportActionBar() != null)
+        {
+            getSupportActionBar().hide();
+        }
+
     }
 }
