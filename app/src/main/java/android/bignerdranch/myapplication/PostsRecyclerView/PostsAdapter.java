@@ -4,8 +4,6 @@ import android.bignerdranch.myapplication.R;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -71,9 +69,9 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mNameView.setText(mPosts.getPublisherName());
             mDateView.setText(mPosts.getReleaseTime().toString());
             if (mPosts.isFollow()) {
-                mIsFollow.setBackgroundResource(R.mipmap.followed);
+                mIsFollow.setBackgroundResource(R.mipmap.is_follow_followed);
             } else {
-                mIsFollow.setBackgroundResource(R.mipmap.not_followed);
+                mIsFollow.setBackgroundResource(R.mipmap.is_follow_not_followed);
             }
             mContent.setText(mPosts.getContent());
         }

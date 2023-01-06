@@ -13,14 +13,14 @@ public abstract class SingleFragmentActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+        setContentView(R.layout.posts_fragment);
 
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragment_container);//此处为activity_fragment的id
+        Fragment fragment = fm.findFragmentById(R.id.posts_fragment);//此处为activity_fragment的id
         if (fragment == null) {//即如果activity_fragment为空，创建一个
             fragment = createFragment();
             fm.beginTransaction()
-                    .add(R.id.fragment_container, fragment)
+                    .add(R.id.posts_fragment, fragment)
                     .commit();
         }
     }

@@ -20,10 +20,10 @@ public class PostsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle saveInstanceState){
-        View view =inflater.inflate(R.layout.posts_recyclerview,container,false);
+        View view =inflater.inflate(R.layout.recyclerview,container,false);
 
         mPostsRecyclerView=(RecyclerView) view
-                .findViewById(R.id.posts_recyclerview);
+                .findViewById(R.id.recyclerview);
         mPostsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         upDateUI();

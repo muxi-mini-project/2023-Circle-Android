@@ -18,7 +18,7 @@ public class Fragment_Message_Person_list extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
-        View view=inflater.inflate(R.layout.fragment_message_person_list,container,false);
+        View view=inflater.inflate(R.layout.recyclerview,container,false);
         return view;
     }
 }
