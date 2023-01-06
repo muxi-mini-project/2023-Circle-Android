@@ -1,6 +1,5 @@
 package android.bignerdranch.myapplication;
 
-import android.bignerdranch.myapplication.PostsRecyclerView.PostsActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,8 +39,9 @@ public class SignInActivity extends BaseActivity{
             }
         });
     }
+
     private void LoginSucceeded(){
-        Intent intent = PostsActivity.newIntent(SignInActivity.this);
+        Intent intent =NavigationBarActivity.newIntent(SignInActivity.this);
         //以SignInActivity创建一个PostsActivity的Intent
         startActivity(intent);//启动PostsActivity
     }
