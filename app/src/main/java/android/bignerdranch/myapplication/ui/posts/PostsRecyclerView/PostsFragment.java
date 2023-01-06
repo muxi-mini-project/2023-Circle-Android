@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.PostsRecyclerView;
+package android.bignerdranch.myapplication.ui.posts.PostsRecyclerView;
 
 import android.bignerdranch.myapplication.R;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class PostsFragment extends Fragment {
-
     private RecyclerView mPostsRecyclerView;
     private PostsAdapter mPostsAdapter;
 
@@ -39,4 +38,5 @@ public class PostsFragment extends Fragment {
         mPostsAdapter = new PostsAdapter(postsList);//将postsList装载入Adapter中
         mPostsRecyclerView.setAdapter(mPostsAdapter);//给该recyclerview设置adapter
     }
+
 }
