@@ -1,5 +1,6 @@
-package android.bignerdranch.myapplication;
+package android.bignerdranch.myapplication.MessagePersonListRecyclerView;
 
+import android.bignerdranch.myapplication.R;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
