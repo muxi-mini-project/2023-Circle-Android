@@ -57,7 +57,7 @@ public class Fragment_Reminder_List extends Fragment{
 
         @Override
         public Reminder_Holder onCreateViewHolder( ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater=LayoutInflater.from(getActivity());
+            LayoutInflater layoutInflater=LayoutInflater.from(parent.getContext());
 
             return new Reminder_Holder(layoutInflater,parent);
         }
@@ -75,10 +75,6 @@ public class Fragment_Reminder_List extends Fragment{
 
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){

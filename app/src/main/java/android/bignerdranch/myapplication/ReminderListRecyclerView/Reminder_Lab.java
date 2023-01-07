@@ -20,8 +20,8 @@ public class Reminder_Lab {
 
     private Reminder_Lab(Context context){
         mReminders=new ArrayList<>();
-        //先生成5个测试用的样例
-        for(int i=0;i<=4;i++){
+        //先生成20个测试用的样例
+        for(int i=0;i<=19;i++){
             Reminder reminder=new Reminder();
             reminder.setPersonName(i+"号选手");
             mReminders.add(reminder);

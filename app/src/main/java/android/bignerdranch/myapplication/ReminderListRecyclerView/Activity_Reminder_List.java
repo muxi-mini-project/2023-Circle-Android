@@ -1,13 +1,13 @@
 package android.bignerdranch.myapplication.ReminderListRecyclerView;
 
+import android.bignerdranch.myapplication.BaseActivity;
 import android.bignerdranch.myapplication.R;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class Activity_Reminder_List extends AppCompatActivity {
+public class Activity_Reminder_List extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
