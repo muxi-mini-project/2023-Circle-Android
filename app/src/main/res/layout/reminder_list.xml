@@ -8,18 +8,18 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:backgroundTint="@color/material_dynamic_neutral70">
+        android:elevation="4dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="私信"
+            android:text="消息通知"
             android:textSize="60px" />
 
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/message_person_list_fragment_container"
+        android:id="@+id/reminder_list_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

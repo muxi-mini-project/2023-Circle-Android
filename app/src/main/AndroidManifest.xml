@@ -13,8 +13,23 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
 
+
         <activity
-            android:name=".NavigationBarActivity"
+            android:name=".NewUserHelpActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
+        <activity
+            android:name=".PostsRecyclerView.PostsActivity"
+            android:exported="false">
+                <meta-data
+                    android:name="android.app.lib_name"
+                    android:value="" />
+        </activity>
+        <activity
+            android:name=".SignInActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -22,7 +37,8 @@
         </activity>
         <activity
             android:name=".NewUserHelpActivity"
-            android:exported="false">
+            android:exported="false"
+            tools:ignore="DuplicateActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -36,7 +52,8 @@
         </activity>
         <activity
             android:name=".SignInActivity"
-            android:exported="false">
+            android:exported="false"
+            tools:ignore="DuplicateActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -54,6 +71,21 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity
+            android:name=".Test_Navigation_Activity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lip_name"
+                android:value=""/>
+        </activity>
+        <activity
+            android:name=".ReminderListRecyclerView.Activity_Reminder_List"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lip_name"
+                android:value=""/>
+        </activity>
+
     </application>
 
 </manifest>

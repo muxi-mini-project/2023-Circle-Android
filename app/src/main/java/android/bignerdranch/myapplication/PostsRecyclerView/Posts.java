@@ -1,5 +1,8 @@
-
+<<<<<<<< HEAD:app/src/main/java/android/bignerdranch/myapplication/ui/posts/PostsRecyclerView/Posts.java
 package android.bignerdranch.myapplication.ui.posts.PostsRecyclerView;
+========
+package android.bignerdranch.myapplication.PostsRecyclerView;
+>>>>>>>> Huangshaobo:app/src/main/java/android/bignerdranch/myapplication/PostsRecyclerView/Posts.java
 
 import java.util.Date;
 import java.util.UUID;
