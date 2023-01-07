@@ -13,7 +13,7 @@ public abstract class SingleFragmentActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.posts_fragment);
+        setContentView(R.layout.fragment_posts);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.posts_fragment);//此处为activity_fragment的id
