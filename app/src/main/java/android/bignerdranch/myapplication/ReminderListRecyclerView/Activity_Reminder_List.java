@@ -15,7 +15,7 @@ public class Activity_Reminder_List extends BaseActivity {
         setContentView(R.layout.reminder_list);
 
         FragmentManager fragmentManager=getSupportFragmentManager();
-        Fragment fragment=new Fragment_Reminder_List();
+        Fragment fragment=fragmentManager.findFragmentById(R.id.reminder_list_fragment_container);
 
         if(fragment==null){
             fragment=new Fragment_Reminder_List();

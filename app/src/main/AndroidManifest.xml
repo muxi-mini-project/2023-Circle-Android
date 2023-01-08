@@ -22,13 +22,6 @@
                 android:value=""/>
         </activity>
         <activity
-            android:name=".PostsRecyclerView.PostsActivity"
-            android:exported="false">
-                <meta-data
-                    android:name="android.app.lib_name"
-                    android:value="" />
-        </activity>
-        <activity
             android:name=".SignInActivity"
             android:exported="false">
             <meta-data
@@ -84,6 +77,13 @@
             <meta-data
                 android:name="android.app.lip_name"
                 android:value=""/>
+        </activity>
+        <activity android:name=".NavigationBarActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lip_name"
+                android:value=""/>
+
         </activity>
 
     </application>

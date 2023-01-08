@@ -24,7 +24,6 @@ public class Fragment_Reminder_List extends Fragment{
         private TextView mPersonname;
         private TextView mRemindercontent;
         private TextView mReminderdate;
-        private ImageView mImageView;
 
         private Reminder mReminder;
 
@@ -34,13 +33,11 @@ public class Fragment_Reminder_List extends Fragment{
             mPersonname=(TextView)itemView.findViewById(R.id.reminder_personname);
             mRemindercontent=(TextView)itemView.findViewById(R.id.reminder_content);
             mReminderdate=(TextView)itemView.findViewById(R.id.reminder_date);
-            mImageView=(ImageView)itemView.findViewById(R.id.reminder_person_head);
         }
 
         public void bind(Reminder reminder){
             mReminder =reminder;
             mPersonname.setText(mReminder.getPersonName());
-            mReminderdate.setText(mReminder.getDate().toString());
 
             //此处还差通知的具体内容
         }
