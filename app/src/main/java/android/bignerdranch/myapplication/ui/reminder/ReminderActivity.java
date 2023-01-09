@@ -15,11 +15,7 @@ public class ReminderActivity extends BaseActivity {
         setContentView(R.layout.layout_reminder);
 
         FragmentManager fragmentManager=getSupportFragmentManager();
-<<<<<<< HEAD:app/src/main/java/android/bignerdranch/myapplication/ui/reminder/ReminderActivity.java
         Fragment fragment=fragmentManager.findFragmentById(R.id.layout_reminder);
-=======
-        Fragment fragment=fragmentManager.findFragmentById(R.id.reminder_list_fragment_container);
->>>>>>> 2c08dee7fce687e23da1eca265c0fc704528f740:app/src/main/java/android/bignerdranch/myapplication/ReminderListRecyclerView/Activity_Reminder_List.java
 
         if(fragment==null){
             fragment=new ReminderFragment();

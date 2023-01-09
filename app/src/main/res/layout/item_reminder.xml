@@ -13,7 +13,6 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         app:layout_constraintDimensionRatio=""
-        android:contentDescription="@string/reminder_head"
         android:scaleType="centerInside"
         android:src="@drawable/page_head"
         app:layout_constraintHorizontal_bias="0.04"
