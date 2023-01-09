@@ -20,6 +20,6 @@
     <string name="title_letter">消息</string>
     <string name="title_mine">我的</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_reminder">消息</string>
 
 </resources>

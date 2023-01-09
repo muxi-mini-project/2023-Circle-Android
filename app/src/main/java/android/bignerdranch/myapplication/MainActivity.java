@@ -14,8 +14,6 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
 
     Button mSignInButton;
 
-    private Button mTest_Navigation_Button;           //测试导航按钮，等APP全部完成后删除
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,17 +28,6 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
                 startActivity(intent);//启动SignInActivity
             }
         });
-
-        //测试按钮，App全部完成后需删除
-        mTest_Navigation_Button=(Button) findViewById(R.id.test);
-        mTest_Navigation_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,Test_Navigation_Activity.class);
-                startActivity(intent);
-            }
-        });
-        //测试按钮到此为止
     }
 
 }

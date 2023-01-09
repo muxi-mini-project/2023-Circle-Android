@@ -22,7 +22,7 @@
                 android:value=""/>
         </activity>
         <activity
-            android:name=".PostsRecyclerView.PostsActivity"
+            android:name=".NavigationBarActivity"
             android:exported="false">
                 <meta-data
                     android:name="android.app.lib_name"
@@ -36,15 +36,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".NewUserHelpActivity"
-            android:exported="false"
-            tools:ignore="DuplicateActivity">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".ui.posts.PostsRecyclerView.PostsActivity"
+            android:name=".ui.home.PostsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -72,14 +64,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Test_Navigation_Activity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lip_name"
-                android:value=""/>
-        </activity>
-        <activity
-            android:name=".ReminderListRecyclerView.Activity_Reminder_List"
+            android:name=".ui.reminder.ReminderActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lip_name"

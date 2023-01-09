@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ReminderListRecyclerView;
+package android.bignerdranch.myapplication.ui.reminder;
 
 import android.bignerdranch.myapplication.BaseActivity;
 import android.bignerdranch.myapplication.R;
@@ -7,21 +7,22 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class Activity_Reminder_List extends BaseActivity {
+public class ReminderActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.reminder_list);
+        setContentView(R.layout.layout_reminder);
 
         FragmentManager fragmentManager=getSupportFragmentManager();
-        Fragment fragment=new Fragment_Reminder_List();
+        Fragment fragment=fragmentManager.findFragmentById(R.id.layout_reminder);
 
         if(fragment==null){
-            fragment=new Fragment_Reminder_List();
+            fragment=new ReminderFragment();
             fragmentManager.beginTransaction()
-                    .add(R.id.reminder_list_fragment_container,fragment)
+                    .add(R.id.layout_reminder,fragment)
                     .commit();
         }
     }
+
 }

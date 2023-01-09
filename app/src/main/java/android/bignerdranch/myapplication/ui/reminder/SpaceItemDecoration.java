@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ReminderListRecyclerView;
+package android.bignerdranch.myapplication.ui.reminder;
 
 import android.graphics.Rect;
 import android.view.View;

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_reminder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:elevation="4dp"
+    android:orientation="vertical"
+    android:layout_marginBottom="56dp">
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="消息通知"
+            android:textSize="60px"
+            android:translationZ="1dp"
+            android:elevation="1dp"
+            android:background="@drawable/title_shadow"/>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_reminder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

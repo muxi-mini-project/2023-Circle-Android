@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ReminderListRecyclerView;
+package android.bignerdranch.myapplication.ui.reminder;
 
 import android.content.Context;
 
@@ -6,24 +6,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Reminder_Lab {
-    private static Reminder_Lab sReminder_lab;
+public class ReminderLab {
+    private static ReminderLab sReminder_lab;
 
     private List<Reminder> mReminders;
 
-    public static Reminder_Lab getReminder_lab(Context context){
+    public static ReminderLab getReminder_lab(Context context){
         if (sReminder_lab == null) {
-            sReminder_lab =new Reminder_Lab(context);
+            sReminder_lab =new ReminderLab(context);
         }
         return sReminder_lab;
     }
 
-    private Reminder_Lab(Context context){
+    private ReminderLab(Context context){
         mReminders=new ArrayList<>();
         //先生成20个测试用的样例
         for(int i=0;i<=19;i++){
             Reminder reminder=new Reminder();
-            reminder.setPersonName(i+"号选手");
+            reminder.setContent("第"+(i+1)+"次测试");
+            reminder.setPersonName((i+1)+"号选手");
             mReminders.add(reminder);
         }
     }
