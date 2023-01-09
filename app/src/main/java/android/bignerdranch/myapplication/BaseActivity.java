@@ -10,6 +10,15 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
+
+    public  double getStatusBarHeight(Context context){
+
+        double statusBarHeight = Math.ceil(25 * context.getResources().getDisplayMetrics().density);
+
+        return statusBarHeight;
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

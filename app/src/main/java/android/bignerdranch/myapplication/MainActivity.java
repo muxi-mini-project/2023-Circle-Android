@@ -26,7 +26,8 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
                 Intent intent = SignInActivity.newIntent(MainActivity.this);
                 //以MainActivity创建一个SignInActivity的Intent
                 startActivity(intent);//启动SignInActivity
-                }
+            }
         });
     }
+
 }
