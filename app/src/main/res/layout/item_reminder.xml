@@ -11,11 +11,15 @@
     <ImageView
         android:id="@+id/reminder_person_head"
         android:layout_width="64dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="16dp"
+        android:layout_height="64dp"
+        app:layout_constraintDimensionRatio=""
+        android:contentDescription="@string/reminder_head"
         android:scaleType="centerInside"
         android:src="@drawable/page_head"
+        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintVertical_bias="0.5"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,33 +27,38 @@
         android:id="@+id/reminder_personname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
         android:text="Personname"
         android:textSize="60px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.239" />
+        app:layout_constraintHorizontal_bias="0.36"
+        app:layout_constraintVertical_bias="0.15" />
 
     <TextView
         android:id="@+id/reminder_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
         android:text="reminder_content"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.35"
         app:layout_constraintVertical_bias="0.866" />
 
     <TextView
         android:id="@+id/reminder_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="50dp"
         android:text="reminder date"
         android:textSize="20px"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
