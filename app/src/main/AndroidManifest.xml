@@ -62,6 +62,13 @@
                 android:name="android.app.lip_name"
                 android:value=""/>
         </activity>
+        <activity
+            android:name=".User_Information_Edit.Activity_User_Information"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lip_name"
+                android:value=""/>
+        </activity>
 
     </application>
 
