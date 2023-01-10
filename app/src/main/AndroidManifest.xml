@@ -14,18 +14,25 @@
         tools:targetApi="31">
 
         <activity
+            android:name=".ui.mine.MineActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".NewUserHelpActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
-                android:value=""/>
+                android:value="" />
         </activity>
         <activity
             android:name=".NavigationBarActivity"
             android:exported="false">
-                <meta-data
-                    android:name="android.app.lib_name"
-                    android:value="" />
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
         <activity
             android:name=".SignInActivity"
@@ -35,7 +42,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.home.PostsActivity"
+            android:name=".ui.posts.PostsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -67,14 +74,14 @@
             android:exported="false">
             <meta-data
                 android:name="android.app.lip_name"
-                android:value=""/>
+                android:value="" />
         </activity>
         <activity
             android:name=".User_Information_Edit.Activity_User_Information"
             android:exported="false">
             <meta-data
                 android:name="android.app.lip_name"
-                android:value=""/>
+                android:value="" />
         </activity>
 
     </application>

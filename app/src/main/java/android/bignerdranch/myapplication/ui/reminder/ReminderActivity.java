@@ -1,6 +1,6 @@
 package android.bignerdranch.myapplication.ui.reminder;
 
-import android.bignerdranch.myapplication.BaseActivity;
+import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.R;
 import android.os.Bundle;
 

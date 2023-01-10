@@ -1,12 +1,17 @@
 package android.bignerdranch.myapplication.User_Information_Edit;
 
+import android.bignerdranch.myapplication.UserSex;
+
 public class User_Information {
     private String mUser_Name_Title;
     private String mUser_Name;
     private boolean Male;
     private boolean Female;
-    private boolean Unselected_Sex;
+    private boolean IsUnselected_Sex;
     private String mSignature;
+    private int mFans;
+    private int mFollow;
+    private int mDynamics;
 
     public User_Information(){
         //初始化,等到可以网络请求的时候应该要修改
@@ -14,15 +19,7 @@ public class User_Information {
         mUser_Name="默认用户名";
         Male=false;
         Female=false;
-        Unselected_Sex=true;
-    }
-
-    public String getUser_Name() {
-        return mUser_Name;
-    }
-
-    public void setUser_Name(String name) {
-        mUser_Name = name;
+        IsUnselected_Sex=true;
     }
 
     public boolean isMale() {
@@ -42,11 +39,43 @@ public class User_Information {
     }
 
     public boolean isUnselected_Sex() {
-        return Unselected_Sex;
+        return IsUnselected_Sex;
     }
 
     public void setUnselected_Sex(boolean unselected_Sex) {
-        Unselected_Sex = unselected_Sex;
+        IsUnselected_Sex = unselected_Sex;
+    }
+
+    public int getFans() {
+        return mFans;
+    }
+
+    public void setFans(int fans) {
+        mFans = fans;
+    }
+
+    public int getFollow() {
+        return mFollow;
+    }
+
+    public void setFollow(int follow) {
+        mFollow = follow;
+    }
+
+    public int getDynamics() {
+        return mDynamics;
+    }
+
+    public void setDynamics(int dynamics) {
+        mDynamics = dynamics;
+    }
+
+    public String getUser_Name() {
+        return mUser_Name;
+    }
+
+    public void setUser_Name(String name) {
+        mUser_Name = name;
     }
 
     public String getSignature() {

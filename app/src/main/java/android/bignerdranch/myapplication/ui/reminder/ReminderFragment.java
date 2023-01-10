@@ -1,6 +1,7 @@
 package android.bignerdranch.myapplication.ui.reminder;
 
 import android.bignerdranch.myapplication.R;
+import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

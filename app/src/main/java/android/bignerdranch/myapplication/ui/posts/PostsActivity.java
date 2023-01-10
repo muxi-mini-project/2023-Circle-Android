@@ -1,6 +1,6 @@
-package android.bignerdranch.myapplication.ui.home;
+package android.bignerdranch.myapplication.ui.posts;
 
-import android.bignerdranch.myapplication.BaseActivity;
+import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.R;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +23,7 @@ public class PostsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_home);
+        setContentView(R.layout.layout_posts);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.layout_home);//此处为layout_home的id

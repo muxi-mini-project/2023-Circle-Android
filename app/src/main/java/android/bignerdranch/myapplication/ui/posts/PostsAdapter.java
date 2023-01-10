@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ui.home;
+package android.bignerdranch.myapplication.ui.posts;
 
 import android.bignerdranch.myapplication.R;
 import android.view.LayoutInflater;

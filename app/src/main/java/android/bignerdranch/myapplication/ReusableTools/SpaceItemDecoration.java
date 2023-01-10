@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ui.home;
+package android.bignerdranch.myapplication.ReusableTools;
 
 import android.graphics.Rect;
 import android.view.View;

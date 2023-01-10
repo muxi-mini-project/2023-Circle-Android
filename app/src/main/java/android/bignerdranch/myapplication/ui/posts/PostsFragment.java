@@ -1,11 +1,11 @@
-package android.bignerdranch.myapplication.ui.home;
+package android.bignerdranch.myapplication.ui.posts;
 
 import android.bignerdranch.myapplication.R;
+import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,12 +17,10 @@ public class PostsFragment extends Fragment {
     private RecyclerView mPostsRecyclerView;
     private PostsAdapter mPostsAdapter;
 
-    private RadioGroup mRadioGroup;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle saveInstanceState){
-        View view =inflater.inflate(R.layout.layout_home,container,false);
+        View view =inflater.inflate(R.layout.layout_posts,container,false);
 
         mPostsRecyclerView=(RecyclerView) view
                 .findViewById(R.id.recyclerview_home);

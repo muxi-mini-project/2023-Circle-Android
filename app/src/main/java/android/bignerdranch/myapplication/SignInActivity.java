@@ -2,6 +2,7 @@ package android.bignerdranch.myapplication;
 
 
 
+import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class SignInActivity extends BaseActivity{
+public class SignInActivity extends BaseActivity {
 
     Button mSignInButton;
     TextView mSignInTipText;

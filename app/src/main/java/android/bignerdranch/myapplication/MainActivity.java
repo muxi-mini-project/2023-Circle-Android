@@ -1,14 +1,10 @@
 package android.bignerdranch.myapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 
 public class MainActivity extends BaseActivity {//继承了BaseActivity的透明任务栏，锁定竖屏
 

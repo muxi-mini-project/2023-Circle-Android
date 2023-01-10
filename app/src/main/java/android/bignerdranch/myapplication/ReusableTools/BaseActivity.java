@@ -1,7 +1,5 @@
-package android.bignerdranch.myapplication;
+package android.bignerdranch.myapplication.ReusableTools;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,14 +8,6 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
-
-    public  double getStatusBarHeight(Context context){
-
-        double statusBarHeight = Math.ceil(25 * context.getResources().getDisplayMetrics().density);
-
-        return statusBarHeight;
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

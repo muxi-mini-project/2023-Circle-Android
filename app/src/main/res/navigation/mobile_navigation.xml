@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="android.bignerdranch.myapplication.ui.home.PostsFragment"
+        android:name="android.bignerdranch.myapplication.ui.posts.PostsFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/layout_home" />
+        tools:layout="@layout/layout_posts" />
 
     <fragment
         android:id="@+id/navigation_mine"
