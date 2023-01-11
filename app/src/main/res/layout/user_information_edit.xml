@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <FrameLayout
-            android:background="@color/white"
+            android:background="@drawable/informationcard_background"
             android:elevation="4dp"
             android:id="@+id/user_informationcard_fragmentcontainer"
             app:layout_constraintHeight_percent="0.5"
