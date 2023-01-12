@@ -19,7 +19,7 @@
         <ImageButton
             android:id="@+id/publish_head_portrait"
             android:layout_width="50dp"
-            android:layout_height="50sp"
+            android:layout_height="50dp"
             android:scaleType="centerCrop"
             android:background="@mipmap/head_portrait"
             />
@@ -64,5 +64,27 @@
         android:layout_height="wrap_content"
         android:text="@string/test_text" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/is_likes_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/likes_not"
+            app:layout_constraintEnd_toStartOf="@+id/comment_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="10dp"/>
+
+        <ImageButton
+            android:id="@+id/comment_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@mipmap/comment_btn_background"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

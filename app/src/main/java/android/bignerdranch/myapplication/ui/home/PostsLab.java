@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ui.posts;
+package android.bignerdranch.myapplication.ui.home;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +28,7 @@ public class PostsLab {
             mPosts.add(posts);
         }
     }
+
 
     public List<Posts> get_mPosts(){return mPosts;}
 

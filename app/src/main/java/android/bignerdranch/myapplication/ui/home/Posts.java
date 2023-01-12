@@ -1,24 +1,34 @@
 
-package android.bignerdranch.myapplication.ui.posts;
+package android.bignerdranch.myapplication.ui.home;
+
+import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 
 import java.util.Date;
 import java.util.UUID;
 
-public class Posts {
+public class Posts extends BaseItem {
     private UUID mId;
     private String publisherName;//发布者的名字
     private boolean follow;//是否关注发布者
     private String content;//发布内容
     private Date releaseTime;//发布时间
+    private boolean likes;//是否点赞
 
+
+    public int typeCode(){
+        return ItemTypeDef.Type.TWO_TEXT.getCode();
+    }
 
     //构造器
-    public Posts(String publisherName, boolean follow, String content, Date releaseTime) {
+    public Posts(String publisherName, boolean follow, String content, boolean likes) {
+        mId=UUID.randomUUID();
         this.publisherName = publisherName;
         this.follow = follow;
         this.content = content;
-        this.releaseTime = releaseTime;
+        releaseTime=new Date();
+        this.likes = likes;
     }
+
     //空构造器
     public Posts(){
         mId = UUID.randomUUID();
@@ -26,6 +36,12 @@ public class Posts {
     }
 
     //以下为自动生成的get和set方法
+    public boolean isLikes() {
+        return likes;
+    }
+    public void setLikes(boolean likes) {
+        this.likes = likes;
+    }
     public UUID getId() {
         return mId;
     }
@@ -43,10 +59,6 @@ public class Posts {
     }
     public Date getReleaseTime() {
         return releaseTime;
-    }
-    public void setReleaseTime(Date releaseTime) {
-        this.releaseTime = releaseTime;
-
     }
     public String getContent() {
         return content;

@@ -7,19 +7,16 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="android.bignerdranch.myapplication.ui.posts.PostsFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/layout_posts" />
+        android:name="android.bignerdranch.myapplication.ui.home.HomeFragment"
+        tools:layout="@layout/layout_home" />
 
     <fragment
         android:id="@+id/navigation_mine"
         android:name="android.bignerdranch.myapplication.ui.mine.MineFragment"
-        android:label="@string/title_mine"
         tools:layout="@layout/layout_mine" />
 
     <fragment
         android:id="@+id/navigation_reminder"
         android:name="android.bignerdranch.myapplication.ui.reminder.ReminderFragment"
-        android:label="@string/title_reminder"
         tools:layout="@layout/layout_reminder" />
 </navigation>

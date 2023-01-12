@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ui.posts;
+package android.bignerdranch.myapplication.ui.home;
 
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.R;
@@ -10,20 +10,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
-public class PostsActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity {
     public static Intent newIntent(Context packageContext) {
-        Intent intent = new Intent(packageContext, PostsActivity.class);
+        Intent intent = new Intent(packageContext, HomeActivity.class);
         return intent;
     }
 
     protected Fragment createFragment() {
-        return new PostsFragment();
+        return new HomeFragment();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_posts);
+        setContentView(R.layout.layout_home);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.layout_home);//此处为layout_home的id

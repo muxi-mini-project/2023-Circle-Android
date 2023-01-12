@@ -43,7 +43,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.posts.PostsActivity"
+            android:name=".ui.home.HomeActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
