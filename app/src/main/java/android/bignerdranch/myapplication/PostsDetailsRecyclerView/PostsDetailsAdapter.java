@@ -1,10 +1,11 @@
-package android.bignerdranch.myapplication.ui.home;
+package android.bignerdranch.myapplication.PostsDetailsRecyclerView;
 
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
+import android.bignerdranch.myapplication.ui.home.PostsHolder;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -12,26 +13,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
-public class HomeAdapter extends RecyclerView.Adapter<BaseHolder> {
+public class PostsDetailsAdapter extends RecyclerView.Adapter<BaseHolder> {
 
     private List<BaseItem> mList;//该Adapter管理的Posts的List
-    private MyRecyclerItemClickListener myRecyclerItemClickListener;
 
-    public List<BaseItem> getList() {
-        return mList;
-    }
 
-    public HomeAdapter(List<BaseItem> List) {
+
+    public PostsDetailsAdapter(List<BaseItem> List) {
         mList = List;
     }
+
 
     @Override
     public BaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (ItemTypeDef.Type.getItemTypeByCode(viewType)){
-            case SEARCH_BOX:
-                return new SearchBoxHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_box,parent,false),ItemTypeDef.Type.SEARCH_BOX);
+            case COMMENT:
+                return new CommentHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment,parent,false),ItemTypeDef.Type.COMMENT);//创建新CommentHolder
             case POSTS:
-                return new PostsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_posts_layout,parent,false),ItemTypeDef.Type.POSTS,myRecyclerItemClickListener);//创建一个新的PostsHolder
+                return new PostsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_posts_layout,parent,false),ItemTypeDef.Type.POSTS);//创建一个新的PostsHolder
         }
         return null;
     }
@@ -41,6 +40,11 @@ public class HomeAdapter extends RecyclerView.Adapter<BaseHolder> {
             BaseItem item = mList.get(position);
             PostsHolder postsHolder = (PostsHolder) holder;
             postsHolder.bind(item);
+        }
+        if (holder.getType()==ItemTypeDef.Type.COMMENT){
+            BaseItem item=mList.get(position);
+            CommentHolder commentHolder=(CommentHolder) holder;
+            commentHolder.bind(item);
         }
     }
 
@@ -54,7 +58,4 @@ public class HomeAdapter extends RecyclerView.Adapter<BaseHolder> {
         return mList.get(position).typeCode();
     }
 
-    public void setOnItemClickListener(MyRecyclerItemClickListener listener){
-        this.myRecyclerItemClickListener = listener;
-    }
 }

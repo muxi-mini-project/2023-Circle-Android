@@ -34,4 +34,5 @@ public class HomeActivity extends BaseActivity {
                     .commit();
         }
     }
+
 }

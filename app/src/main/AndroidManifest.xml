@@ -15,6 +15,12 @@
 
 
         <activity
+            android:name=".PostsDetailsRecyclerView.PostsDetailsActivity"
+            android:exported="false">
+            <meta-data android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
+        <activity
             android:name=".ui.mine.MineActivity"
             android:exported="false">
             <meta-data

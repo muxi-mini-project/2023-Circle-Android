@@ -1,12 +1,16 @@
 package android.bignerdranch.myapplication.ui.home;
 
+import android.bignerdranch.myapplication.PostsDetailsRecyclerView.PostsDetailsActivity;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
+import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,19 +20,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    private RecyclerView mPostsRecyclerView;
-    private HomeAdapter mPostsAdapter;
+    private RecyclerView mHomeRecyclerView;
+    private HomeAdapter mHomeAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle saveInstanceState){
         View view =inflater.inflate(R.layout.layout_home,container,false);
 
-        mPostsRecyclerView=(RecyclerView) view
+        mHomeRecyclerView=(RecyclerView) view
                 .findViewById(R.id.recyclerview_home);
-        mPostsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mHomeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mPostsRecyclerView.setItemViewCacheSize(16);
 
         upDateUI();
 
@@ -43,9 +46,19 @@ public class HomeFragment extends Fragment {
             mList.add(e);
         }
 
-        mPostsRecyclerView.addItemDecoration(new SpaceItemDecoration(20));//设置item之间的间隔为20
-        mPostsAdapter = new HomeAdapter(mList);//将mList装载入Adapter中
-        mPostsRecyclerView.setAdapter(mPostsAdapter);//给该recyclerview设置adapter
+        mHomeRecyclerView.addItemDecoration(new SpaceItemDecoration(20));//设置item之间的间隔为20
+        mHomeAdapter = new HomeAdapter(mList);//将mList装载入Adapter中
+        mHomeRecyclerView.setAdapter(mHomeAdapter);//给该recyclerview设置adapter
+
+        this.mHomeAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent= PostsDetailsActivity.newIntent(getActivity(),mHomeAdapter.getList().get(position).getName()
+                ,mHomeAdapter.getList().get(position).getTime()
+                ,mHomeAdapter.getList().get(position).getContent());
+                startActivity(intent);
+            }
+        });
     }
 
 }
