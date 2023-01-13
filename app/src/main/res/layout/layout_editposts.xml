@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:text="内容编辑"
+            android:textSize="60px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageButton
+            android:background="@color/white"
+            android:id="@+id/backbutton_editposts"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.4"
+            app:layout_constraintWidth_percent="0.1"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.03"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/back_button1" />
+
+        <ImageButton
+            android:id="@+id/releasebutton_editposts"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.6"
+            app:layout_constraintWidth_percent="0.15"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.95"
+            android:src="@drawable/release_button"
+            android:scaleType="centerInside"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:layout_weight="4"
+            android:text="选择标签:"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"/>
+
+        <RadioGroup
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            
+            <RadioButton
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/label1"
+                android:button="@null"
+                android:background="@drawable/label1_selector"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_margin="4dp"/>
+
+            <RadioButton
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/label2"
+                android:button="@null"
+                android:background="@drawable/label2_selector"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_margin="4dp"/>
+
+            <RadioButton
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/label3"
+                android:button="@null"
+                android:background="@drawable/label3_selelctor"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_margin="4dp"/>
+
+            <RadioButton
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/label4"
+                android:button="@null"
+                android:background="@drawable/label4_selector"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_margin="4dp"/>
+        </RadioGroup>
+        
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:elevation="4dp"
+        android:background="@color/white"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="请输入标题:"
+            android:layout_weight="3"/>
+
+        <android.widget.EditText
+            android:id="@+id/posts_title_field"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="8dp"
+        android:elevation="4dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="400dp">
+
+        <android.widget.EditText
+            android:layout_weight="2"
+            android:id="@+id/posts_content_field"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="left|top"
+            android:hint="请随意发挥..."
+            android:inputType="textMultiLine"
+            android:textSize="40px" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
