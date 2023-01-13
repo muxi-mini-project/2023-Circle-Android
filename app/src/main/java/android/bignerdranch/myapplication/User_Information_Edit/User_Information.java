@@ -1,20 +1,61 @@
 package android.bignerdranch.myapplication.User_Information_Edit;
 
+import android.bignerdranch.myapplication.UserSex;
+import android.hardware.usb.UsbRequest;
+
 public class User_Information {
     private String mUser_Name_Title;
     private String mUser_Name;
-    private boolean Male;
-    private boolean Female;
-    private boolean Unselected_Sex;
+    private UserSex mUserSex;
     private String mSignature;
+    private int mFans;
+    private int mFollow;
+    private int mDynamics;
 
-    public User_Information(){
+    private User_Information(){
         //初始化,等到可以网络请求的时候应该要修改
         mUser_Name_Title="显示用户名";
         mUser_Name="默认用户名";
-        Male=false;
-        Female=false;
-        Unselected_Sex=true;
+        mUserSex= UserSex.Unselected;
+    }
+
+    private static User_Information mUser_information = new User_Information();
+
+    public  static User_Information getUser_information(){
+        return  mUser_information;
+    }
+
+
+    public UserSex getUserSex() {
+        return mUserSex;
+    }
+
+    public void setUserSex(UserSex userSex) {
+        mUserSex = userSex;
+    }
+
+    public int getFans() {
+        return mFans;
+    }
+
+    public void setFans(int fans) {
+        mFans = fans;
+    }
+
+    public int getFollow() {
+        return mFollow;
+    }
+
+    public void setFollow(int follow) {
+        mFollow = follow;
+    }
+
+    public int getDynamics() {
+        return mDynamics;
+    }
+
+    public void setDynamics(int dynamics) {
+        mDynamics = dynamics;
     }
 
     public String getUser_Name() {
@@ -23,30 +64,6 @@ public class User_Information {
 
     public void setUser_Name(String name) {
         mUser_Name = name;
-    }
-
-    public boolean isMale() {
-        return Male;
-    }
-
-    public void setMale(boolean male) {
-        Male = male;
-    }
-
-    public boolean isFemale() {
-        return Female;
-    }
-
-    public void setFemale(boolean female) {
-        Female = female;
-    }
-
-    public boolean isUnselected_Sex() {
-        return Unselected_Sex;
-    }
-
-    public void setUnselected_Sex(boolean unselected_Sex) {
-        Unselected_Sex = unselected_Sex;
     }
 
     public String getSignature() {

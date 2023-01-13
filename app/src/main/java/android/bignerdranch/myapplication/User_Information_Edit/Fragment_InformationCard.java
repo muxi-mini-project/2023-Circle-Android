@@ -1,6 +1,7 @@
 package android.bignerdranch.myapplication.User_Information_Edit;
 
 import android.bignerdranch.myapplication.R;
+import android.bignerdranch.myapplication.UserSex;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,8 +16,6 @@ import androidx.fragment.app.Fragment;
 
 public class Fragment_InformationCard extends Fragment {
 
-    private User_Information mUser_information;
-
     private TextView mTitle;
     private TextView mWords;
     private ImageButton mIsMaleButton;
@@ -24,15 +23,15 @@ public class Fragment_InformationCard extends Fragment {
     private ImageButton mUnselectedButton;
     private TextView Tip1;
     private TextView Tip2;
-    private EditText mUser_name_label;
-    private EditText mSignature_label;
+    private EditText mUser_name_field;
+    private EditText mSignature_field;
 
-
+    private User_Information user_information;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        mUser_information=new User_Information();
+        user_information= User_Information.getUser_information();
     }
 
     @Override
@@ -44,15 +43,15 @@ public class Fragment_InformationCard extends Fragment {
         mUnselectedButton=(ImageButton)view.findViewById(R.id.unselected);
 
         //初始化性别按钮的
-        if(mUser_information.isMale()){
+        if(user_information.getUserSex()== UserSex.Male){
             mIsMaleButton.setBackgroundResource(R.drawable.ismale_yes);
             mIsFemaleButton.setBackgroundResource(R.drawable.isfemale_no);
             mUnselectedButton.setBackgroundResource(R.drawable.unselected_no);
-        }else if(mUser_information.isFemale()){
+        }else if(user_information.getUserSex()==UserSex.Female){
             mIsMaleButton.setBackgroundResource(R.drawable.ismale_no);
             mIsFemaleButton.setBackgroundResource(R.drawable.isfemale_yes);
             mUnselectedButton.setBackgroundResource(R.drawable.unselected_no);
-        }else if(mUser_information.isUnselected_Sex()){
+        }else if(user_information.getUserSex()==UserSex.Unselected){
             mIsMaleButton.setBackgroundResource(R.drawable.ismale_no);
             mIsFemaleButton.setBackgroundResource(R.drawable.isfemale_no);
             mUnselectedButton.setBackgroundResource(R.drawable.unselected_yes);
@@ -63,9 +62,7 @@ public class Fragment_InformationCard extends Fragment {
         mIsMaleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mUser_information.setMale(true);
-                mUser_information.setFemale(false);
-                mUser_information.setUnselected_Sex(false);
+                user_information.setUserSex(UserSex.Male);
 
                 mIsMaleButton.setBackgroundResource(R.drawable.ismale_yes);
                 mIsFemaleButton.setBackgroundResource(R.drawable.isfemale_no);
@@ -77,9 +74,7 @@ public class Fragment_InformationCard extends Fragment {
         mIsFemaleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mUser_information.setMale(false);
-                mUser_information.setFemale(true);
-                mUser_information.setUnselected_Sex(false);
+                user_information.setUserSex(UserSex.Female);
 
                 mIsMaleButton.setBackgroundResource(R.drawable.ismale_no);
                 mIsFemaleButton.setBackgroundResource(R.drawable.isfemale_yes);
@@ -91,9 +86,7 @@ public class Fragment_InformationCard extends Fragment {
         mUnselectedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mUser_information.setMale(false);
-                mUser_information.setFemale(false);
-                mUser_information.setUnselected_Sex(true);
+               user_information.setUserSex(UserSex.Unselected);
 
                 mIsMaleButton.setBackgroundResource(R.drawable.ismale_no);
                 mIsFemaleButton.setBackgroundResource(R.drawable.isfemale_no);
@@ -101,8 +94,8 @@ public class Fragment_InformationCard extends Fragment {
             }
         });
 
-        mUser_name_label=(EditText) view.findViewById(R.id.user_name_label);
-        mUser_name_label.addTextChangedListener(new TextWatcher() {
+        mUser_name_field=(EditText) view.findViewById(R.id.user_name_field);
+        mUser_name_field.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -110,8 +103,8 @@ public class Fragment_InformationCard extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mUser_information.setUser_Name_Title(s.toString());
-                mUser_information.setUser_Name(s.toString());
+                user_information.setUser_Name_Title(s.toString());
+                user_information.setUser_Name(s.toString());
             }
 
             @Override
@@ -121,8 +114,8 @@ public class Fragment_InformationCard extends Fragment {
         });
 
 
-        mSignature_label=(EditText) view.findViewById(R.id.signature_label);
-        mSignature_label.addTextChangedListener(new TextWatcher() {
+        mSignature_field=(EditText) view.findViewById(R.id.signature_field);
+        mSignature_field.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -130,7 +123,7 @@ public class Fragment_InformationCard extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mUser_information.setSignature(s.toString());
+                user_information.setSignature(s.toString());
             }
 
             @Override
