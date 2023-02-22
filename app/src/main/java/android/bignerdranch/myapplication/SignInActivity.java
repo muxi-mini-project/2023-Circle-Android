@@ -2,18 +2,34 @@ package android.bignerdranch.myapplication;
 
 
 
+import android.bignerdranch.myapplication.ApiAbout.Api;
+import android.bignerdranch.myapplication.ApiAbout.SignInResult;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignInActivity extends BaseActivity {
 
     Button mSignInButton;
     TextView mSignInTipText;
+    EditText usernameEdit;
+    EditText passwordEdit;
+
+    private Retrofit mRetrofit;
+    private Api mApi;
+
 
     public static Intent newIntent(Context packageContext) {
         return  new Intent(packageContext, SignInActivity.class);
@@ -24,12 +40,36 @@ public class SignInActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in_layout);//布局绑定
 
+        usernameEdit=(EditText)findViewById(R.id.user_name_edit);
+        passwordEdit=(EditText)findViewById(R.id.password_edit);
+
+        mRetrofit=new Retrofit.Builder().baseUrl("http://43.138.61.49:8899/api/v1/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        mApi=mRetrofit.create(Api.class);
+
         mSignInButton=(Button) findViewById(R.id.sign_in_btn);
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginSucceeded();//使用这个方法来启动下一个Activity，便于后续扩展认证功能
-                //后续可以在此处写认证方法，将LoginSucceeded方法放在认证方法的认证成功中去调用
+                Call<SignInResult> apiResult=mApi.loginTest(usernameEdit.getText().toString(),passwordEdit.getText().toString());
+                apiResult.enqueue(new Callback<SignInResult>() {
+                    @Override
+                    public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
+                        if (response.body().getToken()!=null){
+                            LoginSucceeded();//使用这个方法来启动下一个Activity
+                        }
+                        else{
+                            Toast.makeText(SignInActivity.this,response.body().getMsg().toString(),Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SignInResult> call, Throwable t) {
+                        Toast.makeText(SignInActivity.this,"登陆失败！",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
 
