@@ -26,14 +26,13 @@ public class MineFragment extends Fragment {
     private TextView mUserSignature;
 
 
-    private User_Information mUser;
+    private User_Information mUser=User_Information.getUser_information();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle saveInstanceState){
         View view =inflater.inflate(R.layout.layout_mine,container,false);
 
-        mUser=new User_Information();
 
         mUserInformation=(LinearLayout)view
                 .findViewById(R.id.user_information);
