@@ -100,7 +100,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Editposts.EditpostsActivity"
+            android:name=".ui.home.Editposts.EditpostsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lip_name"

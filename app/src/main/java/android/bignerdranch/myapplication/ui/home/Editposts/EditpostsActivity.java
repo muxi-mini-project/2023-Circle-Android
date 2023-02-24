@@ -1,9 +1,11 @@
-package android.bignerdranch.myapplication.Editposts;
+package android.bignerdranch.myapplication.ui.home.Editposts;
 
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ui.home.Posts;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.User_Information_Edit.User_Information;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -58,5 +60,8 @@ public class EditpostsActivity extends BaseActivity {
 
         //水平滚动设置为False
         mPosts_content_field.setHorizontallyScrolling(false);
+    }
+    public static Intent newIntent(Context packageContext) {
+        return  new Intent(packageContext, EditpostsActivity.class);
     }
 }
