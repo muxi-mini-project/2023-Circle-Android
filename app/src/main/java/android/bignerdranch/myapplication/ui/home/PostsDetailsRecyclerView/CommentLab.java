@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.PostsDetailsRecyclerView;
+package android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;

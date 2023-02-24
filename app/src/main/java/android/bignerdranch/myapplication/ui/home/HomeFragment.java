@@ -1,11 +1,11 @@
 package android.bignerdranch.myapplication.ui.home;
 
-import android.bignerdranch.myapplication.PostsDetailsRecyclerView.PostsDetailsActivity;
+import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
-import android.bignerdranch.myapplication.ui.home.Editposts.EditpostsActivity;
+import android.bignerdranch.myapplication.ui.home.EditPosts.EditPostsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
         newPostsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = EditpostsActivity.newIntent(getActivity());
+                Intent intent = EditPostsActivity.newIntent(getActivity());
                 startActivity(intent);
             }
         });

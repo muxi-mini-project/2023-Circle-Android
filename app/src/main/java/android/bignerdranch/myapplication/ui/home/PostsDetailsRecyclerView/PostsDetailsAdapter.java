@@ -1,10 +1,9 @@
-package android.bignerdranch.myapplication.PostsDetailsRecyclerView;
+package android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView;
 
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
-import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ui.home.PostsHolder;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

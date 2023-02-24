@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.PostsDetailsRecyclerView;
+package android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView;
 
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseHolder;

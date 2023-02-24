@@ -1,7 +1,6 @@
 package android.bignerdranch.myapplication.User_Information_Edit;
 
 import android.bignerdranch.myapplication.R;
-import android.bignerdranch.myapplication.UserSex;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;

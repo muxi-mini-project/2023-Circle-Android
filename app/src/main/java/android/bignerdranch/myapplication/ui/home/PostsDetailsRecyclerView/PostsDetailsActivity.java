@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.PostsDetailsRecyclerView;
+package android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView;
 
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.R;
@@ -8,8 +8,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import java.util.UUID;
 
 
 public class PostsDetailsActivity extends BaseActivity {

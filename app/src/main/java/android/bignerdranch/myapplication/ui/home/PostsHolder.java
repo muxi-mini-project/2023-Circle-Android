@@ -1,18 +1,13 @@
 package android.bignerdranch.myapplication.ui.home;
 
-import android.bignerdranch.myapplication.PostsDetailsRecyclerView.PostsDetailsActivity;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
-import android.content.Intent;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.UUID;
 
 
 public class PostsHolder extends BaseHolder implements View.OnClickListener{

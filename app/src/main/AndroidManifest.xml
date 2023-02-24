@@ -24,7 +24,7 @@
                 android:value=""/>
         </activity>
         <activity
-            android:name=".PostsDetailsRecyclerView.PostsDetailsActivity"
+            android:name=".ui.home.PostsDetailsRecyclerView.PostsDetailsActivity"
             android:exported="false">
             <meta-data android:name="android.app.lib_name"
                 android:value=""/>
@@ -100,7 +100,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.home.Editposts.EditpostsActivity"
+            android:name=".ui.home.EditPosts.EditPostsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lip_name"

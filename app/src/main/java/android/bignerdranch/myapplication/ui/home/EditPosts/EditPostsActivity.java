@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ui.home.Editposts;
+package android.bignerdranch.myapplication.ui.home.EditPosts;
 
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ui.home.Posts;
@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-public class EditpostsActivity extends BaseActivity {
+public class EditPostsActivity extends BaseActivity {
 
     private Posts mPosts;
     private User_Information user_information=User_Information.getUser_information();
@@ -62,6 +62,6 @@ public class EditpostsActivity extends BaseActivity {
         mPosts_content_field.setHorizontallyScrolling(false);
     }
     public static Intent newIntent(Context packageContext) {
-        return  new Intent(packageContext, EditpostsActivity.class);
+        return  new Intent(packageContext, EditPostsActivity.class);
     }
 }
