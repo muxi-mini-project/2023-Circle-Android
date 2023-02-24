@@ -1,20 +1,24 @@
 package android.bignerdranch.myapplication.ui.home;
 
+import android.bignerdranch.myapplication.NavigationBarActivity;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.R;
+import android.bignerdranch.myapplication.SignInActivity;
+import android.bignerdranch.myapplication.ui.home.NewPosts.NewPostsActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
 public class HomeActivity extends BaseActivity {
-    public static Intent newIntent(Context packageContext) {
-        Intent intent = new Intent(packageContext, HomeActivity.class);
-        return intent;
-    }
+
+    ImageButton newPostsBtn;
 
     protected Fragment createFragment() {
         return new HomeFragment();
@@ -33,6 +37,13 @@ public class HomeActivity extends BaseActivity {
                     .add(R.id.layout_home, fragment)
                     .commit();
         }
+
+
+    }
+
+    public static Intent newIntent(Context packageContext) {
+        Intent intent = new Intent(packageContext, HomeActivity.class);
+        return intent;
     }
 
 }

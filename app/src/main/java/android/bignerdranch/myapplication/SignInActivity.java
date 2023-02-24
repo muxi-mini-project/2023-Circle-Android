@@ -8,6 +8,8 @@ import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.TransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,9 +42,15 @@ public class SignInActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in_layout);//布局绑定
 
+        //获取用户输入的用户名和密码
         usernameEdit=(EditText)findViewById(R.id.user_name_edit);
         passwordEdit=(EditText)findViewById(R.id.password_edit);
 
+        //隐藏密码
+        TransformationMethod method2 = PasswordTransformationMethod.getInstance();
+        passwordEdit.setTransformationMethod(method2);
+
+        //创建一个指向该url的retrofit
         mRetrofit=new Retrofit.Builder().baseUrl("http://43.138.61.49:8899/api/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -56,8 +64,10 @@ public class SignInActivity extends BaseActivity {
                 apiResult.enqueue(new Callback<SignInResult>() {
                     @Override
                     public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
-                        if (response.body().getToken()!=null){
+                        String token=response.body().getToken();
+                        if (token!=null){
                             LoginSucceeded();//使用这个方法来启动下一个Activity
+                            saveToken(token);
                         }
                         else{
                             Toast.makeText(SignInActivity.this,response.body().getMsg().toString(),Toast.LENGTH_SHORT).show();
@@ -85,8 +95,7 @@ public class SignInActivity extends BaseActivity {
 
     private void LoginSucceeded(){
         Intent intent =NavigationBarActivity.newIntent(SignInActivity.this);
-        //以SignInActivity创建一个PostsActivity的Intent
-        startActivity(intent);//启动PostsActivity
+        startActivity(intent);
     }
 
 }

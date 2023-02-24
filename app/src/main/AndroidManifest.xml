@@ -17,6 +17,13 @@
 
 
         <activity
+            android:name=".ui.home.NewPosts.NewPostsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
+        <activity
             android:name=".PostsDetailsRecyclerView.PostsDetailsActivity"
             android:exported="false">
             <meta-data android:name="android.app.lib_name"

@@ -1,5 +1,7 @@
 package android.bignerdranch.myapplication.ReusableTools;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,5 +27,17 @@ public class BaseActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
+    }
+    public void saveToken(String token){
+        SharedPreferences sharedPreferences=getSharedPreferences("data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString("token",token);
+        editor.apply();
+    }
+
+    public String getToken(){
+        SharedPreferences sharedPreferences= getSharedPreferences("data", Context .MODE_PRIVATE);
+        String token=sharedPreferences.getString("token","false");
+        return token;
     }
 }

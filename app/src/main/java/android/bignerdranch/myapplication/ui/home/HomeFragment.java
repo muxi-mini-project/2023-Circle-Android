@@ -5,11 +5,13 @@ import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
+import android.bignerdranch.myapplication.ui.home.NewPosts.NewPostsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -22,6 +24,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     private RecyclerView mHomeRecyclerView;
     private HomeAdapter mHomeAdapter;
+    private ImageButton newPostsBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,6 +34,15 @@ public class HomeFragment extends Fragment {
         mHomeRecyclerView=(RecyclerView) view
                 .findViewById(R.id.recyclerview_home);
         mHomeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        newPostsBtn=(ImageButton) view.findViewById(R.id.new_posts_btn);
+        newPostsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = NewPostsActivity.newIntent(getActivity());
+                startActivity(intent);
+            }
+        });
 
 
         upDateUI();

@@ -1,7 +1,7 @@
 package android.bignerdranch.myapplication.Editposts;
 
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
-import android.bignerdranch.myapplication.ui.posts.Posts;
+import android.bignerdranch.myapplication.ui.home.Posts;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.User_Information_Edit.User_Information;
 import android.os.Bundle;
