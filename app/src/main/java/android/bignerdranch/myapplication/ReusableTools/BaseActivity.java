@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication;
+package android.bignerdranch.myapplication.ReusableTools;
 
 import android.content.pm.ActivityInfo;
 import android.os.Build;
@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

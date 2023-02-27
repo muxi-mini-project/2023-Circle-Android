@@ -1,6 +1,7 @@
-package android.bignerdranch.myapplication.PostsRecyclerView;
+package android.bignerdranch.myapplication.ui.posts;
 
 import android.bignerdranch.myapplication.R;
+import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,20 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class PostsFragment extends Fragment {
-
     private RecyclerView mPostsRecyclerView;
     private PostsAdapter mPostsAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle saveInstanceState){
-        View view =inflater.inflate(R.layout.recyclerview,container,false);
+        View view =inflater.inflate(R.layout.layout_posts,container,false);
 
         mPostsRecyclerView=(RecyclerView) view
-                .findViewById(R.id.recyclerview);
+                .findViewById(R.id.recyclerview_home);
         mPostsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         upDateUI();
+
+
 
         return view;
     }
@@ -39,4 +41,5 @@ public class PostsFragment extends Fragment {
         mPostsAdapter = new PostsAdapter(postsList);//将postsList装载入Adapter中
         mPostsRecyclerView.setAdapter(mPostsAdapter);//给该recyclerview设置adapter
     }
+
 }

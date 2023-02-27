@@ -1,7 +1,6 @@
 package android.bignerdranch.myapplication.User_Information_Edit;
 
 import android.bignerdranch.myapplication.UserSex;
-import android.hardware.usb.UsbRequest;
 
 public class User_Information {
     private String mUser_Name_Title;

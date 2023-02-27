@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.PostsRecyclerView;
+package android.bignerdranch.myapplication.ui.posts;
 
 import android.bignerdranch.myapplication.R;
 import android.view.LayoutInflater;
@@ -48,7 +48,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private Posts mPosts;
 
         public PostsHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.posts_layout, parent, false));
+            super(inflater.inflate(R.layout.item_posts_layout, parent, false));
 
             mNameView=(TextView) itemView.findViewById(R.id.publisher_name);
             mDateView=(TextView) itemView.findViewById(R.id.publish_time);
@@ -64,7 +64,7 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             });
         }
 
-        public void bind(Posts posts) {
+        public  void bind(Posts posts) {
             mPosts = posts;
             mNameView.setText(mPosts.getPublisherName());
             mDateView.setText(mPosts.getReleaseTime().toString());

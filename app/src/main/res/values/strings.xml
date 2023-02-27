@@ -13,7 +13,11 @@
     <string name="new_user_help_text">新用户帮助</string>
     <string name="new_user_help_content">
         新生用户名为学号，初始密码（如果未修改）为证件号后6位（其中大陆学生证件号为身份证号，港澳学生证件号为回乡证号，台湾学生证件号为台胞证号，外国留学生证件号为护照号），忽略括号，字母均为小写。如果密码仍然不正确，验证不通过，请本人携带一卡通证件到田家炳负二楼卡务中心进行密码重置操作。
-      新进教师用户名为教工号，初始密码为身份证号后6位。（如有x使用小写x）</string>
+        新进教师用户名为教工号，初始密码为身份证号后6位。（如有x使用小写x）</string>
     <string name="new_user_help_title">《新用户帮助》</string>
-    <string name="reminder_head">reminder_head</string>
+    <string name="title_activity_navigation_bar">NavigationBarActivity</string>
+    <string name="title_home">首页</string>
+    <string name="title_mine">我的</string>
+    <string name="title_reminder">消息</string>
+
 </resources>

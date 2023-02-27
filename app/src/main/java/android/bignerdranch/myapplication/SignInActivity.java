@@ -1,6 +1,8 @@
 package android.bignerdranch.myapplication;
 
-import android.bignerdranch.myapplication.PostsRecyclerView.PostsActivity;
+
+
+import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class SignInActivity extends BaseActivity{
+public class SignInActivity extends BaseActivity {
 
     Button mSignInButton;
     TextView mSignInTipText;
@@ -40,8 +42,9 @@ public class SignInActivity extends BaseActivity{
             }
         });
     }
+
     private void LoginSucceeded(){
-        Intent intent = PostsActivity.newIntent(SignInActivity.this);
+        Intent intent =NavigationBarActivity.newIntent(SignInActivity.this);
         //以SignInActivity创建一个PostsActivity的Intent
         startActivity(intent);//启动PostsActivity
     }

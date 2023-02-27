@@ -1,10 +1,11 @@
 package android.bignerdranch.myapplication;
 
+import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class NewUserHelpActivity extends BaseActivity{
+public class NewUserHelpActivity extends BaseActivity {
 
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, NewUserHelpActivity.class);

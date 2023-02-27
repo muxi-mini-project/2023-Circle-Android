@@ -1,4 +1,5 @@
-package android.bignerdranch.myapplication.PostsRecyclerView;
+
+package android.bignerdranch.myapplication.ui.posts;
 
 import java.util.Date;
 import java.util.UUID;
