@@ -48,6 +48,7 @@ public class EditPostsActivity extends BaseActivity {
                 mPosts.setPublisherName(user_information.getUser_Name().toString());
 
                 //还要加一个add方法，把mPost添加到PostsLab里
+                //liz：应该不是加到PostsLab里面，而是通过网络请求添加到服务器的帖子当中，PostsLab只在需要获取帖子列表的时候通过网络请求向服务器获取Posts列表
             }
         });
 

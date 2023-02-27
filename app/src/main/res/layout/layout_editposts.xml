@@ -83,8 +83,11 @@
                 android:layout_weight="1"
                 android:id="@+id/label1"
                 android:button="@null"
-                android:background="@drawable/label1_selector"
-                android:layout_width="60dp"
+                android:text="日常唠嗑"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/selector_label"
+                android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_margin="4dp"/>
 
@@ -93,8 +96,11 @@
                 android:layout_weight="1"
                 android:id="@+id/label2"
                 android:button="@null"
-                android:background="@drawable/label2_selector"
-                android:layout_width="60dp"
+                android:text="学术问询"
+                android:textColor="@color/white"
+                android:gravity="center"
+               android:background="@drawable/selector_label"
+                android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_margin="4dp"/>
 
@@ -103,8 +109,11 @@
                 android:layout_weight="1"
                 android:id="@+id/label3"
                 android:button="@null"
-                android:background="@drawable/label3_selelctor"
-                android:layout_width="60dp"
+                android:text="帮忙互助"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/selector_label"
+                android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_margin="4dp"/>
 
@@ -113,8 +122,11 @@
                 android:layout_weight="1"
                 android:id="@+id/label4"
                 android:button="@null"
-                android:background="@drawable/label4_selector"
-                android:layout_width="60dp"
+                android:text="寻人捞物"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/selector_label"
+                android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_margin="4dp"/>
         </RadioGroup>

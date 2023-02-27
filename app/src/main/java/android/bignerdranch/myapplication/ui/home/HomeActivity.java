@@ -13,7 +13,6 @@ import androidx.fragment.app.FragmentManager;
 
 public class HomeActivity extends BaseActivity {
 
-    ImageButton newPostsBtn;
 
     protected Fragment createFragment() {
         return new HomeFragment();

@@ -15,29 +15,28 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //透明任务栏
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
         //锁定竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //去除顶上自带的标题
-        if (getSupportActionBar() != null)
-        {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-
     }
-    public void saveToken(String token){
-        SharedPreferences sharedPreferences=getSharedPreferences("data", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        editor.putString("token",token);
+
+    public void saveToken(String token) {
+        SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("token", token);
         editor.apply();
     }
 
-    public String getToken(){
-        SharedPreferences sharedPreferences= getSharedPreferences("data", Context .MODE_PRIVATE);
-        String token=sharedPreferences.getString("token","false");
+    public String getToken() {
+        SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "false");
         return token;
     }
 }
