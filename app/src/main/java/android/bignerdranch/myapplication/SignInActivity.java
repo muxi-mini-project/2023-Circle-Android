@@ -60,26 +60,29 @@ public class SignInActivity extends BaseActivity {
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<SignInResult> apiResult=mApi.loginTest(usernameEdit.getText().toString(),passwordEdit.getText().toString());
-                apiResult.enqueue(new Callback<SignInResult>() {
-                    @Override
-                    public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
-                        String token=response.body().getToken();
-                        if (token!=null){
-                            LoginSucceeded();//使用这个方法来启动下一个Activity
-                            saveToken(token);
+                if ((usernameEdit.getText().toString().trim().equals("")) && (passwordEdit.getText().toString().trim().equals(""))) {
+                    Toast.makeText(SignInActivity.this, "请输入账号及密码！", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Call<SignInResult> apiResult = mApi.loginTest(usernameEdit.getText().toString(), passwordEdit.getText().toString());
+                    apiResult.enqueue(new Callback<SignInResult>() {
+                        @Override
+                        public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
+                            String token = response.body().getToken();
+                            if (token != null) {
+                                LoginSucceeded();//使用这个方法来启动下一个Activity
+                                saveToken(token);
+                            } else {
+                                Toast.makeText(SignInActivity.this, response.body().getMsg().toString(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else{
-                            Toast.makeText(SignInActivity.this,response.body().getMsg().toString(),Toast.LENGTH_SHORT).show();
+
+                        @Override
+                        public void onFailure(Call<SignInResult> call, Throwable t) {
+                            Toast.makeText(SignInActivity.this, "登陆失败！", Toast.LENGTH_SHORT).show();
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<SignInResult> call, Throwable t) {
-                        Toast.makeText(SignInActivity.this,"登陆失败！",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                    });
+                }
             }
         });
 
