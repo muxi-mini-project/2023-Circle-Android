@@ -39,21 +39,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/back_button1" />
 
-        <ImageButton
-            android:id="@+id/releasebutton_editposts"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/white"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.6"
-            app:layout_constraintWidth_percent="0.15"
-            app:layout_constraintVertical_bias="0.5"
-            app:layout_constraintHorizontal_bias="0.95"
-            android:src="@drawable/release_button"
-            android:scaleType="centerInside"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -182,5 +167,28 @@
 
 
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/releasebutton_editposts"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.6"
+            app:layout_constraintWidth_percent="0.15"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.95"
+            android:src="@drawable/release_button"
+            android:scaleType="centerInside"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
