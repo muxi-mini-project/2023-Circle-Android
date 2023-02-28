@@ -39,21 +39,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/back_button1" />
 
-        <ImageButton
-            android:id="@+id/releasebutton_editposts"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/white"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.6"
-            app:layout_constraintWidth_percent="0.15"
-            app:layout_constraintVertical_bias="0.5"
-            app:layout_constraintHorizontal_bias="0.95"
-            android:src="@drawable/release_button"
-            android:scaleType="centerInside"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -83,8 +68,11 @@
                 android:layout_weight="1"
                 android:id="@+id/label1"
                 android:button="@null"
-                android:background="@drawable/label1_selector"
-                android:layout_width="60dp"
+                android:text="日常唠嗑"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/selector_label"
+                android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_margin="4dp"/>
 
@@ -93,8 +81,11 @@
                 android:layout_weight="1"
                 android:id="@+id/label2"
                 android:button="@null"
-                android:background="@drawable/label2_selector"
-                android:layout_width="60dp"
+                android:text="学术问询"
+                android:textColor="@color/white"
+                android:gravity="center"
+               android:background="@drawable/selector_label"
+                android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_margin="4dp"/>
 
@@ -103,8 +94,11 @@
                 android:layout_weight="1"
                 android:id="@+id/label3"
                 android:button="@null"
-                android:background="@drawable/label3_selelctor"
-                android:layout_width="60dp"
+                android:text="帮忙互助"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/selector_label"
+                android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_margin="4dp"/>
 
@@ -113,8 +107,11 @@
                 android:layout_weight="1"
                 android:id="@+id/label4"
                 android:button="@null"
-                android:background="@drawable/label4_selector"
-                android:layout_width="60dp"
+                android:text="寻人捞物"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/selector_label"
+                android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_margin="4dp"/>
         </RadioGroup>
@@ -171,5 +168,28 @@
 
 
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/releasebutton_editposts"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.6"
+            app:layout_constraintWidth_percent="0.15"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.95"
+            android:src="@drawable/release_button"
+            android:scaleType="centerInside"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
