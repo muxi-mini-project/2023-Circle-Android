@@ -20,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends BaseActivity {//继承了BaseActivity的透明任务栏，锁定竖屏
 
     Button mSignInButton;
+    Button mTestButton;
 
     private Retrofit mRetrofit;
     private Api mApi;
@@ -45,10 +46,9 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
                     @Override
                     public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
                         Intent intent;
-                        if (response.body().getMsg().equals("指定的帖子查询失败.")) {
+                        if (response.body().getCode()!=0) {
                             intent = NavigationBarActivity.newIntent(MainActivity.this);
                         } else {
-                            System.out.println(response.body().getMsg());
                             intent = SignInActivity.newIntent(MainActivity.this);
                         }
                         startActivity(intent);
@@ -59,6 +59,15 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
                         Toast.makeText(MainActivity.this, "请求失败！", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+
+        mTestButton=(Button) findViewById(R.id.test_button);
+        mTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=SignInActivity.newIntent(MainActivity.this);
+                startActivity(intent);
             }
         });
     }
