@@ -2,41 +2,28 @@ package android.bignerdranch.myapplication.ui.home;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class PostsLab {
-    private static PostsLab sPostsLab;
 
-    private List<Posts> mPosts;
+    private List<Posts> mPostsList;
 
-    public static PostsLab get(){
-        if (sPostsLab==null){
-            sPostsLab=new PostsLab();
-        }
-        return sPostsLab;
+    public PostsLab(List<Posts> mPosts) {
+        mPostsList = mPosts;
     }
 
-    private PostsLab(){
-        mPosts=new ArrayList<>();
-        for (int i=0;i<20;i++){
-            Posts posts=new Posts();
-            posts.setPublisherName("复读机"+(i+1)+"号");
-            posts.setContent("第"+(i+1)+"次测试");
-            if ((i%2)==0){
-                posts.setFollow(true);
-            }
+    public static PostsLab get(int dataLength) {
+        List<Posts> mPosts = new ArrayList<>();
+        for (int i=0;i<dataLength;i++) {
+            Posts posts = new Posts();
+            posts.setContent("");
+            posts.setPublisherName("用户名");
             mPosts.add(posts);
         }
+        return new PostsLab(mPosts);
     }
 
 
-    public List<Posts> get_mPosts(){return mPosts;}
-
-    public Posts getPosts(UUID id){
-        for (Posts e:mPosts){
-            if (e.getId().equals(id))
-                return e;
-        }
-        return null;
+    public List<Posts> getPosts() {
+        return mPostsList;
     }
 }

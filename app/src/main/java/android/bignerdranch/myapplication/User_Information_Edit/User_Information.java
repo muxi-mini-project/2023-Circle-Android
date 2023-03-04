@@ -2,12 +2,12 @@ package android.bignerdranch.myapplication.User_Information_Edit;
 
 public class User_Information {
     private String mUser_Name_Title;
-    private String mUser_Name;
-    private UserSex mUserSex;
-    private String mSignature;
-    private int mFans;
-    private int mFollow;
-    private int mDynamics;
+    private String mUser_Name;//用户名
+    private UserSex mUserSex;//用户性别
+    private String mSignature;//个性签名
+    private int mFans;//粉丝数
+    private int mFollow;//关注数
+    private int mDynamics;//动态数
 
     private User_Information(){
         //初始化,等到可以网络请求的时候应该要修改

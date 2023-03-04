@@ -1,7 +1,7 @@
 package android.bignerdranch.myapplication.ui.home.EditPosts;
 
 import android.bignerdranch.myapplication.ApiAbout.Api;
-import android.bignerdranch.myapplication.ApiAbout.SignInResult;
+import android.bignerdranch.myapplication.ApiAbout.ApiResult;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ui.home.Posts;
 import android.bignerdranch.myapplication.R;
@@ -64,7 +64,7 @@ public class EditPostsActivity extends BaseActivity {
         EditContent.setHorizontallyScrolling(false);
 
         //创建一个指向该url的retrofit
-        mRetrofit=new Retrofit.Builder().baseUrl("http://43.138.61.49:8899/api/v1/")
+        mRetrofit=new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mApi=mRetrofit.create(Api.class);
@@ -72,16 +72,16 @@ public class EditPostsActivity extends BaseActivity {
         ReleaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<SignInResult> apiResult=mApi.publishPosts(getToken(),"no","日常唠嗑",EditTitle.getText().toString(),EditContent.getText().toString());
-                apiResult.enqueue(new Callback<SignInResult>() {
+                Call<ApiResult> apiResult=mApi.publishPosts(getMyToken(),"no","日常唠嗑",EditTitle.getText().toString(),EditContent.getText().toString());
+                apiResult.enqueue(new Callback<ApiResult>() {
                     @Override
-                    public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
+                    public void onResponse(Call<ApiResult> call, Response<ApiResult> response) {
                         Toast.makeText(EditPostsActivity.this,response.body().getMsg(),Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
                     @Override
-                    public void onFailure(Call<SignInResult> call, Throwable t) {
+                    public void onFailure(Call<ApiResult> call, Throwable t) {
                         Toast.makeText(EditPostsActivity.this,"请求失败！",Toast.LENGTH_SHORT).show();
                     }
                 });

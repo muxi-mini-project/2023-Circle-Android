@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Posts extends BaseItem {
-    private UUID mId;
     private String publisherName;//发布者的昵称
     private boolean follow;//是否关注发布者
     private String content;//发布内容
@@ -32,7 +31,6 @@ public class Posts extends BaseItem {
 
     //空构造器
     public Posts(){
-        mId = UUID.randomUUID();
         releaseTime=new Date().toString();
         likesNumber=0;
         commentNumber=0;
@@ -51,9 +49,6 @@ public class Posts extends BaseItem {
     }
     public void setLikes(boolean likes) {
         this.likes = likes;
-    }
-    public UUID getId() {
-        return mId;
     }
     public boolean isFollow() {
         return follow;

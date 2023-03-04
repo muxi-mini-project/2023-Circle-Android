@@ -11,10 +11,6 @@ public class SearchBox extends BaseItem {
     }
 
     @Override
-    public UUID getId() {
-        return null;
-    }
-    @Override
     public String getName() {
         return null;
     }
