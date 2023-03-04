@@ -35,6 +35,10 @@ public class Comment extends BaseItem {
     public String getTime() {
         return releaseTime;
     }
+
+    @Override
+    public void setTime(String time) {releaseTime=time;}
+
     public UUID getId() {
         return itSelfID;
     }

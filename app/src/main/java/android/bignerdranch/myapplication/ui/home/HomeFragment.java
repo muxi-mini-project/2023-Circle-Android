@@ -80,7 +80,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<ApiResult> call, Response<ApiResult> response) {
                 data = response.body().getData();
-                if (data != null) {setAdapterAbout();}
+                if (data != null) {
+                    setAdapterAbout();
+                }
             }
 
             @Override

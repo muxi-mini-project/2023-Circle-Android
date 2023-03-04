@@ -24,10 +24,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignInActivity extends BaseActivity {
 
-    Button mSignInButton;
-    TextView mSignInTipText;
-    EditText usernameEdit;
-    EditText passwordEdit;
+    private Button mSignInButton;
+    private TextView mSignInTipText;
+    private EditText usernameEdit;
+    private EditText passwordEdit;
 
     private Retrofit mRetrofit;
     private Api mApi;

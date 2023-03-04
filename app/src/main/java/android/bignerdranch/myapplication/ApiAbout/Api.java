@@ -10,6 +10,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -36,4 +37,12 @@ public interface Api {
     //我的帖子
     @GET("user/my_post")
     Call<ApiResult> myPost(@Header("Authorization")String token);
+
+    //修改个人信息
+    @PUT("user/my_msg")
+    @FormUrlEncoded
+    Call<ApiResult> putMyMsg(@Header("Authorization")String token,@Field("gender")String gender,
+                             @Field("user_name")String name,@Field("signature")String signature);
+
+
 }

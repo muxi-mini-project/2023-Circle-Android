@@ -22,4 +22,12 @@ public class SearchBox extends BaseItem {
     public String getTime() {
         return null;
     }
+    @Override
+    public void setTime(String time) {
+
+    }
+    @Override
+    public void setContent(String content) {
+
+    }
 }

@@ -84,8 +84,8 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener{
     public void bind(BaseItem item,String id) {
         mPosts =(Posts) item;
         mPostsId=id;//传入当前这个帖子的id
-        mNameView.setText(mPosts.getPublisherName());
-        mDateView.setText(mPosts.getReleaseTime().toString());
+        mNameView.setText(mPosts.getName());
+        mDateView.setText(mPosts.getTime());
         if (mPosts.isFollow()) {
             mIsFollow.setBackgroundResource(R.mipmap.is_follow_followed);
         } else {

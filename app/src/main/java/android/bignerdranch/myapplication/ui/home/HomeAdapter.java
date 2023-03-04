@@ -73,6 +73,7 @@ public class HomeAdapter extends RecyclerView.Adapter<BaseHolder> {
                     JsonObject jsonObject = response.body().getData();
                     item.setContent(jsonObject.getAsJsonPrimitive("content").toString().replaceAll("\"",""));
                     //将字符串中的双引号去掉
+                    item.setTime(jsonObject.getAsJsonPrimitive("UpdatedAt").toString().replaceAll("\"",""));
                     postsHolder.bind(item,mData[position-1]);//把此帖子的id传递给holder
                 }
 

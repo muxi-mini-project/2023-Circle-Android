@@ -16,7 +16,7 @@ public class PostsLab {
         for (int i=0;i<dataLength;i++) {
             Posts posts = new Posts();
             posts.setContent("");
-            posts.setPublisherName("用户名");
+            posts.setName("用户名");
             mPosts.add(posts);
         }
         return new PostsLab(mPosts);
