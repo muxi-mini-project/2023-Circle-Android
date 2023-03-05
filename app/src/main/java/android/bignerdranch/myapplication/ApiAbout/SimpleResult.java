@@ -1,6 +1,6 @@
 package android.bignerdranch.myapplication.ApiAbout;
 
-public class ApiResult {
+public class SimpleResult {
     private int code;
     private String msg;
     private String token;

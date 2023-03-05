@@ -1,7 +1,7 @@
 package android.bignerdranch.myapplication.ui.home;
 
 import android.bignerdranch.myapplication.ApiAbout.Api;
-import android.bignerdranch.myapplication.ApiAbout.ApiResult;
+import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
@@ -34,7 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
     private RecyclerView mHomeRecyclerView;
-    private HomeAdapter mHomeAdapter;
+    private PostsAdapter mPostsAdapter;
     private ImageButton newPostsBtn;
 
     private Retrofit mRetrofit;
@@ -75,10 +75,10 @@ public class HomeFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mApi = mRetrofit.create(Api.class);
-        Call<ApiResult> apiResultCall = mApi.myPost(token);
-        apiResultCall.enqueue(new Callback<ApiResult>() {
+        Call<SimpleResult> apiResultCall = mApi.myPost(token);
+        apiResultCall.enqueue(new Callback<SimpleResult>() {
             @Override
-            public void onResponse(Call<ApiResult> call, Response<ApiResult> response) {
+            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 data = response.body().getData();
                 if (data != null) {
                     setAdapterAbout();
@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ApiResult> call, Throwable t) {
+            public void onFailure(Call<SimpleResult> call, Throwable t) {
                 Toast.makeText(getActivity(), "网络请求异常！", Toast.LENGTH_SHORT).show();
             }
         });
@@ -101,15 +101,15 @@ public class HomeFragment extends Fragment {
         }
 
         mHomeRecyclerView.addItemDecoration(new SpaceItemDecoration(20));//设置item之间的间隔为20
-        mHomeAdapter = new HomeAdapter(mList, data, token);//将mList装载入Adapter中
-        mHomeRecyclerView.setAdapter(mHomeAdapter);//给该recyclerview设置adapter
+        mPostsAdapter = new PostsAdapter(mList, data, token);//将mList装载入Adapter中
+        mHomeRecyclerView.setAdapter(mPostsAdapter);//给该recyclerview设置adapter
 
-        mHomeAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
+        mPostsAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = PostsDetailsActivity.newIntent(getActivity(), mHomeAdapter.getList().get(position).getName()
-                        , mHomeAdapter.getList().get(position).getTime()
-                        , mHomeAdapter.getList().get(position).getContent());
+                Intent intent = PostsDetailsActivity.newIntent(getActivity(), mPostsAdapter.getList().get(position).getName()
+                        , mPostsAdapter.getList().get(position).getTime()
+                        , mPostsAdapter.getList().get(position).getContent());
                 startActivity(intent);
             }
         });

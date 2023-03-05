@@ -16,6 +16,7 @@ public abstract class BaseItem {
     public abstract String getContent();
     public abstract String getTime();
 
+    public abstract void setName(String name);
     public abstract void setTime(String time);
     public abstract void setContent(String content);
 

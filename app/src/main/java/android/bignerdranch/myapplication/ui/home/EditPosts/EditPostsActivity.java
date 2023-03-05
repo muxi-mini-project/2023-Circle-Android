@@ -1,7 +1,7 @@
 package android.bignerdranch.myapplication.ui.home.EditPosts;
 
 import android.bignerdranch.myapplication.ApiAbout.Api;
-import android.bignerdranch.myapplication.ApiAbout.ApiResult;
+import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ui.home.Posts;
 import android.bignerdranch.myapplication.R;
@@ -72,16 +72,16 @@ public class EditPostsActivity extends BaseActivity {
         ReleaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<ApiResult> apiResult=mApi.publishPosts(getMyToken(),"no","日常唠嗑",EditTitle.getText().toString(),EditContent.getText().toString());
-                apiResult.enqueue(new Callback<ApiResult>() {
+                Call<SimpleResult> apiResult=mApi.publishPosts(getMyToken(),"no","日常唠嗑",EditTitle.getText().toString(),EditContent.getText().toString());
+                apiResult.enqueue(new Callback<SimpleResult>() {
                     @Override
-                    public void onResponse(Call<ApiResult> call, Response<ApiResult> response) {
+                    public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                         Toast.makeText(EditPostsActivity.this,response.body().getMsg(),Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
                     @Override
-                    public void onFailure(Call<ApiResult> call, Throwable t) {
+                    public void onFailure(Call<SimpleResult> call, Throwable t) {
                         Toast.makeText(EditPostsActivity.this,"请求失败！",Toast.LENGTH_SHORT).show();
                     }
                 });

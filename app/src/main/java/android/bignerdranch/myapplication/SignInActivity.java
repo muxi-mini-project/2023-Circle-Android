@@ -3,7 +3,7 @@ package android.bignerdranch.myapplication;
 
 
 import android.bignerdranch.myapplication.ApiAbout.Api;
-import android.bignerdranch.myapplication.ApiAbout.ApiResult;
+import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -79,22 +79,23 @@ public class SignInActivity extends BaseActivity {
             Toast.makeText(SignInActivity.this, "请输入账号及密码！", Toast.LENGTH_SHORT).show();
         }
         else {
-            Call<ApiResult> apiResult = mApi.loginTest(usernameEdit.getText().toString(), passwordEdit.getText().toString());
-            apiResult.enqueue(new Callback<ApiResult>() {
+            Call<SimpleResult> apiResult = mApi.loginTest(usernameEdit.getText().toString(), passwordEdit.getText().toString());
+            apiResult.enqueue(new Callback<SimpleResult>() {
                 @Override
-                public void onResponse(Call<ApiResult> call, Response<ApiResult> response) {
+                public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                     String token = response.body().getToken();
                     if (token != null) {
                         Intent intent =NavigationBarActivity.newIntent(SignInActivity.this);
-                        startActivity(intent);
+                        removeToken();
                         saveToken(token);
+                        startActivity(intent);
                     } else {
                         Toast.makeText(SignInActivity.this,"用户名或密码错误", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<ApiResult> call, Throwable t) {
+                public void onFailure(Call<SimpleResult> call, Throwable t) {
                     Toast.makeText(SignInActivity.this, "网络请求失败！", Toast.LENGTH_SHORT).show();
                 }
             });

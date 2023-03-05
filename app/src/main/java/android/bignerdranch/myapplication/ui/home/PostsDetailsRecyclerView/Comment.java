@@ -46,7 +46,7 @@ public class Comment extends BaseItem {
     public String getName() {
         return commenterName;
     }
-    public void setCommenterName(String commenterName) {
+    public void setName(String commenterName) {
         this.commenterName = commenterName;
     }
 

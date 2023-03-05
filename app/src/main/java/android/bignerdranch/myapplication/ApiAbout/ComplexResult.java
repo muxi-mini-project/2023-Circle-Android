@@ -2,7 +2,7 @@ package android.bignerdranch.myapplication.ApiAbout;
 
 import com.google.gson.JsonObject;
 
-public class PostsResult {
+public class ComplexResult {
     private int code;
     private String msg;
     private JsonObject data;

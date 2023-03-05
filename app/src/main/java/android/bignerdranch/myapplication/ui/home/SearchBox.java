@@ -23,11 +23,9 @@ public class SearchBox extends BaseItem {
         return null;
     }
     @Override
-    public void setTime(String time) {
-
-    }
+    public void setTime(String time) {}
     @Override
-    public void setContent(String content) {
-
-    }
+    public void setContent(String content) {}
+    @Override
+    public void setName(String name){}
 }

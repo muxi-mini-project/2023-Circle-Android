@@ -2,11 +2,12 @@ package android.bignerdranch.myapplication.ui.home;
 
 import android.annotation.SuppressLint;
 import android.bignerdranch.myapplication.ApiAbout.Api;
-import android.bignerdranch.myapplication.ApiAbout.PostsResult;
+import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
+import android.bignerdranch.myapplication.ReusableTools.JsonTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,8 +15,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.gson.JsonObject;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomeAdapter extends RecyclerView.Adapter<BaseHolder> {
+public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
 
     private List<BaseItem> mList;//该Adapter管理的Posts的List
     private MyRecyclerItemClickListener myRecyclerItemClickListener;
@@ -39,7 +38,7 @@ public class HomeAdapter extends RecyclerView.Adapter<BaseHolder> {
         return mList;
     }
 
-    public HomeAdapter(List<BaseItem> List,String[] data,String token) {
+    public PostsAdapter(List<BaseItem> List, String[] data, String token) {
         mList = List;
         mData=data;
         mToken=token;
@@ -66,19 +65,18 @@ public class HomeAdapter extends RecyclerView.Adapter<BaseHolder> {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
                 mApi = mRetrofit.create(Api.class);}
-            Call<PostsResult> seekPostsResult = mApi.seekPosts(mData[position-1],mToken);
-            seekPostsResult.enqueue(new Callback<PostsResult>() {
+            Call<ComplexResult> seekPostsResult = mApi.seekPosts(mData[position-1],mToken);
+            seekPostsResult.enqueue(new Callback<ComplexResult>() {
                 @Override
-                public void onResponse(Call<PostsResult> call, Response<PostsResult> response) {
-                    JsonObject jsonObject = response.body().getData();
-                    item.setContent(jsonObject.getAsJsonPrimitive("content").toString().replaceAll("\"",""));
-                    //将字符串中的双引号去掉
-                    item.setTime(jsonObject.getAsJsonPrimitive("UpdatedAt").toString().replaceAll("\"",""));
+                public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
+                    item.setName(JsonTool.getJsonString(response.body().getData(),"deleted_at"));//你没看错，deleted_at就是指发布者名称（至于为什么你得问后端哥们）
+                    item.setContent(JsonTool.getJsonString(response.body().getData(),"content"));
+                    item.setTime(JsonTool.getJsonString(response.body().getData(),"UpdatedAt"));
                     postsHolder.bind(item,mData[position-1]);//把此帖子的id传递给holder
                 }
 
                 @Override
-                public void onFailure(Call<PostsResult> call, Throwable t) {
+                public void onFailure(Call<ComplexResult> call, Throwable t) {
                     Log.d("TAG","网络请求失败");
                 }
             });

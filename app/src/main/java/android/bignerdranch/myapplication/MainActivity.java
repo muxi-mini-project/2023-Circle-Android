@@ -1,9 +1,8 @@
 package android.bignerdranch.myapplication;
 
 import android.bignerdranch.myapplication.ApiAbout.Api;
-import android.bignerdranch.myapplication.ApiAbout.ApiResult;
+import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
-import android.bignerdranch.myapplication.ui.home.PostsLab;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -40,6 +39,7 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
             @Override
             public void onClick(View v) {
                     TokenVerify();
+                    System.out.println(getMyToken());
                 }
         });
 
@@ -53,22 +53,24 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
         });
     }
     private void TokenVerify(){
-        Call<ApiResult> apiResult = mApi.tokenVerify(getMyToken());
-        apiResult.enqueue(new Callback<ApiResult>() {
+        Call<SimpleResult> apiResult = mApi.tokenVerify(getMyToken());
+        apiResult.enqueue(new Callback<SimpleResult>(){
             @Override
-            public void onResponse(Call<ApiResult> call, Response<ApiResult> response) {
+            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 Intent intent;
                 if (response.body().getMsg().equals("token合法.")) {
                     intent = NavigationBarActivity.newIntent(MainActivity.this);
+                    System.out.println("token检验成功");
                 } else {
                     intent = SignInActivity.newIntent(MainActivity.this);
+                    System.out.println("token检验失败，请登陆");
                 }
                 startActivity(intent);
             }
-
             @Override
-            public void onFailure(Call<ApiResult> call, Throwable t) {
+            public void onFailure(Call<SimpleResult> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "请求失败！", Toast.LENGTH_SHORT).show();
+                System.out.println("请求失败");
             }
         });
     }

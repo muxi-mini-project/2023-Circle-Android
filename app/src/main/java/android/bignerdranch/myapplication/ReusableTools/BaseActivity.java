@@ -9,6 +9,7 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 public class BaseActivity extends AppCompatActivity {
 
 
@@ -40,5 +41,10 @@ public class BaseActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "false");
         return token;
+    }
+    public  void removeToken() {
+        SharedPreferences sharedPreferences=getSharedPreferences("data",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.remove("token");
     }
 }
