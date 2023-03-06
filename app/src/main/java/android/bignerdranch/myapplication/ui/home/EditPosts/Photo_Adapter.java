@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Photo_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -59,8 +60,12 @@ public class Photo_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
+        if(Adapter_UriList==null){
+            return 1;
+        }
         return Adapter_UriList.size()+1;
     }
+
 
     //通过glide将图片添加到viewholder内
     private void bindPhoto_Holder_1(Photo_Holder_1 holder,int position){
@@ -72,12 +77,22 @@ public class Photo_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     //第二种viewholder(内置＋号)的bind方法
     private void bindPhoto_Holder_2(final Photo_Holder_2 holder,int position){
-        if(listSize()==9){
+        if(Adapter_UriList!=null){
+        if(Adapter_UriList.size()==9){
             holder.imageview2.setVisibility(View.GONE);//集合长度大于等于9张时，隐藏 图片
+        }
         }
 
         //添加图片的＋号的监听器已经在layout的onclick里实现了（调用popup方法）
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position + 1 == getItemCount()) {
+            return HOLDER_TYPE_TWO;
+        } else {
+            return HOLDER_TYPE_ONE;
+        }
     }
 
     //第一类ViewHolder,已添加图片
@@ -106,12 +121,6 @@ public class Photo_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void addMoreItem(List<Uri> loarMoreDatas) {
         Adapter_UriList.addAll(loarMoreDatas);
         notifyDataSetChanged();
-    }
-
-    //得到集合长度
-    public int listSize() {
-        int size = Adapter_UriList.size();
-        return size;
     }
 
 

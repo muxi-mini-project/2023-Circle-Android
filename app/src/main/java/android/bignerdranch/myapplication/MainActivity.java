@@ -25,6 +25,7 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
     private Retrofit mRetrofit;
     private Api mApi;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

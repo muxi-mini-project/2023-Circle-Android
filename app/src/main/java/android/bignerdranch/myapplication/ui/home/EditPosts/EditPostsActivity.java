@@ -11,8 +11,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.view.View;
@@ -23,12 +23,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import android.widget.Toast;
 
@@ -39,9 +41,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EditPostsActivity extends BaseActivity {
-
-    public static final int TAKE_PHOTO=1;
-    public static final int CROP_PHOTO=2;
 
     private Posts mPosts;
     private User_Information user_information;
@@ -57,71 +56,11 @@ public class EditPostsActivity extends BaseActivity {
     private Button add_photos;
     private Uri imageUri;
     private ImageView picture;
-    private List<Uri> UriList;   //存放每个图片的Uri
+    private List<Uri> UriList = new ArrayList<>();   //存放每个图片的Uri
 
     private RecyclerView mPhotosRecyclerview;
     private Photo_Adapter adapter;
 
-    //点击添加图片的＋号，建立一个弹窗
-    public void Popup(View view){
-
-        View popupview_photo_pictures=getLayoutInflater().inflate(R.layout.popupview_photo_pictures,null);
-        Button Take_Photos=popupview_photo_pictures.findViewById(R.id.take_photos);
-        Button ChooseFromAlbum=popupview_photo_pictures.findViewById(R.id.choose_from_album);
-        picture=(ImageView)findViewById(R.id.add_photo);
-
-        PopupWindow window=new PopupWindow(popupview_photo_pictures,ViewGroup.LayoutParams.WRAP_CONTENT
-                ,ViewGroup.LayoutParams.WRAP_CONTENT,true);
-        window.showAsDropDown(view);
-
-        Take_Photos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                File outputImage=new File(Environment.getExternalStorageDirectory(),"tempImage.jpg");
-                try {
-                    if(outputImage.exists()){
-                        outputImage.delete();
-                    }
-                    outputImage.createNewFile();
-                }catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                imageUri=Uri.fromFile(outputImage);
-                UriList.add(imageUri);
-                Intent intent=new Intent("android.media.action.IMAGE_CAPTURE");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-                startActivityForResult(intent,TAKE_PHOTO);//启动相机程序
-                window.dismiss();
-
-            }
-        });
-
-        ChooseFromAlbum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                File outputImage=new File(Environment.getExternalStorageDirectory(),"output_image.jpg");
-                try{
-                    if(outputImage.exists()){
-                        outputImage.delete();
-                    }
-                    outputImage.createNewFile();
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-                imageUri=Uri.fromFile(outputImage);
-                UriList.add(imageUri);
-                Intent intent=new Intent("android.intent.action.GET_CONTENT");
-                intent.setType("image/*");
-                intent.putExtra("crop",true);
-                intent.putExtra("scale",true);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-                startActivityForResult(intent,CROP_PHOTO);
-                window.dismiss();
-            }
-        });
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -187,34 +126,6 @@ public class EditPostsActivity extends BaseActivity {
         return  new Intent(packageContext, EditPostsActivity.class);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode,int resultCode,Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case TAKE_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    Intent intent = new Intent("com.android.camera.action.CROP");
-                    intent.setDataAndType(imageUri, "image/*");
-                    intent.putExtra("scale", true);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intent, CROP_PHOTO);//启动裁剪程序
-                }
-                break;
-            case CROP_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-                        picture.setImageBitmap(bitmap);
-                        adapter.addMoreItem(UriList);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-    }
 
     @Override
     protected void onStart() {

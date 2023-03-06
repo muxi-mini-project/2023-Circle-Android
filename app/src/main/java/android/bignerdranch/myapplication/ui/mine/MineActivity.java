@@ -12,9 +12,7 @@ import androidx.fragment.app.FragmentManager;
 
 
 public class MineActivity extends BaseActivity {
-
     private User_Information mUser=User_Information.getUser_information();
-
 
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, MineActivity.class);

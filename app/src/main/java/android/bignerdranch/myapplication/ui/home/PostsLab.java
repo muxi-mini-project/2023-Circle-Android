@@ -1,4 +1,3 @@
-
 package android.bignerdranch.myapplication.ui.home;
 
 import java.util.ArrayList;

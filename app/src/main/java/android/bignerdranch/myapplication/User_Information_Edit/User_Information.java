@@ -1,5 +1,4 @@
 package android.bignerdranch.myapplication.User_Information_Edit;
-import android.bignerdranch.myapplication.User_Information_Edit.UserSex;
 
 public class User_Information {
     private String mUser_Name_Title;
