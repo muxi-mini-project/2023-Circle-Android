@@ -27,6 +27,7 @@ public class Photo_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<Uri> Adapter_UriList;    //存放每个图片的Uri的adapter中间人
     private final LayoutInflater inflater;
     private Activity context;
+    private Uri imageUri;
 
     private static final int HOLDER_TYPE_ONE = 0x00001;
     private static final int HOLDER_TYPE_TWO = 0x00002;
@@ -83,7 +84,7 @@ public class Photo_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
         }
 
-        //添加图片的＋号的监听器已经在layout的onclick里实现了（调用popup方法）
+        //添加图片的＋号的监听器已经在layout的onclick里实现了
     }
 
     @Override

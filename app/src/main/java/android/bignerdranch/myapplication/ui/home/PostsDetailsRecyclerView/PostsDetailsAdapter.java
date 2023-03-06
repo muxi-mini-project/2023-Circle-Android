@@ -15,7 +15,7 @@ import java.util.List;
 public class PostsDetailsAdapter extends RecyclerView.Adapter<BaseHolder> {
 
     private List<BaseItem> mList;//该Adapter管理的Posts的List
-
+    private String PostsId;
 
 
     public PostsDetailsAdapter(List<BaseItem> List) {
@@ -38,7 +38,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<BaseHolder> {
         if (holder.getType()== ItemTypeDef.Type.POSTS){
             BaseItem item = mList.get(position);
             PostsHolder postsHolder = (PostsHolder) holder;
-            postsHolder.bind(item);
+            postsHolder.bind(item,PostsId);
         }
         if (holder.getType()==ItemTypeDef.Type.COMMENT){
             BaseItem item=mList.get(position);

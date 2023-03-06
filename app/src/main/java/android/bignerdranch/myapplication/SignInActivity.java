@@ -3,7 +3,7 @@ package android.bignerdranch.myapplication;
 
 
 import android.bignerdranch.myapplication.ApiAbout.Api;
-import android.bignerdranch.myapplication.ApiAbout.SignInResult;
+import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,10 +24,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignInActivity extends BaseActivity {
 
-    Button mSignInButton;
-    TextView mSignInTipText;
-    EditText usernameEdit;
-    EditText passwordEdit;
+    private Button mSignInButton;
+    private TextView mSignInTipText;
+    private EditText usernameEdit;
+    private EditText passwordEdit;
 
     private Retrofit mRetrofit;
     private Api mApi;
@@ -51,7 +51,7 @@ public class SignInActivity extends BaseActivity {
         passwordEdit.setTransformationMethod(method2);
 
         //创建一个指向该url的retrofit
-        mRetrofit=new Retrofit.Builder().baseUrl("http://43.138.61.49:8899/api/v1/")
+        mRetrofit=new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mApi=mRetrofit.create(Api.class);
@@ -60,29 +60,7 @@ public class SignInActivity extends BaseActivity {
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((usernameEdit.getText().toString().trim().equals("")) && (passwordEdit.getText().toString().trim().equals(""))) {
-                    Toast.makeText(SignInActivity.this, "请输入账号及密码！", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Call<SignInResult> apiResult = mApi.loginTest(usernameEdit.getText().toString(), passwordEdit.getText().toString());
-                    apiResult.enqueue(new Callback<SignInResult>() {
-                        @Override
-                        public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
-                            String token = response.body().getToken();
-                            if (token != null) {
-                                LoginSucceeded();//使用这个方法来启动下一个Activity
-                                saveToken(token);
-                            } else {
-                                Toast.makeText(SignInActivity.this, response.body().getMsg().toString(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<SignInResult> call, Throwable t) {
-                            Toast.makeText(SignInActivity.this, "登陆失败！", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                LoginTest();
             }
         });
 
@@ -93,12 +71,36 @@ public class SignInActivity extends BaseActivity {
                 Intent intent=NewUserHelpActivity.newIntent(SignInActivity.this);
                 startActivity(intent);
             }
-        });
+        });//新用户帮助
     }
 
-    private void LoginSucceeded(){
-        Intent intent =NavigationBarActivity.newIntent(SignInActivity.this);
-        startActivity(intent);
+    private void LoginTest(){
+        if ((usernameEdit.getText().toString().trim().equals("")) && (passwordEdit.getText().toString().trim().equals(""))) {
+            Toast.makeText(SignInActivity.this, "请输入账号及密码！", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Call<SimpleResult> apiResult = mApi.loginTest(usernameEdit.getText().toString(), passwordEdit.getText().toString());
+            apiResult.enqueue(new Callback<SimpleResult>() {
+                @Override
+                public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                    String token = response.body().getToken();
+                    if (token != null) {
+                        Intent intent =NavigationBarActivity.newIntent(SignInActivity.this);
+                        removeToken();
+                        saveToken(token);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SignInActivity.this,"用户名或密码错误", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SimpleResult> call, Throwable t) {
+                    Toast.makeText(SignInActivity.this, "网络请求失败！", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
     }
 
 }

@@ -70,7 +70,6 @@
             android:orientation="horizontal">
             
             <LinearLayout
-                android:id="@+id/posts_number"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -84,6 +83,7 @@
                     android:text="动态"/>
 
                 <TextView
+                    android:id="@+id/posts_number"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -106,6 +106,7 @@
                     android:text="关注"/>
 
                 <TextView
+                    android:id="@+id/follow_number"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -127,6 +128,7 @@
                     android:text="粉丝"/>
 
                 <TextView
+                    android:id="@+id/fans_number"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"

@@ -35,6 +35,10 @@ public class Comment extends BaseItem {
     public String getTime() {
         return releaseTime;
     }
+
+    @Override
+    public void setTime(String time) {releaseTime=time;}
+
     public UUID getId() {
         return itSelfID;
     }
@@ -42,7 +46,7 @@ public class Comment extends BaseItem {
     public String getName() {
         return commenterName;
     }
-    public void setCommenterName(String commenterName) {
+    public void setName(String commenterName) {
         this.commenterName = commenterName;
     }
 

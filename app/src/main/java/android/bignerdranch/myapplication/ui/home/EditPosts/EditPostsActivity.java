@@ -1,8 +1,9 @@
 package android.bignerdranch.myapplication.ui.home.EditPosts;
 
 import android.bignerdranch.myapplication.ApiAbout.Api;
-import android.bignerdranch.myapplication.ApiAbout.SignInResult;
+import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
+import android.bignerdranch.myapplication.User_Information_Edit.UserImageChange;
 import android.bignerdranch.myapplication.ui.home.Posts;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.User_Information_Edit.User_Information;
@@ -15,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -54,12 +56,14 @@ public class EditPostsActivity extends BaseActivity {
     private EditText EditContent;
 
     private Button add_photos;
-    private Uri imageUri;
-    private ImageView picture;
     private List<Uri> UriList = new ArrayList<>();   //存放每个图片的Uri
+    private static final int TAKE_PHOTO = 0X99;
+    private static final int PICK_PHOTO = 0X98;
+    private String path;
 
     private RecyclerView mPhotosRecyclerview;
     private Photo_Adapter adapter;
+    private UserImageChange u=new UserImageChange(EditPostsActivity.this);
 
 
     @Override
@@ -97,7 +101,7 @@ public class EditPostsActivity extends BaseActivity {
         EditContent.setHorizontallyScrolling(false);
 
         //创建一个指向该url的retrofit
-        mRetrofit=new Retrofit.Builder().baseUrl("http://43.138.61.49:8899/api/v1/")
+        mRetrofit=new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mApi=mRetrofit.create(Api.class);
@@ -105,16 +109,16 @@ public class EditPostsActivity extends BaseActivity {
         ReleaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<SignInResult> apiResult=mApi.publishPosts(getToken(),"no","日常唠嗑",EditTitle.getText().toString(),EditContent.getText().toString());
-                apiResult.enqueue(new Callback<SignInResult>() {
+                Call<SimpleResult> apiResult=mApi.publishPosts(getMyToken(),"no","日常唠嗑",EditTitle.getText().toString(),EditContent.getText().toString());
+                apiResult.enqueue(new Callback<SimpleResult>() {
                     @Override
-                    public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
+                    public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                         Toast.makeText(EditPostsActivity.this,response.body().getMsg(),Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
                     @Override
-                    public void onFailure(Call<SignInResult> call, Throwable t) {
+                    public void onFailure(Call<SimpleResult> call, Throwable t) {
                         Toast.makeText(EditPostsActivity.this,"请求失败！",Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -137,5 +141,7 @@ public class EditPostsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
     }
+
+
 
 }

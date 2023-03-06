@@ -28,7 +28,7 @@ public class UserImageChange {
     //private Context context;
     private static File file;
     private Uri uri;
-    private final String fileName = "IMG_selfControl.jpg";
+    private final String fileName = "IMG_head.jpg";
     private static final int TAKE_PHOTO = 0X66;
     private static final int PICK_PHOTO = 0X88;
 

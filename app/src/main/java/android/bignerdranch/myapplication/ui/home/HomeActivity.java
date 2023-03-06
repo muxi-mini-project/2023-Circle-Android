@@ -4,6 +4,7 @@ import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.R;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
@@ -40,4 +41,16 @@ public class HomeActivity extends BaseActivity {
         return intent;
     }
 
+    public  void saveToken(String token) {
+        SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("token", token);
+        editor.apply();
+    }
+
+    public  String getMyToken() {
+        SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "false");
+        return token;
+    }
 }

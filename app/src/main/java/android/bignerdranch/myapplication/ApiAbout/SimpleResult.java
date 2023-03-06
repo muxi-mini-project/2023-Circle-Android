@@ -1,9 +1,11 @@
 package android.bignerdranch.myapplication.ApiAbout;
 
-public class SignInResult {
+public class SimpleResult {
     private int code;
     private String msg;
     private String token;
+    private String[] data;
+
 
     public String getMsg() {
         return msg;
@@ -22,5 +24,13 @@ public class SignInResult {
     }
     public void setCode(int code) {
         this.code = code;
+    }
+
+    public String[] getData() {
+        return data;
+    }
+
+    public void setData(String[] data) {
+        this.data = data;
     }
 }

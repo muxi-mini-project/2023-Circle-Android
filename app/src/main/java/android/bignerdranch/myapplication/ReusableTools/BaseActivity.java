@@ -9,7 +9,10 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 public class BaseActivity extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +30,21 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void saveToken(String token) {
+    public  void saveToken(String token) {
         SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("token", token);
         editor.apply();
     }
 
-    public String getToken() {
+    public  String getMyToken() {
         SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "false");
         return token;
+    }
+    public  void removeToken() {
+        SharedPreferences sharedPreferences=getSharedPreferences("data",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.remove("token");
     }
 }

@@ -3,4 +3,7 @@
     <external-path
         name="image_path"
         path="/"/>
+    <root-path
+        name="root_path"
+        path="." />
 </paths>

@@ -20,7 +20,7 @@ public class CommentLab {
         mComments=new ArrayList<>();
         for (int i=0;i<20;i++){
             Comment comment=new Comment();
-            comment.setCommenterName("复读机"+(i+1)+"号");
+            comment.setName("复读机"+(i+1)+"号");
             comment.setContent("第"+(i+1)+"次测试");
             mComments.add(comment);
         }

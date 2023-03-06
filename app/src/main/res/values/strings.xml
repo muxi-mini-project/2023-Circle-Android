@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">华小圈</string>
-    <string name="test_text">测试测试测试测试测试测试测试测试测试测试
-    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
-    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
+    <string name="test_text"> </string>
 
     <string name="sign_in_tip">请输入您的用户名和密码.</string>
 
