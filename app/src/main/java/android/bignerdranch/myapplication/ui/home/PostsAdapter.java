@@ -9,6 +9,7 @@ import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 import android.bignerdranch.myapplication.ReusableTools.JsonTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -31,6 +32,8 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
     private String[] mData;
     private String mToken;
 
+    private Context mContext;
+
     private static Retrofit mRetrofit;
     private static Api mApi;
 
@@ -38,7 +41,8 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
         return mList;
     }
 
-    public PostsAdapter(List<BaseItem> List, String[] data, String token) {
+    public PostsAdapter(List<BaseItem> List, String[] data, String token, Context context) {
+        mContext=context;
         mList = List;
         mData=data;
         mToken=token;
@@ -52,7 +56,8 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
                 return new SearchBoxHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_box,parent,false),ItemTypeDef.Type.SEARCH_BOX);
             case POSTS:
                 return new PostsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_posts_layout,parent,
-                        false),ItemTypeDef.Type.POSTS,myRecyclerItemClickListener,mToken);//创建一个新的PostsHolder
+                        false),ItemTypeDef.Type.POSTS,myRecyclerItemClickListener,mToken,mContext);//创建一个新的PostsHolder
+            //在此处将token和context都传递给PostsHolder
         }
         return null;
     }
@@ -72,7 +77,9 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
                     item.setName(JsonTool.getJsonString(response.body().getData(),"author_name"));
                     item.setContent(JsonTool.getJsonString(response.body().getData(),"content"));
                     item.setTime(JsonTool.getJsonString(response.body().getData(),"UpdatedAt"));
-                    postsHolder.bind(item,mData[position-1]);//把此帖子的id传递给holder
+                    item.setProfilePath(JsonTool.getJsonString(response.body().getData(),"avatar_path"));
+                    item.setID(JsonTool.getJsonString(response.body().getData(),"ID"));
+                    postsHolder.bind(item);//把此帖子的id传递给holder
                 }
 
                 @Override

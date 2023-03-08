@@ -93,7 +93,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setAdapterAbout() {
-        postsLab = PostsLab.get(data.length);//
+        postsLab = PostsLab.get(data.length);
         List<BaseItem> mList = new ArrayList<>();
         mList.add(new SearchBox());//在mList中加入搜索框
         for (Posts e : postsLab.getPosts()) {
@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment {
         }
 
         mHomeRecyclerView.addItemDecoration(new SpaceItemDecoration(20));//设置item之间的间隔为20
-        mPostsAdapter = new PostsAdapter(mList, data, token);//将mList装载入Adapter中
+        mPostsAdapter = new PostsAdapter(mList, data, token,getContext());//将mList装载入Adapter中
         mHomeRecyclerView.setAdapter(mPostsAdapter);//给该recyclerview设置adapter
 
         mPostsAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
@@ -109,7 +109,8 @@ public class HomeFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 Intent intent = PostsDetailsActivity.newIntent(getActivity(), mPostsAdapter.getList().get(position).getName()
                         , mPostsAdapter.getList().get(position).getTime()
-                        , mPostsAdapter.getList().get(position).getContent());
+                        , mPostsAdapter.getList().get(position).getContent()
+                ,mPostsAdapter.getList().get(position).getID());
                 startActivity(intent);
             }
         });

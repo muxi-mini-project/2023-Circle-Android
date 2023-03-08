@@ -5,6 +5,7 @@ import java.io.File;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -34,9 +35,25 @@ public interface Api {
     Call<SimpleResult> publishPostsNotPic(@Header("Authorization")String token, @Query("file_have")String file_have,
                                     @Field("type")String type, @Field("title")String title, @Field("content")String content);
 
-    //我的帖子
+    //删除帖子
+    @DELETE("post")
+    Call<SimpleResult> delPost(@Header("Authorization")String token,@Query("post_id")String postsId);
+
+    //查询我的帖子id数组
     @GET("user/my_post")
     Call<SimpleResult> myPost(@Header("Authorization")String token);
+
+    //查询某个帖子
+    @GET("post/{id}")
+    Call<ComplexResult> seekPosts(@Path("id")String id, @Header("Authorization")String token);
+
+    //给帖子点赞
+    @POST("post/likes")
+    Call<SimpleResult> likesPosts(@Query("post_id")String postsId,@Header("Authorization")String token);
+
+    //取消点赞
+    @DELETE("post/likes")
+    Call<SimpleResult> deleteLikesPosts(@Query("post_id")String postsId,@Header("Authorization")String token);
 
     //修改个人信息
     @PUT("user/my_msg")
@@ -58,7 +75,5 @@ public interface Api {
     @GET("user/{id}/user_outline")
     Call<ComplexResult> getUserMsg(@Path("id")String userId,@Header("Authorization")String token);
 
-    //查询某个帖子
-    @GET("post/{id}")
-    Call<ComplexResult> seekPosts(@Path("id")String id, @Header("Authorization")String token);
+
 }

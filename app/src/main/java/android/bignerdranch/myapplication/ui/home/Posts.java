@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Posts extends BaseItem {
+    private String PostsId;
     private String Name;//发布者的昵称
     private boolean follow;//是否关注发布者
     private String content;//发布内容
@@ -16,6 +17,7 @@ public class Posts extends BaseItem {
     private boolean likes;//是否点赞
     private int likesNumber;//点赞数
     private int commentNumber;//评论数
+    private String profilePath;
 
 
     public int typeCode(){
@@ -47,7 +49,22 @@ public class Posts extends BaseItem {
     public String getContent() {
         return content;
     }
+    public String getProfilePath(){return profilePath;}
 
+    @Override
+    public String getID() {
+        return PostsId;
+    }
+
+    @Override
+    public void setID(String id) {
+        PostsId=id;
+    }
+
+    @Override
+    public void setProfilePath(String path) {
+        profilePath=path;
+    }
     public void setName(String publisherName) {
         this.Name = publisherName;
     }

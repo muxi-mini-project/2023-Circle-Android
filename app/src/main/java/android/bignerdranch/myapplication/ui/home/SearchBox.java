@@ -23,6 +23,25 @@ public class SearchBox extends BaseItem {
         return null;
     }
     @Override
+    public String getProfilePath() {
+        return null;
+    }
+    @Override
+    public String getID() {
+        return null;
+    }
+
+
+
+    @Override
+    public void setID(String id) {
+
+    }
+    @Override
+    public void setProfilePath(String path) {
+
+    }
+    @Override
     public void setTime(String time) {}
     @Override
     public void setContent(String content) {}
