@@ -34,8 +34,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import android.widget.Toast;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -109,7 +113,7 @@ public class EditPostsActivity extends BaseActivity {
         ReleaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<SimpleResult> apiResult=mApi.publishPosts(getMyToken(),"no","日常唠嗑",EditTitle.getText().toString(),EditContent.getText().toString());
+                Call<SimpleResult> apiResult=mApi.publishPostsNotPic(getMyToken(),"no","日常唠嗑",EditTitle.getText().toString(),EditContent.getText().toString());
                 apiResult.enqueue(new Callback<SimpleResult>() {
                     @Override
                     public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {

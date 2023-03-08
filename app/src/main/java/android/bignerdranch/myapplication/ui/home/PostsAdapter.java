@@ -69,7 +69,7 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
             seekPostsResult.enqueue(new Callback<ComplexResult>() {
                 @Override
                 public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
-                    item.setName(JsonTool.getJsonString(response.body().getData(),"deleted_at"));//你没看错，deleted_at就是指发布者名称（至于为什么你得问后端哥们）
+                    item.setName(JsonTool.getJsonString(response.body().getData(),"author_name"));
                     item.setContent(JsonTool.getJsonString(response.body().getData(),"content"));
                     item.setTime(JsonTool.getJsonString(response.body().getData(),"UpdatedAt"));
                     postsHolder.bind(item,mData[position-1]);//把此帖子的id传递给holder

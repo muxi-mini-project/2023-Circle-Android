@@ -14,12 +14,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Photo_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -70,10 +64,10 @@ public class Photo_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     //通过glide将图片添加到viewholder内
     private void bindPhoto_Holder_1(Photo_Holder_1 holder,int position){
-        Glide.with(context)
-                .load(Adapter_UriList.get(position))
-                .centerCrop()
-                .into(holder.imageview1);
+//        Glide.with(context)
+//                .load(Adapter_UriList.get(position))
+//                .centerCrop()
+//                .into(holder.imageview1);
     }
 
     //第二种viewholder(内置＋号)的bind方法

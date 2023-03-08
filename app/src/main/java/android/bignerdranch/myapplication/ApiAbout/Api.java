@@ -1,12 +1,19 @@
 package android.bignerdranch.myapplication.ApiAbout;
 
+import java.io.File;
+
+import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -24,8 +31,9 @@ public interface Api {
     //发布帖子
     @POST("post")
     @FormUrlEncoded
-    Call<SimpleResult> publishPosts(@Header("Authorization")String token, @Query("file_have")String file_have,
+    Call<SimpleResult> publishPostsNotPic(@Header("Authorization")String token, @Query("file_have")String file_have,
                                     @Field("type")String type, @Field("title")String title, @Field("content")String content);
+
     //我的帖子
     @GET("user/my_post")
     Call<SimpleResult> myPost(@Header("Authorization")String token);
@@ -35,6 +43,13 @@ public interface Api {
     @FormUrlEncoded
     Call<SimpleResult> putMyMsg(@Header("Authorization")String token, @Field("gender")String gender,
                                 @Field("name")String name, @Field("signature")String signature);
+
+    //修改头像
+    @PUT("user/my_msg")
+    @Multipart
+    Call<SimpleResult> putMyProfile(@Header("Authorization")String token,@Query("avatar_only")String s,
+                                  @Part MultipartBody.Part file);
+
     //查询自己信息
     @GET("user/my_outline")
     Call<ComplexResult> getMyMsg(@Header("Authorization")String token);
