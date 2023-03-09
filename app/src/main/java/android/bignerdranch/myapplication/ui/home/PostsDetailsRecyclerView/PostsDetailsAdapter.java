@@ -7,6 +7,7 @@ import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 import android.bignerdranch.myapplication.ReusableTools.JsonTool;
+import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ui.home.PostsHolder;
 import android.content.Context;
 import android.util.Log;
@@ -26,6 +27,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostsDetailsAdapter extends RecyclerView.Adapter<BaseHolder> {
+
+    private MyRecyclerItemClickListener myRecyclerItemClickListener;
 
     private List<BaseItem> mList;//该Adapter管理的Posts的List
     private String PostsId;
@@ -51,7 +54,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<BaseHolder> {
             case COMMENT:
                 return new CommentHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment,parent,false),ItemTypeDef.Type.COMMENT);//创建新CommentHolder
             case POSTS:
-                return new PostsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_posts_layout,parent,false),ItemTypeDef.Type.POSTS,mContext,mToken);//创建一个新的PostsHolder
+                return new PostsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_posts_layout,parent,false),ItemTypeDef.Type.POSTS,myRecyclerItemClickListener,mToken,mContext);//创建一个新的PostsHolder
         }
         return null;
     }
@@ -73,6 +76,8 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<BaseHolder> {
                     item.setContent(JsonTool.getJsonString(response.body().getData(),"content"));
                     item.setTime(JsonTool.getJsonString(response.body().getData(),"UpdatedAt"));
                     item.setProfilePath(JsonTool.getJsonString(response.body().getData(),"avatar_path"));
+                    item.setLikesNumber(JsonTool.getJsonString(response.body().getData(),"likes"));
+                    item.setCommentNumber(JsonTool.getJsonString(response.body().getData(),"comment_no"));
                     postsHolder.bind(item);//把此帖子的id传递给holder
                 }
 
@@ -83,6 +88,8 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<BaseHolder> {
                     item.setContent("看到这行文字时说明您发出的的网络请求失败了");
                     item.setTime(new Date().toString());
                     item.setProfilePath("ts1.cn.mm.bing.net/th/id/R-C.e89d745d8651a20a0bf9a72a2c8405c9?rik=VZLYlVQZt2Ny%2bA&riu=http%3a%2f%2fbpic.588ku.com%2felement_pic%2f01%2f37%2f85%2f80573c6529bb88f.jpg&ehk=MmfPCBHD8juSbs0fmBYdCJyBI9%2bs%2bItwvtsiKV7X4Ps%3d&risl=&pid=ImgRaw&r=0");
+                    item.setLikesNumber("0");
+                    item.setCommentNumber("0");
                     postsHolder.bind(item);
 
                 }
@@ -103,6 +110,10 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<BaseHolder> {
     @Override
     public int getItemViewType(int position) {
         return mList.get(position).typeCode();
+    }
+
+    public void setOnItemClickListener(MyRecyclerItemClickListener listener){
+        this.myRecyclerItemClickListener = listener;
     }
 
 }

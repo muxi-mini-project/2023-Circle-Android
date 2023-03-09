@@ -2,19 +2,25 @@ package android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView;
 
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
+import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.JsonTool;
+import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ui.home.Posts;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +39,7 @@ public class PostsDetailsFragment extends Fragment {
     private PostsDetailsAdapter mPostsDetailsAdapter;
 
     private ImageButton mBackBtn;
+    private Button mDeleteButton;
 
     private Retrofit mRetrofit;
     private Api mApi;
@@ -41,16 +48,60 @@ public class PostsDetailsFragment extends Fragment {
     private String mToken;
 
 
-
-    public void setPostsID(String id){mPostsID=id;}
+    public void setPostsID(String id) {
+        mPostsID = id;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle saveInstanceState) {
         View view = inflater.inflate(R.layout.post_details, container, false);
 
+        {
+            mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            mApi = mRetrofit.create(Api.class);
+        }
+
         BaseActivity homeActivity = (BaseActivity) getActivity();//得到一个可以调用getMyToken的对象
         mToken = homeActivity.getMyToken();
+
+        mDeleteButton = (Button) view.findViewById(R.id.delete_button);
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog alertDialog2 = new AlertDialog.Builder(getContext())
+                        .setTitle("确定删除这个帖子吗？")
+                        .setMessage("您可以稍作考虑")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Call<SimpleResult> deleteResult = mApi.delPost(mToken, mPostsID);
+                                deleteResult.enqueue(new Callback<SimpleResult>() {
+                                    @Override
+                                    public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                                        Toast.makeText(getActivity(), "删除帖子成功！", Toast.LENGTH_SHORT).show();
+                                        onStop();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<SimpleResult> call, Throwable t) {
+                                        Log.d("TAG", "删除帖子：网络请求失败！");
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("TAG", "取消删除帖子");
+                            }
+                        })
+                        .create();
+                alertDialog2.show();
+            }
+        });
 
         mBackBtn = (ImageButton) view.findViewById(R.id.back_btn);
         mBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -72,33 +123,40 @@ public class PostsDetailsFragment extends Fragment {
     private void upDateUI() {
         CommentLab commentLab = CommentLab.get();
         List<BaseItem> mList = new ArrayList<>();
-        Posts item=new Posts();
-        {mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-            mApi = mRetrofit.create(Api.class);
-        Call<ComplexResult> seekPostsResult = mApi.seekPosts(mPostsID,mToken);
+        Posts item = new Posts();
+        Call<ComplexResult> seekPostsResult = mApi.seekPosts(mPostsID, mToken);
         seekPostsResult.enqueue(new Callback<ComplexResult>() {
             @Override
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
-                item.setName(JsonTool.getJsonString(response.body().getData(),"author_name"));
-                item.setContent(JsonTool.getJsonString(response.body().getData(),"content"));
-                item.setTime(JsonTool.getJsonString(response.body().getData(),"UpdatedAt"));
-                item.setProfilePath(JsonTool.getJsonString(response.body().getData(),"avatar_path"));
-                item.setID(JsonTool.getJsonString(response.body().getData(),"ID"));
+                item.setName(JsonTool.getJsonString(response.body().getData(), "author_name"));
+                item.setContent(JsonTool.getJsonString(response.body().getData(), "content"));
+                item.setTime(JsonTool.getJsonString(response.body().getData(), "UpdatedAt"));
+                item.setProfilePath(JsonTool.getJsonString(response.body().getData(), "avatar_path"));
+                item.setID(JsonTool.getJsonString(response.body().getData(), "ID"));
                 mList.add(item);
                 for (Comment e : commentLab.get_mComment()) {
                     mList.add(e);
                 }
-                mPostsDetailsAdapter = new PostsDetailsAdapter(mList,getContext(),mToken);//将mList装载入Adapter中
+                mPostsDetailsAdapter = new PostsDetailsAdapter(mList, getContext(), mToken);//将mList装载入Adapter中
                 mPostsDetailsRecyclerView.setAdapter(mPostsDetailsAdapter);//给该recyclerview设置adapter
+                mPostsDetailsAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+
+                    }
+                });
             }
+
             @Override
             public void onFailure(Call<ComplexResult> call, Throwable t) {
-                Log.d("TAG","评论详情：请求失败");
+                Log.d("TAG", "评论详情：请求失败");
             }
-        });}
+        });
+
+
     }
 
 
 }
+
+

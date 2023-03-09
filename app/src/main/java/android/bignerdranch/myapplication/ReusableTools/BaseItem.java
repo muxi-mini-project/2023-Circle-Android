@@ -10,21 +10,41 @@ public abstract class BaseItem {
     private String CreateTime;//发布时间
     private String UpdatedTime;//最近一次更新时间
     private boolean likes;//是否点赞
-    private int likesNumber;//点赞数
-    private int commentNumber;//评论数
+    private String likesNumber;//点赞数
+    private String commentNumber;//评论数
     private String profilePath;
 
+    public abstract void setLikes(boolean isLike);
+
+    public abstract boolean isLikes();
+
     public abstract String getName();
+
+    public abstract void setName(String name);
+
     public abstract String getContent();
+
+    public abstract void setContent(String content);
+
     public abstract String getTime();
+
+    public abstract void setTime(String time);
+
     public abstract String getProfilePath();
+
+    public abstract void setProfilePath(String path);
+
     public abstract String getID();
 
     public abstract void setID(String id);
-    public abstract void setProfilePath(String path);
-    public abstract void setName(String name);
-    public abstract void setTime(String time);
-    public abstract void setContent(String content);
+
+    public abstract String getLikesNumber();
+
+    public abstract void setLikesNumber(String likesNumber);
+
+    public abstract String getCommentNumber();
+
+    public abstract void setCommentNumber(String commentNumber);
 
     public abstract int typeCode();
 }

@@ -1,4 +1,3 @@
-
 package android.bignerdranch.myapplication.ui.home;
 
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
@@ -15,41 +14,64 @@ public class Posts extends BaseItem {
     private String CreateTime;//发布时间
     private String UpdatedTime;//最近一次更新时间
     private boolean likes;//是否点赞
-    private int likesNumber;//点赞数
-    private int commentNumber;//评论数
+    private String likesNumber;//点赞数
+    private String commentNumber;//评论数
     private String profilePath;
 
 
-    public int typeCode(){
+    //构造器
+    public Posts(String publisherName, String publishTime, String content) {
+        this.Name = publisherName;
+        this.content = content;
+        CreateTime = publishTime;
+    }
+
+    //空构造器
+    public Posts() {
+        CreateTime = new Date().toString();
+        UpdatedTime = CreateTime;
+        likesNumber = "0";
+        commentNumber = "0";
+    }
+
+    public int typeCode() {
         return ItemTypeDef.Type.POSTS.getCode();
     }
 
-    //构造器
-    public Posts(String publisherName,String publishTime,String content) {
-        this.Name = publisherName;
-        this.content = content;
-        CreateTime=publishTime;
-    }
-
-
-    //空构造器
-    public Posts(){
-        CreateTime=new Date().toString();
-        UpdatedTime=CreateTime;
-        likesNumber=0;
-        commentNumber=0;
-    }
-
-    public String getTime(){
+    public String getTime() {
         return UpdatedTime;
     }
-    public String getName(){
+
+    public void setTime(String time) {
+        this.UpdatedTime = time;
+    }
+
+
+
+    public String getName() {
         return Name;
     }
+
+    public void setName(String publisherName) {
+        this.Name = publisherName;
+    }
+
     public String getContent() {
         return content;
     }
-    public String getProfilePath(){return profilePath;}
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getProfilePath() {
+        return profilePath;
+    }
+
+    @Override
+    public void setProfilePath(String path) {
+        profilePath = path;
+    }
 
     @Override
     public String getID() {
@@ -58,36 +80,44 @@ public class Posts extends BaseItem {
 
     @Override
     public void setID(String id) {
-        PostsId=id;
+        PostsId = id;
     }
 
     @Override
-    public void setProfilePath(String path) {
-        profilePath=path;
+    public String getLikesNumber() {
+        return likesNumber;
     }
-    public void setName(String publisherName) {
-        this.Name = publisherName;
+
+    @Override
+    public void setLikesNumber(String number) {
+        likesNumber = number;
     }
-    public void setContent(String content) {
-        this.content = content;
+
+    @Override
+    public String getCommentNumber() {
+        return commentNumber;
     }
-    public void setTime(String time){
-        this.UpdatedTime=time;
+
+    @Override
+    public void setCommentNumber(String number) {
+        commentNumber = number;
     }
 
     public boolean isLikes() {
         return likes;
     }
+
     public void setLikes(boolean likes) {
         this.likes = likes;
     }
+
     public boolean isFollow() {
         return follow;
     }
+
     public void setFollow(boolean follow) {
         this.follow = follow;
     }
-
 
 
 }

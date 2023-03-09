@@ -11,8 +11,8 @@ public class Comment extends BaseItem {
     private String commenterName;//发布评论者昵称
     private String content;//内容
     private boolean likes;//是否点赞
-    private int likesNumber;
-    private int commentNumber;
+    private String likesNumber;
+    private String commentNumber;
     private String releaseTime;//发布时间
     private String profilePath;
 
@@ -79,17 +79,17 @@ public class Comment extends BaseItem {
         this.likes = likes;
     }
 
-    public int getLikesNumber() {
+    public String getLikesNumber() {
         return likesNumber;
     }
-    public void setLikesNumber(int likesNumber) {
+    public void setLikesNumber(String likesNumber) {
         this.likesNumber = likesNumber;
     }
 
-    public int getCommentNumber() {
+    public String getCommentNumber() {
         return commentNumber;
     }
-    public void setCommentNumber(int commentNumber) {
+    public void setCommentNumber(String commentNumber) {
         this.commentNumber = commentNumber;
     }
 }

@@ -55,6 +55,10 @@ public interface Api {
     @DELETE("post/likes")
     Call<SimpleResult> deleteLikesPosts(@Query("post_id")String postsId,@Header("Authorization")String token);
 
+    //查询帖子是否已赞
+    @GET("post/whether_like")
+    Call<SimpleResult> getIsLike(@Query("post_id")String id,@Header("Authorization")String token);
+
     //修改个人信息
     @PUT("user/my_msg")
     @FormUrlEncoded
@@ -74,6 +78,7 @@ public interface Api {
     //查询他人信息
     @GET("user/{id}/user_outline")
     Call<ComplexResult> getUserMsg(@Path("id")String userId,@Header("Authorization")String token);
+
 
 
 }

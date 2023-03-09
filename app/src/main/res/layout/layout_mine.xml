@@ -18,7 +18,6 @@
         android:layout_weight="1"
         android:translationZ="1dp"
         android:elevation="1dp"
-        android:background="@drawable/title_shadow"
         android:orientation="vertical">
 
         <LinearLayout

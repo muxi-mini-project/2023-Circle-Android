@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/posts_details"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="20dp">
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:translationZ="1dp"
+        android:elevation="1dp"
+        android:background="@drawable/title_shadow"
+        app:layout_constraintBottom_toTopOf="@+id/posts_detail_text"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,6 +22,8 @@
         android:translationZ="1dp"
         android:elevation="1dp"
         android:background="@drawable/title_shadow">
+
+
 
         <ImageButton
             android:id="@+id/back_btn"
@@ -25,11 +35,26 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
+            android:id="@+id/posts_detail_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/posts_details_text"
             android:gravity="center"
             app:layout_constraintTop_toTopOf="parent"/>
+
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:background="@drawable/recyangle2"
+            android:gravity="center"
+            android:text="删除"
+            android:textSize="15dp"
+            android:textColor="#FF3737"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
