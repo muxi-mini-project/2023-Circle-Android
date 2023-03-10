@@ -16,20 +16,22 @@ public class Comment extends BaseItem {
     private String releaseTime;//发布时间
     private String profilePath;
 
-    public int typeCode(){
+    public Comment() {
+        releaseTime = new Date().toString();
+    }
+
+    public int typeCode() {
         return ItemTypeDef.Type.COMMENT.getCode();
     }
-
-
-    public Comment() {
-        releaseTime=new Date().toString();
-    }
-
-
 
     @Override
     public String getProfilePath() {
         return profilePath;
+    }
+
+    @Override
+    public void setProfilePath(String path) {
+        profilePath = path;
     }
 
     @Override
@@ -39,42 +41,52 @@ public class Comment extends BaseItem {
 
     @Override
     public void setID(String id) {
-        itSelfID=id;
+        itSelfID = id;
     }
-
-    @Override
-    public void setProfilePath(String path) {
-        profilePath=path;
-    }
-    @Override
-    public void setTime(String time) {releaseTime=time;}
 
     public String getTime() {
         return releaseTime;
     }
 
-
+    @Override
+    public void setTime(String time) {
+        releaseTime = time;
+    }
 
     public String getId() {
         return itSelfID;
     }
+
     public String getName() {
         return commenterName;
     }
+
+    public void setName(String commenterName) {
+        this.commenterName = commenterName;
+    }
+
     public String getContent() {
         return content;
     }
 
-
     public void setContent(String content) {
         this.content = content;
     }
-    public void setName(String commenterName) {
-        this.commenterName = commenterName;
+
+    @Override
+    public String getTitle() {
+        return null;
     }
+
+    @Override
+    public void setTitle(String title) {
+
+    }
+
     public boolean isLikes() {
         return likes;
     }
+
     public void setLikes(boolean likes) {
         this.likes = likes;
     }
@@ -82,6 +94,7 @@ public class Comment extends BaseItem {
     public String getLikesNumber() {
         return likesNumber;
     }
+
     public void setLikesNumber(String likesNumber) {
         this.likesNumber = likesNumber;
     }
@@ -89,6 +102,7 @@ public class Comment extends BaseItem {
     public String getCommentNumber() {
         return commentNumber;
     }
+
     public void setCommentNumber(String commentNumber) {
         this.commentNumber = commentNumber;
     }

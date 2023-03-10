@@ -10,6 +10,7 @@ public class Posts extends BaseItem {
     private String PostsId;
     private String Name;//发布者的昵称
     private boolean follow;//是否关注发布者
+    private String title;
     private String content;//发布内容
     private String CreateTime;//发布时间
     private String UpdatedTime;//最近一次更新时间
@@ -101,6 +102,16 @@ public class Posts extends BaseItem {
     @Override
     public void setCommentNumber(String number) {
         commentNumber = number;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title=title;
     }
 
     public boolean isLikes() {

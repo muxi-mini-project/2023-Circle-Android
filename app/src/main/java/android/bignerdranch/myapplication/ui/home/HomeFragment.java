@@ -4,6 +4,7 @@ import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
+import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
@@ -12,6 +13,7 @@ import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.bignerdranch.myapplication.ui.home.EditPosts.EditPostsActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -75,12 +79,20 @@ public class HomeFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mApi = mRetrofit.create(Api.class);
-        Call<SimpleResult> apiResultCall = mApi.myPost(token);
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_YEAR,-10);
+        String startDate=StringTool.getDateString(calendar.getTime());
+        String endDate=StringTool.getDateString(new Date());
+        Call<SimpleResult> apiResultCall=mApi.recPost(token,"日常唠嗑",endDate,startDate,10,0);
         apiResultCall.enqueue(new Callback<SimpleResult>() {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 data = response.body().getData();
                 if (data != null) {
+                    for (String e:data){
+                        Log.d("TAG",e);
+                    }
                     setAdapterAbout();
                 }
             }

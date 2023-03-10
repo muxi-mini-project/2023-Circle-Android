@@ -1,11 +1,13 @@
 package android.bignerdranch.myapplication.ui.home;
 
 import android.bignerdranch.myapplication.ApiAbout.Api;
+import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
+import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.content.Context;
 import android.util.Log;
@@ -29,6 +31,7 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
     private TextView mNameView;
     private TextView mDateView;
     private TextView mContent;
+    private TextView mTitle;
     private ImageButton mIsFollow;
     private ImageButton mIsLikes;
     private TextView mLikesNum;
@@ -60,6 +63,7 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
             mNameView = (TextView) itemView.findViewById(R.id.publisher_name);
             mDateView = (TextView) itemView.findViewById(R.id.publish_time);
             mContent = (TextView) itemView.findViewById(R.id.publish_content);
+            mTitle=(TextView)itemView.findViewById(R.id.publish_title);
             mIsFollow = (ImageButton) itemView.findViewById(R.id.is_followed_btn);
             mIsLikes = (ImageButton) itemView.findViewById(R.id.is_likes_btn);
             mLikesNum = (TextView) itemView.findViewById(R.id.likes_num);
@@ -77,8 +81,6 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
                 } else {
                     deleteLikePost();
                 }
-                mPosts.setLikes(!mPosts.isLikes());
-                bind(mPosts);
             }
         });
 
@@ -87,33 +89,59 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
             public void onClick(View v) {
                 //同理
                 mPosts.setFollow(!mPosts.isFollow());
-                bind(mPosts);
+                bind(mPosts, mPosts.getID());
             }
         });
     }
 
 
-    public void bind(BaseItem item) {
-        mPosts = (Posts) item;
-        Glide.with(mContext)
-                .load("http://" + mPosts.getProfilePath())
-                .centerCrop()
-                .into(mProfile);//设置头像
-        mNameView.setText(mPosts.getName());
-        mDateView.setText(mPosts.getTime());
-        mLikesNum.setText(mPosts.getLikesNumber());
-        mCommentNum.setText(mPosts.getCommentNumber());
-        setLikes(mPosts.isLikes());
-        setFollow(mPosts.isFollow());
-        mContent.setText(mPosts.getContent());
+    public void bind(BaseItem item, String id) {
+        if (mPosts == null) {
+            mPosts = (Posts) item;
+        }
+        Call<ComplexResult> seekPostsResult = mApi.seekPosts(id, mToken);
+        //每次装载数据时都要通过网络请求更新帖子数据，如点赞数之类的
+        seekPostsResult.enqueue(new Callback<ComplexResult>() {
+            @Override
+            public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
+
+                mPosts.setLikesNumber(StringTool.getJsonString(response.body().getData(), "likes"));
+                mPosts.setCommentNumber(StringTool.getJsonString(response.body().getData(), "comment_no"));
+
+                //获取是否点赞数据
+                Call<SimpleResult> isLikeResult = mApi.getIsLike(mPosts.getID(), mToken);
+                isLikeResult.enqueue(new Callback<SimpleResult>() {
+                    @Override
+                    public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        if (response.body().getMsg().equals("yes")) {
+                            mPosts.setLikes(true);
+                        } else {
+                            mPosts.setLikes(false);
+                        }
+                        setPosts();
+                    }
+
+                    @Override
+                    public void onFailure(Call<SimpleResult> call, Throwable t) {
+                        Log.d("TAG", "是否点赞：网络请求失败！");
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<ComplexResult> call, Throwable t) {
+                Log.d("TAG", "查找帖子：网络请求失败");
+            }
+        });
     }
 
     private void setFollow(boolean isFollow) {
-                if (isFollow) {
-                    mIsFollow.setBackgroundResource(R.mipmap.is_follow_followed);
-                } else {
-                    mIsFollow.setBackgroundResource(R.mipmap.is_follow_not_followed);
-                }
+        if (isFollow) {
+            mIsFollow.setBackgroundResource(R.mipmap.is_follow_followed);
+        } else {
+            mIsFollow.setBackgroundResource(R.mipmap.is_follow_not_followed);
+        }
     }
 
     private void setLikes(boolean isLike) {
@@ -124,12 +152,27 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         }
     }
 
+    private void setPosts() {
+        Glide.with(mContext)
+                .load("http://" + mPosts.getProfilePath())
+                .centerCrop()
+                .into(mProfile);//设置头像
+        mNameView.setText(mPosts.getName());
+        mDateView.setText(mPosts.getTime());
+        mLikesNum.setText(mPosts.getLikesNumber());
+        mCommentNum.setText(mPosts.getCommentNumber());
+        setLikes(mPosts.isLikes());
+        setFollow(mPosts.isFollow());
+        mTitle.setText(mPosts.getTitle());
+        mContent.setText(mPosts.getContent());
+    }
 
     private void likePost() {
         Call<SimpleResult> likesResult = mApi.likesPosts(mPosts.getID(), mToken);
         likesResult.enqueue(new Callback<SimpleResult>() {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                bind(mPosts, mPosts.getID());
                 Log.d("TAG", "点赞成功");
             }
 
@@ -145,7 +188,8 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         deleteLikesResult.enqueue(new Callback<SimpleResult>() {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                Log.d("TAG", "取消点赞成功！");
+                bind(mPosts, mPosts.getID());
+                Log.d("TAG", "取消点赞成功");
             }
 
             @Override

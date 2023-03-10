@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/sign_text"
-        android:textColor="@color/teal_700"
+        android:textColor="#FF8C37"
         android:background="@drawable/sign_in_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

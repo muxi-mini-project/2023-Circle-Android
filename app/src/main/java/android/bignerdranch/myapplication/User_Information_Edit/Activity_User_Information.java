@@ -2,7 +2,6 @@ package android.bignerdranch.myapplication.User_Information_Edit;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.R;
 import android.content.Intent;
@@ -15,11 +14,8 @@ import android.os.Build;
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
-import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
-import android.bignerdranch.myapplication.R;
-import android.bignerdranch.myapplication.ReusableTools.JsonTool;
+import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,8 +25,6 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -42,7 +36,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 public class Activity_User_Information extends BaseActivity {
 
@@ -274,8 +267,8 @@ public class Activity_User_Information extends BaseActivity {
         apiResult1.enqueue(new Callback<ComplexResult>() {
             @Override
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
-                mUser_name_field.setText(JsonTool.getJsonString(response.body().getData(), "Name"));
-                mSignature_field.setText(JsonTool.getJsonString(response.body().getData(), "Signature"));
+                mUser_name_field.setText(StringTool.getJsonString(response.body().getData(), "Name"));
+                mSignature_field.setText(StringTool.getJsonString(response.body().getData(), "Signature"));
             }
 
             @Override

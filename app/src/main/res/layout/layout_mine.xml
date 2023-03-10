@@ -58,7 +58,7 @@
                 android:id="@+id/profile_pic"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:src="@mipmap/head_portrait"/>
+                android:src="@drawable/recyangle"/>
 
 
         </LinearLayout>

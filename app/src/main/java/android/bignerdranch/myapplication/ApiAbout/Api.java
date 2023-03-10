@@ -43,6 +43,12 @@ public interface Api {
     @GET("user/my_post")
     Call<SimpleResult> myPost(@Header("Authorization")String token);
 
+    //查询推荐帖子id数组
+    @POST("post/recommendations")
+    @FormUrlEncoded
+    Call<SimpleResult> recPost(@Header("Authorization")String token,@Field("type") String type,@Field("end_time") String end_time
+            ,@Field("start_time") String start_time,@Field("length") int length,@Field("start_index") int index);
+
     //查询某个帖子
     @GET("post/{id}")
     Call<ComplexResult> seekPosts(@Path("id")String id, @Header("Authorization")String token);

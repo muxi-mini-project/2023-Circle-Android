@@ -11,13 +11,23 @@ public class SearchBox extends BaseItem {
     }
 
     @Override
-    public void setLikes(boolean isLike) {
+    public String getTitle() {
+        return null;
+    }
+
+    @Override
+    public void setTitle(String title) {
 
     }
 
     @Override
     public boolean isLikes() {
         return false;
+    }
+
+    @Override
+    public void setLikes(boolean isLike) {
+
     }
 
     @Override

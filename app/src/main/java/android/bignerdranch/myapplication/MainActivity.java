@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,6 +30,7 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //创建一个指向该url的retrofit
         mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")

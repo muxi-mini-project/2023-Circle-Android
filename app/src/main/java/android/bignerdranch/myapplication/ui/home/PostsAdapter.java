@@ -8,7 +8,7 @@ import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
-import android.bignerdranch.myapplication.ReusableTools.JsonTool;
+import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.content.Context;
 import android.util.Log;
@@ -70,35 +70,39 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
                         .build();
                 mApi = mRetrofit.create(Api.class);
             }
+            //由于是初次启动，要先通过网络请求返回体得到数据并装载后再启动Holder
+
             Call<ComplexResult> seekPostsResult = mApi.seekPosts(mData[position - 1], mToken);
             seekPostsResult.enqueue(new Callback<ComplexResult>() {
                 @Override
                 public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
                     {
-                        item.setName(JsonTool.getJsonString(response.body().getData(), "author_name"));
-                        item.setContent(JsonTool.getJsonString(response.body().getData(), "content"));
-                        item.setTime(JsonTool.getJsonString(response.body().getData(), "UpdatedAt"));
-                        item.setProfilePath(JsonTool.getJsonString(response.body().getData(), "avatar_path"));
-                        item.setID(JsonTool.getJsonString(response.body().getData(), "ID"));
-                        item.setLikesNumber(JsonTool.getJsonString(response.body().getData(), "likes"));
-                        item.setCommentNumber(JsonTool.getJsonString(response.body().getData(), "comment_no"));
+                        Log.d("TAG", mData[position - 1]);
+                        item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));
+                        item.setContent(StringTool.getJsonString(response.body().getData(), "content"));
+                        item.setTime(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));
+                        item.setProfilePath(StringTool.getJsonString(response.body().getData(), "avatar_path"));
+                        item.setID(StringTool.getJsonString(response.body().getData(), "ID"));
+                        item.setLikesNumber(StringTool.getJsonString(response.body().getData(), "likes"));
+                        item.setCommentNumber(StringTool.getJsonString(response.body().getData(), "comment_no"));
                     }
-                    Call<SimpleResult> isLikeResult= mApi.getIsLike(item.getID(),mToken);
+                    //由于服务器给的帖子数据当中并没有这个帖子是否已经点赞的数据，所以要写一个嵌套请求
+                    //在这个请求完成后调用bind方法
+                    Call<SimpleResult> isLikeResult = mApi.getIsLike(item.getID(), mToken);
                     isLikeResult.enqueue(new Callback<SimpleResult>() {
                         @Override
                         public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                            if (response.body().getMsg().equals("yes")){
+                            if (response.body().getMsg().equals("yes")) {
                                 item.setLikes(true);
-                            }
-                            else {
+                            } else {
                                 item.setLikes(false);
                             }
-                            postsHolder.bind(item);//把此帖子的id传递给holder
+                            postsHolder.bind(item, item.getID());//把此帖子的id传递给holder
                         }
 
                         @Override
                         public void onFailure(Call<SimpleResult> call, Throwable t) {
-                            Log.d("TAG","是否点赞：网络请求失败！");
+                            Log.d("TAG", "是否点赞：网络请求失败！");
                         }
                     });
 

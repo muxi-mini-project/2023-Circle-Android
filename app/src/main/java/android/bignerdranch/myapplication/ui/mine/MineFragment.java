@@ -7,18 +7,16 @@ import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
-import android.bignerdranch.myapplication.ReusableTools.JsonTool;
+import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.bignerdranch.myapplication.User_Information_Edit.Activity_User_Information;
-import android.bignerdranch.myapplication.User_Information_Edit.User_Information;
 import android.bignerdranch.myapplication.ui.home.PostsAdapter;
 import android.bignerdranch.myapplication.ui.home.Posts;
 import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
 import android.bignerdranch.myapplication.ui.home.PostsLab;
 import android.bignerdranch.myapplication.ui.home.SearchBox;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,21 +27,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -108,12 +100,12 @@ public class MineFragment extends Fragment {
             @SuppressLint("ResourceType")
             @Override
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
-                mUserName.setText(JsonTool.getJsonString(response.body().getData(),"Name"));
-                mUserSignature.setText(JsonTool.getJsonString(response.body().getData(),"Signature"));
-                mPostsNum.setText(JsonTool.getJsonString(response.body().getData(),"PostNo"));
-                mFollowNum.setText(JsonTool.getJsonString(response.body().getData(),"FollowingNo"));
-                mFansNum.setText(JsonTool.getJsonString(response.body().getData(),"FollowerNo"));
-                profileUrl=JsonTool.getJsonString(response.body().getData(),"AvatarPath");
+                mUserName.setText(StringTool.getJsonString(response.body().getData(),"Name"));
+                mUserSignature.setText(StringTool.getJsonString(response.body().getData(),"Signature"));
+                mPostsNum.setText(StringTool.getJsonString(response.body().getData(),"PostNo"));
+                mFollowNum.setText(StringTool.getJsonString(response.body().getData(),"FollowingNo"));
+                mFansNum.setText(StringTool.getJsonString(response.body().getData(),"FollowerNo"));
+                profileUrl= StringTool.getJsonString(response.body().getData(),"AvatarPath");
                 Log.d("TAG",profileUrl);
                 Glide.with(MineFragment.this)
                         .load("http://"+profileUrl

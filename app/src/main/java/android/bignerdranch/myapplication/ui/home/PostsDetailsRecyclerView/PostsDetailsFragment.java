@@ -6,11 +6,10 @@ import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
-import android.bignerdranch.myapplication.ReusableTools.JsonTool;
+import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ui.home.Posts;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -128,11 +127,11 @@ public class PostsDetailsFragment extends Fragment {
         seekPostsResult.enqueue(new Callback<ComplexResult>() {
             @Override
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
-                item.setName(JsonTool.getJsonString(response.body().getData(), "author_name"));
-                item.setContent(JsonTool.getJsonString(response.body().getData(), "content"));
-                item.setTime(JsonTool.getJsonString(response.body().getData(), "UpdatedAt"));
-                item.setProfilePath(JsonTool.getJsonString(response.body().getData(), "avatar_path"));
-                item.setID(JsonTool.getJsonString(response.body().getData(), "ID"));
+                item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));
+                item.setContent(StringTool.getJsonString(response.body().getData(), "content"));
+                item.setTime(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));
+                item.setProfilePath(StringTool.getJsonString(response.body().getData(), "avatar_path"));
+                item.setID(StringTool.getJsonString(response.body().getData(), "ID"));
                 mList.add(item);
                 for (Comment e : commentLab.get_mComment()) {
                     mList.add(e);
