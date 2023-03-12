@@ -14,15 +14,27 @@ import androidx.fragment.app.FragmentManager;
 
 public class HomeActivity extends BaseActivity {
 
+    private static final String EXTRA_POSTS_DATA=
+            "com.bignerdranch.android.huaxiaoquan.data";
+
+    private String[] mData;
 
     protected Fragment createFragment() {
-        return new HomeFragment();
+        HomeFragment homeFragment=new HomeFragment();
+        homeFragment.setData(mData);
+        return homeFragment;
+    }
+
+    public void setData(String[] data){
+        mData=data;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_home);
+
+        mData=getIntent().getStringArrayExtra(EXTRA_POSTS_DATA);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.layout_home);//此处为layout_home的id
@@ -36,8 +48,10 @@ public class HomeActivity extends BaseActivity {
 
     }
 
-    public static Intent newIntent(Context packageContext) {
+    public static Intent newIntent(Context packageContext,String[] data) {
         Intent intent = new Intent(packageContext, HomeActivity.class);
+
+        intent.putExtra(EXTRA_POSTS_DATA,data);
         return intent;
     }
 

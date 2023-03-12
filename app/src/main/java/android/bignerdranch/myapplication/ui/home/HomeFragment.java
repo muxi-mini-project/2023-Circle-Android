@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
     private Retrofit mRetrofit;
     private Api mApi;
 
-    private String[] data;//帖子id数组
+    private String[] mData;//帖子id数组
     private String token;
     private PostsLab postsLab;
 
@@ -69,9 +69,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        upDateUI();
+        if (mData==null){
+            upDateUI();
+        }else {
+            setAdapterAbout();
+        }
 
         return view;
+    }
+
+    public void setData(String[] data){
+        mData=data;
     }
 
     private void upDateUI() {
@@ -79,20 +87,26 @@ public class HomeFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mApi = mRetrofit.create(Api.class);
-        Calendar calendar=Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.DAY_OF_YEAR,-10);
-        String startDate=StringTool.getDateString(calendar.getTime());
-        String endDate=StringTool.getDateString(new Date());
-        Call<SimpleResult> apiResultCall=mApi.recPost(token,"日常唠嗑",endDate,startDate,10,0);
+        String endDate;
+        String startDate;
+        {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DAY_OF_YEAR, -10);
+            startDate = StringTool.getDateString(calendar.getTime());
+            endDate = StringTool.getDateString(new Date());
+        }//制作end和start时间字符串
+        Call<SimpleResult> apiResultCall = mApi.recPost(token, "日常唠嗑", endDate, startDate, 10, 0);
+        Log.d("TAG", endDate + " " + startDate);
         apiResultCall.enqueue(new Callback<SimpleResult>() {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                data = response.body().getData();
-                if (data != null) {
-                    for (String e:data){
-                        Log.d("TAG",e);
-                    }
+                if (response.body() != null) {
+                    mData = response.body().getData();
+                } else {
+                    mData = new String[0];
+                }
+                if (mData != null) {
                     setAdapterAbout();
                 }
             }
@@ -105,7 +119,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setAdapterAbout() {
-        postsLab = PostsLab.get(data.length);
+        postsLab = PostsLab.get(mData.length);
         List<BaseItem> mList = new ArrayList<>();
         mList.add(new SearchBox());//在mList中加入搜索框
         for (Posts e : postsLab.getPosts()) {
@@ -113,15 +127,13 @@ public class HomeFragment extends Fragment {
         }
 
         mHomeRecyclerView.addItemDecoration(new SpaceItemDecoration(20));//设置item之间的间隔为20
-        mPostsAdapter = new PostsAdapter(mList, data, token,getContext());//将mList装载入Adapter中
+        mPostsAdapter = new PostsAdapter(mList, mData, token,getContext());//将mList装载入Adapter中
         mHomeRecyclerView.setAdapter(mPostsAdapter);//给该recyclerview设置adapter
 
         mPostsAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = PostsDetailsActivity.newIntent(getActivity(), mPostsAdapter.getList().get(position).getName()
-                        , mPostsAdapter.getList().get(position).getTime()
-                        , mPostsAdapter.getList().get(position).getContent()
+                Intent intent = PostsDetailsActivity.newIntent(getActivity()
                 ,mPostsAdapter.getList().get(position).getID());
                 startActivity(intent);
             }

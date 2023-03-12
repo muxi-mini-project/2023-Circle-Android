@@ -87,9 +87,11 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         mIsFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //同理
-                mPosts.setFollow(!mPosts.isFollow());
-                bind(mPosts, mPosts.getID());
+               if (!mPosts.isFollow()){
+                   followUser();
+               }else {
+                   delFollowUser();
+               }
             }
         });
     }
@@ -127,6 +129,24 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
                     }
                 });
 
+                //获取是否关注数据
+                Call<SimpleResult> isFollowResult=mApi.getIsFollow(mToken,mPosts.getPublisherId());
+                isFollowResult.enqueue(new Callback<SimpleResult>() {
+                    @Override
+                    public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        if (response.body().getMsg().equals("yes")) {
+                            mPosts.setFollow(true);
+                        } else {
+                            mPosts.setFollow(false);
+                        }
+                        setPosts();
+                    }
+
+                    @Override
+                    public void onFailure(Call<SimpleResult> call, Throwable t) {
+                        Log.d("TAG","是否关注：网络请求失败！");
+                    }
+                });
             }
 
             @Override
@@ -199,4 +219,35 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         });
     }
 
+    private void followUser(){
+        Call<SimpleResult> followResult=mApi.followUser(mToken,mPosts.getPublisherId());
+        followResult.enqueue(new Callback<SimpleResult>() {
+            @Override
+            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                bind(mPosts,mPosts.getID());
+                Log.d("TAG","关注用户:"+mPosts.getPublisherId()+" "+"成功");
+            }
+
+            @Override
+            public void onFailure(Call<SimpleResult> call, Throwable t) {
+                Log.d("TAG","关注用户：网络请求失败");
+            }
+        });
+    }
+
+    private void delFollowUser(){
+        Call<SimpleResult> followResult=mApi.delFollowUser(mToken,mPosts.getPublisherId());
+        followResult.enqueue(new Callback<SimpleResult>() {
+            @Override
+            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                bind(mPosts,mPosts.getID());
+                Log.d("TAG","取消关注用户:"+mPosts.getPublisherId()+" "+"成功");
+            }
+
+            @Override
+            public void onFailure(Call<SimpleResult> call, Throwable t) {
+                Log.d("TAG","取消关注用户：网络请求失败");
+            }
+        });
+    }
 }

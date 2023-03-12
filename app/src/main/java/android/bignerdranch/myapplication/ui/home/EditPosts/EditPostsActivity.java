@@ -48,44 +48,44 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EditPostsActivity extends BaseActivity {
 
+    private static final int TAKE_PHOTO = 0X99;
+    private static final int PICK_PHOTO = 0X98;
     private Posts mPosts;
     private User_Information user_information;
-
     private Retrofit mRetrofit;
     private Api mApi;
-
     private ImageButton BackButton;
     private ImageButton ReleaseButton;
     private EditText EditTitle;
     private EditText EditContent;
-
     private Button add_photos;
     private List<Uri> UriList = new ArrayList<>();   //存放每个图片的Uri
-    private static final int TAKE_PHOTO = 0X99;
-    private static final int PICK_PHOTO = 0X98;
     private String path;
 
     private RecyclerView mPhotosRecyclerview;
     private Photo_Adapter adapter;
-    private UserImageChange u=new UserImageChange(EditPostsActivity.this);
+    private UserImageChange u = new UserImageChange(EditPostsActivity.this);
 
+    public static Intent newIntent(Context packageContext) {
+        return new Intent(packageContext, EditPostsActivity.class);
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPosts=new Posts();
-        user_information=User_Information.getUser_information();
+        mPosts = new Posts();
+        user_information = User_Information.getUser_information();
         setContentView(R.layout.layout_editposts);
 
-        mPhotosRecyclerview=(RecyclerView)findViewById(R.id.recyclerview_photos);
-        mPhotosRecyclerview.setLayoutManager(new GridLayoutManager(this,3));
-        adapter=new Photo_Adapter(EditPostsActivity.this,UriList);
+        mPhotosRecyclerview = (RecyclerView) findViewById(R.id.recyclerview_photos);
+        mPhotosRecyclerview.setLayoutManager(new GridLayoutManager(this, 3));
+        adapter = new Photo_Adapter(EditPostsActivity.this, UriList);
         mPhotosRecyclerview.setAdapter(adapter);
 
-        BackButton=(ImageButton) findViewById(R.id.backbutton_editposts);
-        ReleaseButton=(ImageButton) findViewById(R.id.releasebutton_editposts);
-        EditContent=(EditText) findViewById(R.id.posts_content_field);
-        EditTitle=(EditText)findViewById(R.id.posts_title_field);
+        BackButton = (ImageButton) findViewById(R.id.backbutton_editposts);
+        ReleaseButton = (ImageButton) findViewById(R.id.releasebutton_editposts);
+        EditContent = (EditText) findViewById(R.id.posts_content_field);
+        EditTitle = (EditText) findViewById(R.id.posts_title_field);
 
         //返回键的监听器，记得填起来
         BackButton.setOnClickListener(new View.OnClickListener() {
@@ -105,35 +105,34 @@ public class EditPostsActivity extends BaseActivity {
         EditContent.setHorizontallyScrolling(false);
 
         //创建一个指向该url的retrofit
-        mRetrofit=new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
+        mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        mApi=mRetrofit.create(Api.class);
+        mApi = mRetrofit.create(Api.class);
         //发布键的监听器
         ReleaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<SimpleResult> apiResult=mApi.publishPostsNotPic(getMyToken(),"no","日常唠嗑",EditTitle.getText().toString(),EditContent.getText().toString());
-                apiResult.enqueue(new Callback<SimpleResult>() {
-                    @Override
-                    public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        Toast.makeText(EditPostsActivity.this,response.body().getMsg(),Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
+                if (EditContent.getText().toString().trim().equals("")) {
+                    Toast.makeText(EditPostsActivity.this, "请输入内容", Toast.LENGTH_SHORT).show();
+                } else {
+                    Call<SimpleResult> apiResult = mApi.publishPostsNotPic(getMyToken(), "no", "日常唠嗑", EditTitle.getText().toString(), EditContent.getText().toString());
+                    apiResult.enqueue(new Callback<SimpleResult>() {
+                        @Override
+                        public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                            Toast.makeText(EditPostsActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
 
-                    @Override
-                    public void onFailure(Call<SimpleResult> call, Throwable t) {
-                        Toast.makeText(EditPostsActivity.this,"请求失败！",Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<SimpleResult> call, Throwable t) {
+                            Toast.makeText(EditPostsActivity.this, "请求失败！", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
     }
-
-    public static Intent newIntent(Context packageContext) {
-        return  new Intent(packageContext, EditPostsActivity.class);
-    }
-
 
     @Override
     protected void onStart() {
@@ -145,7 +144,6 @@ public class EditPostsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
     }
-
 
 
 }

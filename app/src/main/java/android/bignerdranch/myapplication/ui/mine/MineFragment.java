@@ -168,10 +168,8 @@ public class MineFragment extends Fragment {
         mPostsAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = PostsDetailsActivity.newIntent(getActivity(), mPostsAdapter.getList().get(position).getName()
-                        , mPostsAdapter.getList().get(position).getTime()
-                        , mPostsAdapter.getList().get(position).getContent()
-                ,mPostsAdapter.getList().get(position).getID());
+                Intent intent = PostsDetailsActivity.newIntent(getActivity()
+                        ,mPostsAdapter.getList().get(position).getID());
                 startActivity(intent);
             }
         });

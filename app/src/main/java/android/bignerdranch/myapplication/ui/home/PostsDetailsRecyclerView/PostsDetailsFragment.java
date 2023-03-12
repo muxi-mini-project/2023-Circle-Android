@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -39,10 +40,15 @@ public class PostsDetailsFragment extends Fragment {
 
     private ImageButton mBackBtn;
     private Button mDeleteButton;
+    private Button mCommentBtn;
+    private EditText mCommentEdit;
 
     private Retrofit mRetrofit;
     private Api mApi;
 
+    private List<BaseItem> mList = new ArrayList<>();
+
+    private String[] data;//评论id数组
     private String mPostsID;
     private String mToken;
 
@@ -61,10 +67,14 @@ public class PostsDetailsFragment extends Fragment {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             mApi = mRetrofit.create(Api.class);
-        }
+        }//初始化Retrofit
 
         BaseActivity homeActivity = (BaseActivity) getActivity();//得到一个可以调用getMyToken的对象
         mToken = homeActivity.getMyToken();
+
+        mPostsDetailsRecyclerView = (RecyclerView) view
+                .findViewById(R.id.recyclerview_posts_details);
+        mPostsDetailsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mDeleteButton = (Button) view.findViewById(R.id.delete_button);
         mDeleteButton.setOnClickListener(new View.OnClickListener() {
@@ -110,9 +120,33 @@ public class PostsDetailsFragment extends Fragment {
             }
         });
 
-        mPostsDetailsRecyclerView = (RecyclerView) view
-                .findViewById(R.id.recyclerview_posts_details);
-        mPostsDetailsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mCommentEdit = (EditText) view.findViewById(R.id.comment_reply_edit);
+
+        mCommentBtn = (Button) view.findViewById(R.id.comment_button);
+        mCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCommentEdit.getText().toString().trim().equals("")) {
+                    Toast.makeText(getActivity(), "请输入评论！", Toast.LENGTH_SHORT).show();
+                } else {
+                    Call<SimpleResult> commentResult= mApi.commentPost(mToken,mPostsID,false,1,
+                            mCommentEdit.getText().toString());
+                    commentResult.enqueue(new Callback<SimpleResult>() {
+                        @Override
+                        public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                            Toast.makeText(getActivity(),"评论成功！",Toast.LENGTH_SHORT).show();
+                            mCommentEdit.setText("");
+                        }
+
+                        @Override
+                        public void onFailure(Call<SimpleResult> call, Throwable t) {
+                            Log.d("TAG","评论失败");
+                        }
+                    });
+                }
+            }
+        });
+
 
         upDateUI();
 
@@ -120,30 +154,40 @@ public class PostsDetailsFragment extends Fragment {
     }
 
     private void upDateUI() {
-        CommentLab commentLab = CommentLab.get();
-        List<BaseItem> mList = new ArrayList<>();
         Posts item = new Posts();
         Call<ComplexResult> seekPostsResult = mApi.seekPosts(mPostsID, mToken);
         seekPostsResult.enqueue(new Callback<ComplexResult>() {
             @Override
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
-                item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));
-                item.setContent(StringTool.getJsonString(response.body().getData(), "content"));
-                item.setTime(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));
-                item.setProfilePath(StringTool.getJsonString(response.body().getData(), "avatar_path"));
-                item.setID(StringTool.getJsonString(response.body().getData(), "ID"));
-                mList.add(item);
-                for (Comment e : commentLab.get_mComment()) {
-                    mList.add(e);
-                }
-                mPostsDetailsAdapter = new PostsDetailsAdapter(mList, getContext(), mToken);//将mList装载入Adapter中
-                mPostsDetailsRecyclerView.setAdapter(mPostsDetailsAdapter);//给该recyclerview设置adapter
-                mPostsDetailsAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
+                {
+                    item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));
+                    item.setContent(StringTool.getJsonString(response.body().getData(), "content"));
+                    item.setTime(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));
+                    item.setProfilePath(StringTool.getJsonString(response.body().getData(), "avatar_path"));
+                    item.setID(StringTool.getJsonString(response.body().getData(), "ID"));
+                    mList.add(item);
+                }//接收当前帖子的数据
 
+                Call<SimpleResult> getCommentResult = mApi.CommentOfPosts(mToken, item.getID());
+                getCommentResult.enqueue(new Callback<SimpleResult>() {
+                    @Override
+                    public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        if (response.body() != null) {
+                            data = response.body().getData();
+                        } else {
+                            data = new String[0];
+                        }
+                        if (data != null) {
+                            setAdapterAbout();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SimpleResult> call, Throwable t) {
+                        Log.d("TAG", "查找评论id数组：网络请求失败！");
                     }
                 });
+
             }
 
             @Override
@@ -152,10 +196,24 @@ public class PostsDetailsFragment extends Fragment {
             }
         });
 
-
     }
 
+    private void setAdapterAbout() {
+        CommentLab commentLab = CommentLab.get(data.length);
+        for (Comment e : commentLab.getComments()) {
+            mList.add(e);
+        }
 
+        mPostsDetailsAdapter = new PostsDetailsAdapter(mList, getContext(), mToken, data);//将mList装载入Adapter中
+        mPostsDetailsRecyclerView.setAdapter(mPostsDetailsAdapter);//给该recyclerview设置adapter
+        mPostsDetailsAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+        });
+
+    }
 }
 
 

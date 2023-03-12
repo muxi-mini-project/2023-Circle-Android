@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public class Comment extends BaseItem {
     private String itSelfID;//该评论的ID
+    private String publisherID;//发布者id
     private String commenterName;//发布评论者昵称
     private String content;//内容
     private boolean likes;//是否点赞
@@ -18,6 +19,22 @@ public class Comment extends BaseItem {
 
     public Comment() {
         releaseTime = new Date().toString();
+    }
+
+    public String getCommenterName() {
+        return commenterName;
+    }
+
+    public void setCommenterName(String commenterName) {
+        this.commenterName = commenterName;
+    }
+
+    public String getPublisherID() {
+        return publisherID;
+    }
+
+    public void setPublisherID(String publisherID) {
+        this.publisherID = publisherID;
     }
 
     public int typeCode() {
@@ -53,18 +70,6 @@ public class Comment extends BaseItem {
         releaseTime = time;
     }
 
-    public String getId() {
-        return itSelfID;
-    }
-
-    public String getName() {
-        return commenterName;
-    }
-
-    public void setName(String commenterName) {
-        this.commenterName = commenterName;
-    }
-
     public String getContent() {
         return content;
     }
@@ -89,6 +94,15 @@ public class Comment extends BaseItem {
 
     public void setLikes(boolean likes) {
         this.likes = likes;
+    }
+
+    @Override
+    public String getName() {
+        return commenterName;
+    }
+
+    public void setName(String commenterName) {
+        this.commenterName = commenterName;
     }
 
     public String getLikesNumber() {

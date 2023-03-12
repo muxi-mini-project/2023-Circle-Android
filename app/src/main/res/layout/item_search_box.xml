@@ -24,7 +24,7 @@
                 android:background="@mipmap/search_picture"/>
 
             <EditText
-                android:id="@+id/search_box"
+                android:id="@+id/search_box_edit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
@@ -33,11 +33,13 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/choose_btn"
+            android:id="@+id/search_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_weight="2"
+            android:text="搜索"
+            android:textColor="@color/white"
             android:background="@drawable/label_button_background"/>
 
     </LinearLayout>

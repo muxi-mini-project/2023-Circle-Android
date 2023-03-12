@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Posts extends BaseItem {
+    private String publisherId;//发布者id
     private String PostsId;
     private String Name;//发布者的昵称
     private boolean follow;//是否关注发布者
@@ -47,7 +48,13 @@ public class Posts extends BaseItem {
         this.UpdatedTime = time;
     }
 
+    public String getPublisherId() {
+        return publisherId;
+    }
 
+    public void setPublisherId(String publisherId) {
+        this.publisherId = publisherId;
+    }
 
     public String getName() {
         return Name;

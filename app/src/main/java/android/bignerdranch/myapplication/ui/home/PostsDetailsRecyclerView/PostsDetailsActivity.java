@@ -25,7 +25,7 @@ public class PostsDetailsActivity extends BaseActivity {
 
 
 
-    public static Intent newIntent(Context packageContext, String publisherName, String publishTime, String content,String postsId) {
+    public static Intent newIntent(Context packageContext,String postsId) {
         Intent intent = new Intent(packageContext, PostsDetailsActivity.class);
 
         intent.putExtra(EXTRA_POSTS_ID,postsId);

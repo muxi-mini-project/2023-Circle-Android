@@ -39,6 +39,20 @@ public interface Api {
     @DELETE("post")
     Call<SimpleResult> delPost(@Header("Authorization")String token,@Query("post_id")String postsId);
 
+    //评论帖子
+    @POST("post/comment")
+    @FormUrlEncoded
+    Call<SimpleResult> commentPost(@Header("Authorization")String token,@Field("post_id")String postsId,@Field("private")boolean isPrivate,
+                                   @Field("status")int one,@Field("content")String content);
+
+    //根据帖子id查询帖子的评论id数组
+    @GET("post/comments/{post_id}")
+    Call<SimpleResult> CommentOfPosts(@Header("Authorization")String token,@Path("post_id")String postId);
+
+    //根据评论id查询评论
+    @GET("post/comment")
+    Call<ComplexResult> seekComment(@Header("Authorization")String token,@Query("id")String commentId);
+
     //查询我的帖子id数组
     @GET("user/my_post")
     Call<SimpleResult> myPost(@Header("Authorization")String token);
@@ -48,6 +62,10 @@ public interface Api {
     @FormUrlEncoded
     Call<SimpleResult> recPost(@Header("Authorization")String token,@Field("type") String type,@Field("end_time") String end_time
             ,@Field("start_time") String start_time,@Field("length") int length,@Field("start_index") int index);
+
+    //查询搜索帖子id数组
+    @GET("post/search")
+    Call<SimpleResult> searchPost(@Header("Authorization")String token,@Query("query_string")String queryString);
 
     //查询某个帖子
     @GET("post/{id}")
@@ -60,6 +78,18 @@ public interface Api {
     //取消点赞
     @DELETE("post/likes")
     Call<SimpleResult> deleteLikesPosts(@Query("post_id")String postsId,@Header("Authorization")String token);
+
+    //根据id关注用户
+    @POST("user/following")
+    Call<SimpleResult> followUser(@Header("Authorization")String token,@Query("followed_id")String userId);
+
+    //根据id取消关注用户
+    @DELETE("user/following")
+    Call<SimpleResult> delFollowUser(@Header("Authorization")String token,@Query("followed_id")String userId);
+
+    //查询用户是否已关注
+    @GET("user/whether_follow")
+    Call<SimpleResult> getIsFollow(@Header("Authorization")String token,@Query("user_id")String userid);
 
     //查询帖子是否已赞
     @GET("post/whether_like")
