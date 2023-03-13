@@ -1,81 +1,50 @@
 package android.bignerdranch.myapplication.ui.reminder;
 
+import android.bignerdranch.myapplication.ApiAbout.Api;
+import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
+import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
+import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
+import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class ReminderFragment extends Fragment {
 
+    private Retrofit mRetrofit;
+    private Api mApi;
+
     private RecyclerView mRecyclerView;
-    private ReminderFragment.Reminder_Adapter mAdapter;
+    private ReminderAdapter mAdapter;
 
-    private class Reminder_Holder extends RecyclerView.ViewHolder{
+    private String mToken;
+    private String[] mData = new String[0];
 
-        private TextView mPersonname;
-        private TextView mRemindercontent;
-        private TextView mReminderdate;
-
-        private Reminder mReminder;
-
-        public Reminder_Holder(LayoutInflater inflater,ViewGroup parent){
-            super(inflater.inflate(R.layout.item_reminder,parent,false));
-
-            mPersonname=(TextView)itemView.findViewById(R.id.reminder_personname);
-            mRemindercontent=(TextView)itemView.findViewById(R.id.reminder_content);
-            mReminderdate=(TextView)itemView.findViewById(R.id.reminder_date);
-        }
-
-        public void bind(Reminder reminder){
-            mReminder =reminder;
-            mPersonname.setText(mReminder.getPersonName());
-
-            //此处还差通知的具体内容
-        }
-    }
-
-
-    private class Reminder_Adapter extends RecyclerView.Adapter<ReminderFragment.Reminder_Holder>{
-
-        private List<Reminder> mReminders;
-
-        public Reminder_Adapter(List<Reminder> reminders){
-            mReminders= reminders;
-        }
-
-        @Override
-        public ReminderFragment.Reminder_Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater=LayoutInflater.from(parent.getContext());
-
-            return new ReminderFragment.Reminder_Holder(layoutInflater,parent);
-        }
-
-        @Override
-        public void onBindViewHolder(ReminderFragment.Reminder_Holder holder, int position) {
-            Reminder reminder=mReminders.get(position);
-            holder.bind(reminder);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mReminders.size();
-        }
-
-    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
-        View view=inflater.inflate(R.layout.layout_reminder,container,false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.layout_reminder, container, false);
 
-        mRecyclerView=(RecyclerView)view.findViewById(R.id.recyclerview_reminder);
+        BaseActivity homeActivity = (BaseActivity) getActivity();//得到一个可以调用getMyToken的对象
+        mToken = homeActivity.getMyToken();
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_reminder);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         updateUI();
@@ -83,17 +52,46 @@ public class ReminderFragment extends Fragment {
         return view;
     }
 
-    private void updateUI(){
-        ReminderLab reminder_lab = ReminderLab.getReminder_lab(getActivity());
-        List<Reminder> reminders= reminder_lab.getReminders();
+    private void updateUI() {
 
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(20));
-        mAdapter=new ReminderFragment.Reminder_Adapter(reminders);
-        mRecyclerView.setAdapter(mAdapter);
+        mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        mApi = mRetrofit.create(Api.class);
+
+        Call<SimpleResult> getLikedMsg = mApi.getMyLikedMsg(mToken);
+        getLikedMsg.enqueue(new Callback<SimpleResult>() {
+            @Override
+            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                if (response.body().getData() != null) {
+                    mData = response.body().getData();
+                }
+                setAdapterAbout();
+            }
+
+            @Override
+            public void onFailure(Call<SimpleResult> call, Throwable t) {
+
+            }
+        });
+
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    private void setAdapterAbout() {
+        ReminderLab reminderLab = ReminderLab.get(mData.length);
+        List<Reminder> reminders = reminderLab.getReminders();
+
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(20));
+        mAdapter = new ReminderAdapter(reminders, mData, mToken, getActivity());
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = PostsDetailsActivity.newIntent(getActivity()
+                        , mAdapter.getList().get(position).getPostID());
+                startActivity(intent);
+            }
+        });
     }
 }

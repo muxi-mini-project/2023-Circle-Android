@@ -2,15 +2,14 @@ package android.bignerdranch.myapplication.ui.home;
 
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
-
-import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
-import android.bignerdranch.myapplication.ReusableTools.StringTool;
-import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
 import android.bignerdranch.myapplication.R;
+import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
+import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ui.home.EditPosts.EditPostsActivity;
+import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,17 +43,16 @@ public class HomeFragment extends Fragment {
     private Retrofit mRetrofit;
     private Api mApi;
 
-    private String[] mData;//帖子id数组
-    private String token;
+    private String[] mData = new String[0];//帖子id数组
+    private String mToken;
     private PostsLab postsLab;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle saveInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
         View view = inflater.inflate(R.layout.layout_home, container, false);
 
         BaseActivity homeActivity = (BaseActivity) getActivity();//得到一个可以调用getMyToken的对象
-        token = homeActivity.getMyToken();
+        mToken = homeActivity.getMyToken();
 
         mHomeRecyclerView = (RecyclerView) view
                 .findViewById(R.id.recyclerview_home);
@@ -69,24 +67,18 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        if (mData==null){
-            upDateUI();
-        }else {
-            setAdapterAbout();
-        }
+        upDateUI();
 
         return view;
     }
 
-    public void setData(String[] data){
-        mData=data;
-    }
-
     private void upDateUI() {
-        mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        mApi = mRetrofit.create(Api.class);
+        {
+            mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            mApi = mRetrofit.create(Api.class);
+        }
         String endDate;
         String startDate;
         {
@@ -96,19 +88,16 @@ public class HomeFragment extends Fragment {
             startDate = StringTool.getDateString(calendar.getTime());
             endDate = StringTool.getDateString(new Date());
         }//制作end和start时间字符串
-        Call<SimpleResult> apiResultCall = mApi.recPost(token, "日常唠嗑", endDate, startDate, 10, 0);
+        Call<SimpleResult> apiResultCall = mApi.recPost(mToken, "日常唠嗑", endDate, startDate, 10, 0);
         Log.d("TAG", endDate + " " + startDate);
         apiResultCall.enqueue(new Callback<SimpleResult>() {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 if (response.body() != null) {
                     mData = response.body().getData();
-                } else {
-                    mData = new String[0];
                 }
-                if (mData != null) {
-                    setAdapterAbout();
-                }
+                setAdapterAbout();
+
             }
 
             @Override
@@ -127,14 +116,14 @@ public class HomeFragment extends Fragment {
         }
 
         mHomeRecyclerView.addItemDecoration(new SpaceItemDecoration(20));//设置item之间的间隔为20
-        mPostsAdapter = new PostsAdapter(mList, mData, token,getContext());//将mList装载入Adapter中
+        mPostsAdapter = new PostsAdapter(mList, mData, mToken, getActivity());//将mList装载入Adapter中
         mHomeRecyclerView.setAdapter(mPostsAdapter);//给该recyclerview设置adapter
 
         mPostsAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = PostsDetailsActivity.newIntent(getActivity()
-                ,mPostsAdapter.getList().get(position).getID());
+                        , mPostsAdapter.getList().get(position).getID());
                 startActivity(intent);
             }
         });

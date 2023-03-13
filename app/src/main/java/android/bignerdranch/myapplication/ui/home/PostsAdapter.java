@@ -52,7 +52,7 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
         switch (ItemTypeDef.Type.getItemTypeByCode(viewType)) {
             case SEARCH_BOX:
                 return new SearchBoxHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_box,
-                        parent, false), ItemTypeDef.Type.SEARCH_BOX,mContext,mToken);
+                        parent, false), ItemTypeDef.Type.SEARCH_BOX,mContext,mToken,this);
             case POSTS:
                 return new PostsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_posts_layout,
                         parent, false), ItemTypeDef.Type.POSTS, myRecyclerItemClickListener, mToken, mContext);
@@ -73,7 +73,7 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
             }
             //由于是初次启动，要先通过网络请求返回体得到数据并装载后再启动Holder
 
-            Call<ComplexResult> seekPostsResult = mApi.seekPosts(mData[position - 1], mToken);
+            Call<ComplexResult> seekPostsResult = mApi.seekPosts(mData[position-1], mToken);
             seekPostsResult.enqueue(new Callback<ComplexResult>() {
                 @Override
                 public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
@@ -119,16 +119,21 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
 
     @Override
     public int getItemCount() {
-        return mList.size();//返回List的长度
-    }
+        return mList.size();
+    }//返回List的长度
 
     @Override
     public int getItemViewType(int position) {
-        return mList.get(position).typeCode();//返回当前这个item的类别（这里应该是Posts或者SearchBox）
-    }
+        return mList.get(position).typeCode();
+    }//返回当前这个item的类别（这里应该是Posts或者SearchBox）
 
     public void setOnItemClickListener(MyRecyclerItemClickListener listener) {
         this.myRecyclerItemClickListener = listener;
+    }
+
+    public void setData(String[] data,List<BaseItem> list){
+        mList=list;
+        mData=data;
     }
 
 }

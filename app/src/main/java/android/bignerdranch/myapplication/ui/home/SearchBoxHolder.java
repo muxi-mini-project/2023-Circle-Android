@@ -5,14 +5,19 @@ import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
+import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +38,7 @@ public class SearchBoxHolder extends BaseHolder {
     private String mToken;
     private Context mContext;
 
-    public SearchBoxHolder(View itemView, ItemTypeDef.Type type,Context context,String token) {
+    public SearchBoxHolder(View itemView, ItemTypeDef.Type type, Context context, String token, PostsAdapter adapter) {
         super(itemView,type);
 
         mContext=context;
@@ -60,8 +65,14 @@ public class SearchBoxHolder extends BaseHolder {
                         public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                             if (response.body().getData()!=null){
                                 data=response.body().getData();
-                                Intent intent=HomeActivity.newIntent(mContext,data);
-                                mContext.startActivity(intent);
+                                PostsLab postsLab=PostsLab.get(data.length);
+                                List<BaseItem> mList=new ArrayList<>();
+                                mList.add(new SearchBox());
+                                for (Posts e:postsLab.getPosts()){
+                                    mList.add(e);
+                                }
+                                adapter.setData(data,mList);
+                                adapter.notifyDataSetChanged();
                             }
                             else {
                                 data=new String[0];

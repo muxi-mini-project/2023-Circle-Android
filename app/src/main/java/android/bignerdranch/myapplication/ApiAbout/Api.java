@@ -79,6 +79,14 @@ public interface Api {
     @DELETE("post/likes")
     Call<SimpleResult> deleteLikesPosts(@Query("post_id")String postsId,@Header("Authorization")String token);
 
+    //查询我被点赞的信息id数组
+    @GET("user/likes_of_my_post")
+    Call<SimpleResult> getMyLikedMsg(@Header("Authorization")String token);
+
+    //根据id查询点赞信息
+    @GET("post/likes")
+    Call<ComplexResult> getLikeInformation(@Query("id")String id,@Header("Authorization")String token);
+
     //根据id关注用户
     @POST("user/following")
     Call<SimpleResult> followUser(@Header("Authorization")String token,@Query("followed_id")String userId);
