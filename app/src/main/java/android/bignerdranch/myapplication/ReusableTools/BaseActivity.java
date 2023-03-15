@@ -5,13 +5,13 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class BaseActivity extends AppCompatActivity {
-
+public abstract class BaseActivity extends AppCompatActivity {
 
 
     @Override

@@ -56,7 +56,7 @@ public class Activity_User_Information extends BaseActivity {
     private Retrofit mRetrofit;
     private Api mApi;
 
-    private final String fileName = "IMG_selfControl.jpg";
+    private final String fileName = "IMG_head.jpg";
     private ImageButton profile_picture;
     private String path;
     private UserImageChange u = new UserImageChange(Activity_User_Information.this);
