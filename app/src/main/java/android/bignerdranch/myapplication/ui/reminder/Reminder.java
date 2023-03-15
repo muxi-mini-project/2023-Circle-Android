@@ -1,37 +1,58 @@
 package android.bignerdranch.myapplication.ui.reminder;
 
-import java.util.Date;
-import java.util.UUID;
-
 public class Reminder {
-    private UUID mId;                         //通知的编码
+    private String mId;                         //通知的编码
+    private String mPostID;
+    private String mUserID;
     private String mPersonName;               //存储通知相关的对象
-    private Date mDate;                       //存储通知时间
-    private String mContent;
+    private String mDate;                       //存储通知时间
+    private String mTitle;                  //对应帖子的标题
+    private String mProfile;
 
+    public Reminder() {
 
-    public Reminder(){
-        mId=UUID.randomUUID();
-        mDate=new Date();
     }
 
 
 //getter and setter
 
-
-    public String getContent() {
-        return mContent;
+    public String getProfile() {
+        return mProfile;
     }
 
-    public void setContent(String content) {
-        mContent = content;
+    public void setProfile(String profile) {
+        mProfile = profile;
     }
 
-    public UUID getId() {
+    public String getUserID() {
+        return mUserID;
+    }
+
+    public void setUserID(String userID) {
+        mUserID = userID;
+    }
+
+    public String getPostID() {
+        return mPostID;
+    }
+
+    public void setPostID(String postID) {
+        mPostID = postID;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
+    public String getId() {
         return mId;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         mId = id;
     }
 
@@ -43,11 +64,11 @@ public class Reminder {
         mPersonName = personName;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return mDate;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         mDate = date;
     }
 }

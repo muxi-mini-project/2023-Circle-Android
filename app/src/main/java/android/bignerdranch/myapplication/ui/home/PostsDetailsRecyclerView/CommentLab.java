@@ -1,39 +1,32 @@
 package android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView;
 
+import android.bignerdranch.myapplication.ui.home.Posts;
+import android.bignerdranch.myapplication.ui.home.PostsLab;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class CommentLab {
-    private static CommentLab sCommentLab;
 
-    private List<Comment> mComments;
+    private List<Comment> mCommentList;
 
-    public static CommentLab get(){
-        if (sCommentLab==null){
-            sCommentLab=new CommentLab();
-        }
-        return sCommentLab;
+    private CommentLab(List<Comment> mComments){
+        mCommentList=mComments;
     }
 
-    private CommentLab(){
-        mComments=new ArrayList<>();
-        for (int i=0;i<20;i++){
+    public static CommentLab get(int dataLength) {
+        List<Comment> mComment= new ArrayList<>();
+        for (int i=0;i<dataLength;i++) {
             Comment comment=new Comment();
-            comment.setName("复读机"+(i+1)+"号");
-            comment.setContent("第"+(i+1)+"次测试");
-            mComments.add(comment);
+            comment.setContent("");
+            comment.setName("用户名");
+            mComment.add(comment);
         }
+        return new CommentLab(mComment);
     }
 
-
-    public List<Comment> get_mComment(){return mComments;}
-
-    public Comment getPosts(UUID id){
-        for (Comment e:mComments){
-            if (e.getId().equals(id))
-                return e;
-        }
-        return null;
+    public List<Comment> getComments(){
+        return mCommentList;
     }
 }

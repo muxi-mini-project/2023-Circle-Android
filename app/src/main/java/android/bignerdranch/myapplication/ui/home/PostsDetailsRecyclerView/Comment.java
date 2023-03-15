@@ -7,29 +7,58 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Comment extends BaseItem {
-    private UUID itSelfID;//该评论的ID
+    private String itSelfID;//该评论的ID
+    private String publisherID;//发布者id
     private String commenterName;//发布评论者昵称
     private String content;//内容
     private boolean likes;//是否点赞
-    private int likesNumber;
-    private int commentNumber;
+    private String likesNumber;
+    private String commentNumber;
     private String releaseTime;//发布时间
+    private String profilePath;
 
-    public int typeCode(){
+    public Comment() {
+        releaseTime = new Date().toString();
+    }
+
+    public String getCommenterName() {
+        return commenterName;
+    }
+
+    public void setCommenterName(String commenterName) {
+        this.commenterName = commenterName;
+    }
+
+    public String getPublisherID() {
+        return publisherID;
+    }
+
+    public void setPublisherID(String publisherID) {
+        this.publisherID = publisherID;
+    }
+
+    public int typeCode() {
         return ItemTypeDef.Type.COMMENT.getCode();
     }
 
-    public Comment(UUID affiliationPostsID, String commenterName, String content) {
-        itSelfID=UUID.randomUUID();
-        releaseTime=new Date().toString();
-
-        this.commenterName = commenterName;
-        this.content = content;
+    @Override
+    public String getProfilePath() {
+        return profilePath;
     }
 
-    public Comment() {
-        itSelfID=UUID.randomUUID();
-        releaseTime=new Date().toString();
+    @Override
+    public void setProfilePath(String path) {
+        profilePath = path;
+    }
+
+    @Override
+    public String getID() {
+        return itSelfID;
+    }
+
+    @Override
+    public void setID(String id) {
+        itSelfID = id;
     }
 
     public String getTime() {
@@ -37,44 +66,58 @@ public class Comment extends BaseItem {
     }
 
     @Override
-    public void setTime(String time) {releaseTime=time;}
-
-    public UUID getId() {
-        return itSelfID;
-    }
-
-    public String getName() {
-        return commenterName;
-    }
-    public void setName(String commenterName) {
-        this.commenterName = commenterName;
+    public void setTime(String time) {
+        releaseTime = time;
     }
 
     public String getContent() {
         return content;
     }
+
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public String getTitle() {
+        return null;
+    }
+
+    @Override
+    public void setTitle(String title) {
+
     }
 
     public boolean isLikes() {
         return likes;
     }
+
     public void setLikes(boolean likes) {
         this.likes = likes;
     }
 
-    public int getLikesNumber() {
+    @Override
+    public String getName() {
+        return commenterName;
+    }
+
+    public void setName(String commenterName) {
+        this.commenterName = commenterName;
+    }
+
+    public String getLikesNumber() {
         return likesNumber;
     }
-    public void setLikesNumber(int likesNumber) {
+
+    public void setLikesNumber(String likesNumber) {
         this.likesNumber = likesNumber;
     }
 
-    public int getCommentNumber() {
+    public String getCommentNumber() {
         return commentNumber;
     }
-    public void setCommentNumber(int commentNumber) {
+
+    public void setCommentNumber(String commentNumber) {
         this.commentNumber = commentNumber;
     }
 }

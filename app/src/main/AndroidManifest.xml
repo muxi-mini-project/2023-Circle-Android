@@ -9,6 +9,7 @@
 
 
     <application
+        android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_config"
         android:allowBackup="true"
         android:requestLegacyExternalStorage="true"
@@ -30,7 +31,6 @@
             android:name="android.support.FILE_PROVIDER_PATHS"
             android:resource="@xml/files" />
         </provider>
-
 
         <activity
             android:name=".ui.home.PostsDetailsRecyclerView.PostsDetailsActivity"
@@ -116,5 +116,7 @@
                 android:value=""/>
         </activity>
     </application>
+
+
 
 </manifest>

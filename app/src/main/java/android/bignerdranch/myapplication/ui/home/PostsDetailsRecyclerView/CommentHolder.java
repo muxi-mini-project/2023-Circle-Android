@@ -4,9 +4,12 @@ import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 
 public class CommentHolder extends BaseHolder {
@@ -14,37 +17,33 @@ public class CommentHolder extends BaseHolder {
     private TextView mNameView;
     private TextView mDateView;
     private TextView mContent;
+    private ImageButton mProfile;
     private ImageButton mIsLikes;
 
     private Comment mComment;
 
-    public CommentHolder(View itemView, ItemTypeDef.Type type) {
+    private Context mContext;
+
+    public CommentHolder(View itemView, ItemTypeDef.Type type,Context context) {
         super(itemView,type);
+
+        mContext=context;
 
         mNameView = (TextView) itemView.findViewById(R.id.commenter_name);
         mDateView = (TextView) itemView.findViewById(R.id.comment_time);
         mContent = (TextView) itemView.findViewById(R.id.comment_content);
-        mIsLikes =(ImageButton) itemView.findViewById(R.id.comment_likes_btn);
+        mProfile=(ImageButton) itemView.findViewById(R.id.profile_pic_comment);
 
-        mIsLikes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mComment.setLikes(!mComment.isLikes());
-                bind(mComment);
-            }
-        });
     }
 
     public void bind(BaseItem item) {
         mComment =(Comment) item;
         mNameView.setText(mComment.getName());
-        mDateView.setText(mComment.getTime().toString());
-        if (mComment.isLikes()){
-            mIsLikes.setBackgroundResource(R.mipmap.likes_yes);
-        }
-        else {
-            mIsLikes.setBackgroundResource(R.mipmap.likes_not);
-        }
+        mDateView.setText(mComment.getTime());
+        Glide.with(mContext)
+                .load("http://" + mComment.getProfilePath())
+                .centerCrop()
+                .into(mProfile);//设置头像
         mContent.setText(mComment.getContent());
     }
 

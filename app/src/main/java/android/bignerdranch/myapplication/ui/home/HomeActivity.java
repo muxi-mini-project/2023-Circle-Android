@@ -14,15 +14,17 @@ import androidx.fragment.app.FragmentManager;
 
 public class HomeActivity extends BaseActivity {
 
-
     protected Fragment createFragment() {
-        return new HomeFragment();
+        HomeFragment homeFragment=new HomeFragment();
+        return homeFragment;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_home);
+
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.layout_home);//此处为layout_home的id

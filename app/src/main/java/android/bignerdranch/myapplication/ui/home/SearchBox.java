@@ -6,26 +6,94 @@ import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 import java.util.UUID;
 
 public class SearchBox extends BaseItem {
-    public int typeCode(){
+    public int typeCode() {
         return ItemTypeDef.Type.SEARCH_BOX.getCode();
+    }
+
+    @Override
+    public String getTitle() {
+        return null;
+    }
+
+    @Override
+    public void setTitle(String title) {
+
+    }
+
+    @Override
+    public boolean isLikes() {
+        return false;
+    }
+
+    @Override
+    public void setLikes(boolean isLike) {
+
     }
 
     @Override
     public String getName() {
         return null;
     }
+
+    @Override
+    public void setName(String name) {
+    }
+
     @Override
     public String getContent() {
         return null;
     }
+
+    @Override
+    public void setContent(String content) {
+    }
+
     @Override
     public String getTime() {
         return null;
     }
+
     @Override
-    public void setTime(String time) {}
+    public void setTime(String time) {
+    }
+
     @Override
-    public void setContent(String content) {}
+    public String getProfilePath() {
+        return null;
+    }
+
     @Override
-    public void setName(String name){}
+    public void setProfilePath(String path) {
+
+    }
+
+    @Override
+    public String getID() {
+        return null;
+    }
+
+    @Override
+    public void setID(String id) {
+
+    }
+
+    @Override
+    public String getLikesNumber() {
+        return null;
+    }
+
+    @Override
+    public void setLikesNumber(String likesNumber) {
+
+    }
+
+    @Override
+    public String getCommentNumber() {
+        return null;
+    }
+
+    @Override
+    public void setCommentNumber(String commentNumber) {
+
+    }
 }

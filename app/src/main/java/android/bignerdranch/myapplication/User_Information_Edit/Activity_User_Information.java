@@ -2,7 +2,6 @@ package android.bignerdranch.myapplication.User_Information_Edit;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.R;
 import android.content.Intent;
@@ -15,11 +14,8 @@ import android.os.Build;
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
-import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
-import android.bignerdranch.myapplication.R;
-import android.bignerdranch.myapplication.ReusableTools.JsonTool;
+import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,24 +25,25 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 
 public class Activity_User_Information extends BaseActivity {
 
     private static final int TAKE_PHOTO = 0X66;
     private static final int PICK_PHOTO = 0X88;
-
+    public static SharedPreferences sharedPreferences;
     private ImageButton BackBtn;
     private Button ConfirmBtn;
-
     private ImageButton mIsMaleButton;
     private ImageButton mIsFemaleButton;
     private ImageButton mUnselectedButton;
@@ -55,17 +52,17 @@ public class Activity_User_Information extends BaseActivity {
     private User_Information user_information;
     private Retrofit mRetrofit;
     private Api mApi;
-
     private final String fileName = "IMG_head.jpg";
     private ImageButton profile_picture;
     private String path;
     private UserImageChange u = new UserImageChange(Activity_User_Information.this);
-    public static SharedPreferences sharedPreferences;
 
-    private void Init_Profile_picture(){
-        sharedPreferences = this.getSharedPreferences("sharedPreferences",MODE_PRIVATE);
-        String string = sharedPreferences.getString("getFilePath",null);
-        if(string!=null){
+    //在进入界面时头像的初始化
+    //通过sharedPreferences中存储的image的path，将image以bitmap形式解码(decode)出来，并在头像位置上显示
+    private void Init_Profile_picture() {
+        sharedPreferences = this.getSharedPreferences("sharedPreferences", MODE_PRIVATE);
+        String string = sharedPreferences.getString("getFilePath", null);
+        if (string != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(string);
             profile_picture.setImageBitmap(bitmap);
         }
@@ -76,14 +73,22 @@ public class Activity_User_Information extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_information_edit);
         user_information = User_Information.getUser_information();
-        profile_picture=findViewById(R.id.profile_picture);
+
+        mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        mApi = mRetrofit.create(Api.class);
+
+        //现获得头像实例，再初始化头像以及其它控件，最后给头像的实例设置监听器
+        profile_picture = findViewById(R.id.profile_picture);
         Init_Profile_picture();
         informationInitialize();
 
         profile_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+                //请求权限
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!checkPermission()) {
                         requestPermissions(PICK_PHOTO);
                     }
@@ -91,16 +96,13 @@ public class Activity_User_Information extends BaseActivity {
                         requestPermissions(TAKE_PHOTO);
                     }
                 }
+                //调用showDialog方法，出现弹窗
                 u.showDialog();
             }
         });
 
 
-
-
-
-
-        BackBtn=(ImageButton) findViewById(R.id.back_btn);
+        BackBtn = (ImageButton) findViewById(R.id.back_btn);
         BackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,29 +117,63 @@ public class Activity_User_Information extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+            //如果是拍照
             if (requestCode == TAKE_PHOTO) {
+                //若无法从u中获得file
                 if (u.getFile() == null || !u.getFile().exists()) {
                     profile_picture.setImageBitmap(null);
                 } else {
-                    Bitmap bitmap = u.getScaledBitmap(u.getFile().getPath(), Activity_User_Information.this);
-                    profile_picture.setImageBitmap(bitmap);
-                    savePhotos(u.getFile().getPath());
+                    Bitmap bitmap = u.getScaledBitmap(u.getFile().getPath(), Activity_User_Information.this);                                                 //缩放图片，以bitmap形式返回
+                    profile_picture.setImageBitmap(bitmap);                      //为头像实例设置图片
+                    savePhotos(u.getFile().getPath());                           //保存图片到本地的                                 //学长代码中的网络请求好像是写在这里的                             //sharedPreference中
+                    File profile=new File(u.getFile().getPath());
+                    MultipartBody.Part part=MultipartBody.Part.createFormData("file",fileName,
+                            RequestBody.create(MediaType.parse("image/*"), profile));
+                    Call<SimpleResult> apiResult=mApi.putMyProfile(getMyToken(),"yes",part);
+                    apiResult.enqueue(new Callback<SimpleResult>() {
+                        @Override
+                        public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                            Log.d("TAG",response.body().getMsg()+"相机");
+                        }
+
+                        @Override
+                        public void onFailure(Call<SimpleResult> call, Throwable t) {
+                            System.out.println("网络请求失败！");
+                        }
+                    });
                 }
 
-            }else if(requestCode==PICK_PHOTO){
+                //如果从相册中选择图片
+            } else if (requestCode == PICK_PHOTO) {
                 Uri uri = data.getData();
                 Activity_User_Information.this.revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                Log.d("TRy", uri.toString());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    path = u.handleImageOnKitKat(uri);
+                Log.d("TRy", uri.toString()+"url ");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {    //高版本
+                    path = u.handleImageOnKitKat(uri);                        //高版本获得path的方法
                 } else {
-                    path = u.handleImageBeforeKitKat(uri);
+                    path = u.handleImageBeforeKitKat(uri);                     //低版本获得path的方法
                 }
 
-                Bitmap bitmap = BitmapFactory.decodeFile(path);
-                Log.d("相册",path);
+                Bitmap bitmap = BitmapFactory.decodeFile(path);                 //解码，以bitmap形式输出
+                Log.d("相册", path);
                 profile_picture.setImageBitmap(bitmap);
                 savePhotos(path);
+                File profile=new File(path);
+                MultipartBody.Part part=MultipartBody.Part.createFormData("file",getProfileType(path),
+                        RequestBody.create(MediaType.parse("image/*"), profile));
+                Call<SimpleResult> apiResult=mApi.putMyProfile(getMyToken(),"yes",part);
+                apiResult.enqueue(new Callback<SimpleResult>() {
+                    @Override
+                    public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        Log.d("TAG",response.body().getMsg()+"相册");
+                    }
+
+                    @Override
+                    public void onFailure(Call<SimpleResult> call, Throwable t) {
+                        System.out.println("网络请求失败！");
+                    }
+                });
+                //学长代码中的网络请求好像是写在这里的
             } else {
                 Log.d("Demo", "结果无");
             }
@@ -147,7 +183,7 @@ public class Activity_User_Information extends BaseActivity {
     /*实现退出后保存图片到本地*/
     public void savePhotos(String filePath) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("getFilePath",filePath);
+        editor.putString("getFilePath", filePath);
         editor.commit();
     }
 
@@ -171,7 +207,7 @@ public class Activity_User_Information extends BaseActivity {
         }
     }
 
-    private void informationInitialize(){
+    private void informationInitialize() {
         mIsMaleButton = (ImageButton) findViewById(R.id.ismale);
         mIsFemaleButton = (ImageButton) findViewById(R.id.isfemale);
         mUnselectedButton = (ImageButton) findViewById(R.id.unselected);
@@ -224,54 +260,55 @@ public class Activity_User_Information extends BaseActivity {
             }
         });
 
-        mUser_name_field=(EditText)findViewById(R.id.user_name_field);
-        mSignature_field=(EditText)findViewById(R.id.signature_field);
+        mUser_name_field = (EditText) findViewById(R.id.user_name_field);
+        mSignature_field = (EditText) findViewById(R.id.signature_field);
 
-        mRetrofit=new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        mApi=mRetrofit.create(Api.class);
-
-        Call<ComplexResult> apiResult1=mApi.getMyMsg(getMyToken());
+        Call<ComplexResult> apiResult1 = mApi.getMyMsg(getMyToken());
         apiResult1.enqueue(new Callback<ComplexResult>() {
             @Override
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
-                mUser_name_field.setText(JsonTool.getJsonString(response.body().getData(),"Name"));
-                mSignature_field.setText(JsonTool.getJsonString(response.body().getData(),"Signature"));
+                mUser_name_field.setText(StringTool.getJsonString(response.body().getData(), "Name"));
+                mSignature_field.setText(StringTool.getJsonString(response.body().getData(), "Signature"));
             }
 
             @Override
             public void onFailure(Call<ComplexResult> call, Throwable t) {
-                Toast.makeText(Activity_User_Information.this,"网络请求失败！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Activity_User_Information.this, "网络请求失败！", Toast.LENGTH_SHORT).show();
             }
         });
 
 
-        ConfirmBtn=(Button) findViewById(R.id.confirm_button);
+        ConfirmBtn = (Button) findViewById(R.id.confirm_button);
         ConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if ((mUser_name_field.getText().toString().trim().equals(""))) {
                     Toast.makeText(Activity_User_Information.this, "请输入用户名", Toast.LENGTH_SHORT).show();
-                } else{
+                } else {
                     Call<SimpleResult> apiResult2 = mApi.putMyMsg(getMyToken(), user_information.getUserSex().toString(), mUser_name_field.getText().toString(), mSignature_field.getText().toString());
-                apiResult2.enqueue(new Callback<SimpleResult>() {
-                    @Override
-                    public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        Toast.makeText(Activity_User_Information.this, "修改成功", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
+                    apiResult2.enqueue(new Callback<SimpleResult>() {
+                        @Override
+                        public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                            Toast.makeText(Activity_User_Information.this, "修改成功", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
 
-                    @Override
-                    public void onFailure(Call<SimpleResult> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<SimpleResult> call, Throwable t) {
 
-                    }
-                });
-            }
+                        }
+                    });
+                }
             }
         });
 
 
-
+    }
+    private String getProfileType(String path){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        String type = options.outMimeType;
+        return type;
     }
 }

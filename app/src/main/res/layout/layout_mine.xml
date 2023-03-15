@@ -18,7 +18,6 @@
         android:layout_weight="1"
         android:translationZ="1dp"
         android:elevation="1dp"
-        android:background="@drawable/title_shadow"
         android:orientation="vertical">
 
         <LinearLayout
@@ -54,11 +53,12 @@
 
             </LinearLayout>
 
-            <ImageView
+
+            <android.bignerdranch.myapplication.ReusableTools.SquareImageView
+                android:id="@+id/profile_pic"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:src="@mipmap/head_portrait" />
+                android:layout_height="match_parent"
+                android:src="@drawable/recyangle"/>
 
 
         </LinearLayout>

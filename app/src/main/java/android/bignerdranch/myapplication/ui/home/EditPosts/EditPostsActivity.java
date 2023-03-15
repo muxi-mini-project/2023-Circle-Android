@@ -58,9 +58,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+
 import android.widget.TextView;
+
 import android.widget.Toast;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,10 +77,8 @@ public class EditPostsActivity extends BaseActivity implements PhotoAdapter.OnIt
 
     private Posts mPosts;
     private User_Information user_information;
-
     private Retrofit mRetrofit;
     private Api mApi;
-
     private ImageButton BackButton;
     private ImageButton ReleaseButton;
     private EditText EditTitle;
@@ -93,6 +95,7 @@ public class EditPostsActivity extends BaseActivity implements PhotoAdapter.OnIt
     private GridLayoutManager gridManager;
     private ArrayList<String> imagePathList=new ArrayList<String>();  //存储所有的图片的路径，和photoadapter相联系
     private String mFilePath;      //存相机拍出来的照的路径
+
 
     private final int TAKE_PHOTO = 1;  //拍照
     private final int PICK_PHOTO = 2; //相册选取
@@ -331,20 +334,23 @@ public class EditPostsActivity extends BaseActivity implements PhotoAdapter.OnIt
     }
 
 
-
+    public static Intent newIntent(Context packageContext) {
+        return new Intent(packageContext, EditPostsActivity.class);
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPosts=new Posts();
-        user_information=User_Information.getUser_information();
+        mPosts = new Posts();
+        user_information = User_Information.getUser_information();
         setContentView(R.layout.layout_editposts);
-        popupView=getLayoutInflater().inflate(R.layout.dialog,null);
 
-        BackButton=(ImageButton) findViewById(R.id.backbutton_editposts);
-        ReleaseButton=(ImageButton) findViewById(R.id.releasebutton_editposts);
-        EditContent=(EditText) findViewById(R.id.posts_content_field);
-        EditTitle=(EditText)findViewById(R.id.posts_title_field);
+
+
+        BackButton = (ImageButton) findViewById(R.id.backbutton_editposts);
+        ReleaseButton = (ImageButton) findViewById(R.id.releasebutton_editposts);
+        EditContent = (EditText) findViewById(R.id.posts_content_field);
+        EditTitle = (EditText) findViewById(R.id.posts_title_field);
 
         //添加图片的按钮
         add_photo=(Button) findViewById(R.id.add_button);
@@ -389,34 +395,35 @@ public class EditPostsActivity extends BaseActivity implements PhotoAdapter.OnIt
         EditContent.setHorizontallyScrolling(false);
 
         //创建一个指向该url的retrofit
-        mRetrofit=new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
+        mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        mApi=mRetrofit.create(Api.class);
+        mApi = mRetrofit.create(Api.class);
         //发布键的监听器
         ReleaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<SimpleResult> apiResult=mApi.publishPosts(getMyToken(),"no","日常唠嗑",EditTitle.getText().toString(),EditContent.getText().toString());
-                apiResult.enqueue(new Callback<SimpleResult>() {
-                    @Override
-                    public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        Toast.makeText(EditPostsActivity.this,response.body().getMsg(),Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
+                if (EditContent.getText().toString().trim().equals("")) {
+                    Toast.makeText(EditPostsActivity.this, "请输入内容", Toast.LENGTH_SHORT).show();
+                } else {
+                    Call<SimpleResult> apiResult = mApi.publishPostsNotPic(getMyToken(), "no", "日常唠嗑", EditTitle.getText().toString(), EditContent.getText().toString());
+                    apiResult.enqueue(new Callback<SimpleResult>() {
+                        @Override
+                        public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                            Toast.makeText(EditPostsActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
 
-                    @Override
-                    public void onFailure(Call<SimpleResult> call, Throwable t) {
-                        Toast.makeText(EditPostsActivity.this,"请求失败！",Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<SimpleResult> call, Throwable t) {
+                            Toast.makeText(EditPostsActivity.this, "请求失败！", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
     }
 
-    public static Intent newIntent(Context packageContext) {
-        return  new Intent(packageContext, EditPostsActivity.class);
-    }
 
 
     //打开相册的方法
@@ -508,5 +515,6 @@ public class EditPostsActivity extends BaseActivity implements PhotoAdapter.OnIt
     public void onItemPicClick(int var1) {
 
     }
+
 
 }

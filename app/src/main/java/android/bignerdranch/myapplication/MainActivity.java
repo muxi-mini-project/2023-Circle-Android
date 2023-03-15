@@ -5,9 +5,11 @@ import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +30,7 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //创建一个指向该url的retrofit
         mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
@@ -59,19 +62,20 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 Intent intent;
-                if (response.body().getMsg().equals("token合法.")) {
-                    intent = NavigationBarActivity.newIntent(MainActivity.this);
-                    System.out.println("token检验成功");
-                } else {
+                if (response.body().getMsg().equals("token不合法.")) {
                     intent = SignInActivity.newIntent(MainActivity.this);
-                    System.out.println("token检验失败，请登陆");
+                    Log.d("TAG",response.body().getMsg());
+                } else {
+
+                    intent = NavigationBarActivity.newIntent(MainActivity.this);
+                    Log.d("TAG",response.body().getMsg());
                 }
                 startActivity(intent);
             }
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "请求失败！", Toast.LENGTH_SHORT).show();
-                System.out.println("请求失败");
+                Log.d("TAG","请求失败");
             }
         });
     }
