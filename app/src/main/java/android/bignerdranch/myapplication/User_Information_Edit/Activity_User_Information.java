@@ -72,7 +72,7 @@ public class Activity_User_Information extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_information_edit);
-        user_information = User_Information.getUser_information();
+        user_information = new User_Information();
 
         mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -173,7 +173,6 @@ public class Activity_User_Information extends BaseActivity {
                         System.out.println("网络请求失败！");
                     }
                 });
-                //学长代码中的网络请求好像是写在这里的
             } else {
                 Log.d("Demo", "结果无");
             }

@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -26,6 +28,7 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.layout_home);
 
 
+
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.layout_home);//此处为layout_home的id
         if (fragment == null) {//即如果posts_fragment为空，创建一个
@@ -35,8 +38,8 @@ public class HomeActivity extends BaseActivity {
                     .commit();
         }
 
-
     }
+
 
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, HomeActivity.class);

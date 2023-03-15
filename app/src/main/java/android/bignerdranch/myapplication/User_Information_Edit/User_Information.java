@@ -2,6 +2,8 @@ package android.bignerdranch.myapplication.User_Information_Edit;
 
 public class User_Information {
     private String mUser_Name_Title;
+    private String mUserId;
+    private String mProfile;//头像地址
     private String mUser_Name;//用户名
     private UserSex mUserSex;//用户性别
     private String mSignature;//个性签名
@@ -9,19 +11,28 @@ public class User_Information {
     private int mFollow;//关注数
     private int mDynamics;//动态数
 
-    private User_Information(){
+    public User_Information() {
         //初始化,等到可以网络请求的时候应该要修改
-        mUser_Name_Title="显示用户名";
-        mUser_Name="默认用户名";
-        mUserSex= UserSex.Unselected;
+        mUser_Name_Title = "显示用户名";
+        mUser_Name = "默认用户名";
     }
 
-    private static User_Information mUser_information = new User_Information();
 
-    public  static User_Information getUser_information(){
-        return  mUser_information;
+    public String getProfile() {
+        return mProfile;
     }
 
+    public void setProfile(String profile) {
+        mProfile = profile;
+    }
+
+    public String getUserId() {
+        return mUserId;
+    }
+
+    public void setUserId(String userId) {
+        mUserId = userId;
+    }
 
     public UserSex getUserSex() {
         return mUserSex;

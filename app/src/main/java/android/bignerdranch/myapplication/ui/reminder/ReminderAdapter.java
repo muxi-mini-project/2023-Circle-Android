@@ -52,7 +52,6 @@ public class ReminderAdapter extends RecyclerView.Adapter {
 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView")int position) {
         Reminder reminder = mReminders.get(position);
-        ((ReminderHolder) holder).bind(reminder);
         {
             mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                     .addConverterFactory(GsonConverterFactory.create())

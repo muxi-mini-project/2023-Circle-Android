@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -173,9 +174,12 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
     }
 
     private void setPosts() {
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.drawable.recyangle)
+                .circleCropTransform();
         Glide.with(mContext)
                 .load("http://" + mPosts.getProfilePath())
-                .centerCrop()
+                .apply(options)
                 .into(mProfile);//设置头像
         mNameView.setText(mPosts.getName());
         mDateView.setText(mPosts.getTime());

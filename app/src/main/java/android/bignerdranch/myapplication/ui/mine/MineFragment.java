@@ -6,6 +6,7 @@ import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
+import android.bignerdranch.myapplication.ReusableTools.BaseFragment;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
@@ -16,6 +17,8 @@ import android.bignerdranch.myapplication.ui.home.Posts;
 import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
 import android.bignerdranch.myapplication.ui.home.PostsLab;
 import android.bignerdranch.myapplication.ui.home.SearchBox;
+import android.bignerdranch.myapplication.ui.mine.UserListAbout.Fans.FansActivity;
+import android.bignerdranch.myapplication.ui.mine.UserListAbout.Follower.FollowerActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,7 +45,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MineFragment extends Fragment {
+public class MineFragment extends BaseFragment {
     private LinearLayout mUserInformation;
     private RecyclerView mPostsRecyclerView;
     private PostsAdapter mPostsAdapter;
@@ -50,7 +53,7 @@ public class MineFragment extends Fragment {
     private Retrofit mRetrofit;
     private Api mApi;
 
-    private String[] data;//帖子id数组
+    private String[] mData;//帖子id数组
     private String token;
     private PostsLab postsLab;
     private String profileUrl;
@@ -89,12 +92,12 @@ public class MineFragment extends Fragment {
         mFansNum=(TextView)view.findViewById(R.id.fans_number);
         mPostsNum=(TextView)view.findViewById(R.id.posts_number);
 
-
-        mRetrofit=new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        mApi=mRetrofit.create(Api.class);
-
+        {
+            mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            mApi = mRetrofit.create(Api.class);
+        }
         Call<ComplexResult> apiResult=mApi.getMyMsg(token);
         apiResult.enqueue(new Callback<ComplexResult>() {
             @SuppressLint("ResourceType")
@@ -117,9 +120,26 @@ public class MineFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ComplexResult> call, Throwable t) {
-
+                Log.d("TAG","获取个人信息：网络请求失败！");
             }
         });
+
+        mFollowNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= FollowerActivity.newIntent(getActivity());
+                startActivity(intent);
+            }
+        });
+
+        mFansNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= FansActivity.newIntent(getActivity());
+                startActivity(intent);
+            }
+        });
+
 
         mPostsRecyclerView=(RecyclerView) view
                 .findViewById(R.id.recyclerview_mine);
@@ -140,8 +160,8 @@ public class MineFragment extends Fragment {
         apiResultCall.enqueue(new Callback<SimpleResult>() {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                data = response.body().getData();
-                if (data != null) {
+                mData = response.body().getData();
+                if (mData != null) {
                     setAdapterAbout();
                 }
             }
@@ -153,8 +173,8 @@ public class MineFragment extends Fragment {
         });
     }
 
-    private void setAdapterAbout() {
-        postsLab = PostsLab.get(data.length);//
+    public void setAdapterAbout() {
+        postsLab = PostsLab.get(mData.length);//
         List<BaseItem> mList = new ArrayList<>();
         mList.add(new SearchBox());//在mList中加入搜索框
         for (Posts e : postsLab.getPosts()) {
@@ -162,7 +182,7 @@ public class MineFragment extends Fragment {
         }
 
         mPostsRecyclerView.addItemDecoration(new SpaceItemDecoration(20));//设置item之间的间隔为20
-        mPostsAdapter = new PostsAdapter(mList, data, token,getContext());//将mList装载入Adapter中
+        mPostsAdapter = new PostsAdapter(mList, mData, token,getContext(),this);//将mList装载入Adapter中
         mPostsRecyclerView.setAdapter(mPostsAdapter);//给该recyclerview设置adapter
 
         mPostsAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
@@ -175,4 +195,8 @@ public class MineFragment extends Fragment {
         });
     }
 
+    @Override
+    public void setData(String[] data) {
+        mData=data;
+    }
 }

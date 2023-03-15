@@ -1,15 +1,19 @@
 package android.bignerdranch.myapplication.ui.home;
 
+import static java.security.AccessController.getContext;
+
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
+import android.bignerdranch.myapplication.ReusableTools.BaseFragment;
 import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
-import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
+import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +40,10 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
     private String mToken;
     private Context mContext;
 
-    public PostsAdapter(List<BaseItem> List, String[] data, String token, Context context) {
+    private BaseFragment mFragment;
+
+    public PostsAdapter(List<BaseItem> List, String[] data, String token, Context context, BaseFragment fragment) {
+        mFragment = fragment;
         mContext = context;
         mList = List;
         mData = data;
@@ -52,11 +59,11 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
         switch (ItemTypeDef.Type.getItemTypeByCode(viewType)) {
             case SEARCH_BOX:
                 return new SearchBoxHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_box,
-                        parent, false), ItemTypeDef.Type.SEARCH_BOX,mContext,mToken,this);
+                        parent, false), ItemTypeDef.Type.SEARCH_BOX, mContext, mToken, mFragment);
             case POSTS:
                 return new PostsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_posts_layout,
                         parent, false), ItemTypeDef.Type.POSTS, myRecyclerItemClickListener, mToken, mContext);
-                //在此处将token和context都传递给PostsHolder
+            //在此处将token和context都传递给PostsHolder
         }
         return null;
     }
@@ -73,19 +80,21 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
             }
             //由于是初次启动，要先通过网络请求返回体得到数据并装载后再启动Holder
 
-            Call<ComplexResult> seekPostsResult = mApi.seekPosts(mData[position-1], mToken);
+            Log.d("TAG", mData[position - 1]);
+            Call<ComplexResult> seekPostsResult = mApi.seekPosts(mData[position - 1], mToken);
             seekPostsResult.enqueue(new Callback<ComplexResult>() {
                 @Override
                 public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
                     {
-                        item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));
-                        item.setContent(StringTool.getJsonString(response.body().getData(), "content"));
+                        item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));//用户名
+                        item.setTitle(StringTool.getJsonString(response.body().getData(), "title"));//标题
+                        item.setContent(StringTool.getJsonString(response.body().getData(), "content"));//内容
                         item.setTime(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));
                         item.setProfilePath(StringTool.getJsonString(response.body().getData(), "avatar_path"));
-                        item.setID(StringTool.getJsonString(response.body().getData(), "ID"));
-                        item.setLikesNumber(StringTool.getJsonString(response.body().getData(), "likes"));
+                        item.setID(StringTool.getJsonString(response.body().getData(), "ID"));//帖子id
+                        item.setLikesNumber(StringTool.getJsonString(response.body().getData(), "likes"));//点赞数
                         item.setCommentNumber(StringTool.getJsonString(response.body().getData(), "comment_no"));
-                        item.setPublisherId(StringTool.getJsonString(response.body().getData(),"author_id"));
+                        item.setPublisherId(StringTool.getJsonString(response.body().getData(), "author_id"));
                     }
                     //由于服务器给的帖子数据当中并没有这个帖子是否已经点赞的数据，所以要写一个嵌套请求
                     //在这个请求完成后调用bind方法
@@ -131,9 +140,6 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
         this.myRecyclerItemClickListener = listener;
     }
 
-    public void setData(String[] data,List<BaseItem> list){
-        mList=list;
-        mData=data;
-    }
+
 
 }

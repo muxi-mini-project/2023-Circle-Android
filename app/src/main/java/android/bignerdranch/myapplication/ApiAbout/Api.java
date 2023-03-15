@@ -1,5 +1,7 @@
 package android.bignerdranch.myapplication.ApiAbout;
 
+import android.icu.text.CaseMap;
+
 import java.io.File;
 
 import okhttp3.MultipartBody;
@@ -63,6 +65,14 @@ public interface Api {
     Call<SimpleResult> recPost(@Header("Authorization")String token,@Field("type") String type,@Field("end_time") String end_time
             ,@Field("start_time") String start_time,@Field("length") int length,@Field("start_index") int index);
 
+    //查询关注帖子id数组
+    @GET("post/following")
+    Call<SimpleResult> followPost(@Header("Authorization")String token);
+
+    //查询最新帖子id数组
+    @GET("post/latest")
+    Call<SimpleResult> newestPost(@Header("Authorization")String token,@Query("start")int startIndex,@Query("length")int length);
+
     //查询搜索帖子id数组
     @GET("post/search")
     Call<SimpleResult> searchPost(@Header("Authorization")String token,@Query("query_string")String queryString);
@@ -99,6 +109,14 @@ public interface Api {
     @GET("user/whether_follow")
     Call<SimpleResult> getIsFollow(@Header("Authorization")String token,@Query("user_id")String userid);
 
+    //查询我的关注id数组
+    @GET("user/my_following")
+    Call<SimpleResult> getMyFollow(@Header("Authorization")String token);
+
+    //查询我的粉丝id数组
+    @GET("user/my_followers")
+    Call<SimpleResult> getMyFans(@Header("Authorization")String token);
+
     //查询帖子是否已赞
     @GET("post/whether_like")
     Call<SimpleResult> getIsLike(@Query("post_id")String id,@Header("Authorization")String token);
@@ -123,6 +141,9 @@ public interface Api {
     @GET("user/{id}/user_outline")
     Call<ComplexResult> getUserMsg(@Path("id")String userId,@Header("Authorization")String token);
 
+    //搜索用户
+    @GET("user/search")
+    Call<SimpleResult> searchUser(@Header("Authorization")String token,@Query("query_string")String query_string);
 
 
 }

@@ -73,8 +73,6 @@ public class EditPostsActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPosts = new Posts();
-        user_information = User_Information.getUser_information();
         setContentView(R.layout.layout_editposts);
 
         mPhotosRecyclerview = (RecyclerView) findViewById(R.id.recyclerview_photos);
