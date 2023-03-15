@@ -152,7 +152,7 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="400dp">
+        android:layout_height="450dp">
 
         <android.widget.EditText
             android:layout_weight="2"
