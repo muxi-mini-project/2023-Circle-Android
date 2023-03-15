@@ -42,7 +42,6 @@ public class Activity_User_Information extends BaseActivity {
     private static final int TAKE_PHOTO = 0X66;
     private static final int PICK_PHOTO = 0X88;
     public static SharedPreferences sharedPreferences;
-    private final String fileName = "IMG_selfControl.jpg";
     private ImageButton BackBtn;
     private Button ConfirmBtn;
     private ImageButton mIsMaleButton;
@@ -53,6 +52,7 @@ public class Activity_User_Information extends BaseActivity {
     private User_Information user_information;
     private Retrofit mRetrofit;
     private Api mApi;
+    private final String fileName = "IMG_head.jpg";
     private ImageButton profile_picture;
     private String path;
     private UserImageChange u = new UserImageChange(Activity_User_Information.this);
