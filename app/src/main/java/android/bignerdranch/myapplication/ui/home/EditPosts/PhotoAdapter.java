@@ -2,10 +2,16 @@ package android.bignerdranch.myapplication.ui.home.EditPosts;
 
 import android.annotation.SuppressLint;
 import android.bignerdranch.myapplication.R;
+import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
+import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,7 +28,14 @@ import kotlin.jvm.internal.Intrinsics;
 public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int ADD_ITEM;
     private final int PIC_ITEM;
-    private OnItemClickListener onItemClickListener;
+    private final int TAKE_PHOTO = 1;  //拍照
+    private final int PICK_PHOTO = 2; //相册选取
+
+    private EditPostsActivity mEditPostsActivity;
+
+    private MyRecyclerItemClickListener myRecyclerItemClickListener;
+
+
     private List data=null;
     private final int maxNum;
 
@@ -40,13 +53,15 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (viewType == this.ADD_ITEM) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_item, parent, false);
             Intrinsics.checkNotNullExpressionValue(view, "view");
-            return (RecyclerView.ViewHolder)(new AddViewHolder(view));
+            return (RecyclerView.ViewHolder)(new AddViewHolder(view,myRecyclerItemClickListener));
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
             Intrinsics.checkNotNullExpressionValue(view, "view");
             return (RecyclerView.ViewHolder)(new PicViewHolder(view));
         }
     }
+
+
 
     public int getItemCount() {
         if(data!=null){return this.data.size() < this.maxNum ? this.data.size() + 1 : this.data.size();}
@@ -55,13 +70,29 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public void onBindViewHolder(@NotNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (holder instanceof AddViewHolder) {
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View it) {
-                    onItemClickListener  = PhotoAdapter.this.onItemClickListener;
-                    if (onItemClickListener != null) {
-                        onItemClickListener.onItemAddClick(position);
+
+                    //test
+                    Log.d("test","onBindVIewholder");
+
+                    Toast.makeText(mEditPostsActivity,"onBindVIewholder", Toast.LENGTH_SHORT).show();
+
+
+
+                    //权限检查
+                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+                        if (!mEditPostsActivity.checkPermission()) {
+                            mEditPostsActivity.requestPermissions(PICK_PHOTO);
+                        }
+                        if (!mEditPostsActivity.checkPermission()) {
+                            mEditPostsActivity.requestPermissions(TAKE_PHOTO);
+                        }
                     }
 
+                    //出现弹窗
+                    mEditPostsActivity.createPopupWindow();
                 }
             });
 
@@ -69,38 +100,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 holder.itemView.setVisibility(View.GONE);
             } else {
                 holder.itemView.setVisibility(View.VISIBLE);
-                holder.itemView.setOnClickListener((View.OnClickListener)(new View.OnClickListener() {
-                    public final void onClick(View it) {
-                        onItemClickListener = PhotoAdapter.this.onItemClickListener;
-                        if (onItemClickListener!= null) {
-                            onItemClickListener.onItemAddClick(position);
-                        }
 
-                    }
-                }));
             }
 
         } else {
 
             Glide.with(holder.itemView.getContext()).load((String)this.data.get(position)).into(((PicViewHolder)holder).getPic());
-            ((PicViewHolder)holder).getPic().setOnClickListener((View.OnClickListener)(new View.OnClickListener() {
-                public final void onClick(View it) {
-                    OnItemClickListener var10000 = PhotoAdapter.this.onItemClickListener;
-                    if (var10000 != null) {
-                        var10000.onItemPicClick(position);
-                    }
 
-                }
-            }));
-            ((PicViewHolder)holder).getDel().setOnClickListener((View.OnClickListener)(new View.OnClickListener() {
-                public void onClick(View it) {
-                    OnItemClickListener var10000 = PhotoAdapter.this.onItemClickListener;
-                    if (var10000 != null) {
-                        var10000.onItemDelClick(position);
-                    }
-
-                }
-            }));
         }
 
     }
@@ -113,28 +119,37 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public final void setOnMyClickListener(@Nullable OnItemClickListener onClickListener) {
-        this.onItemClickListener = onClickListener;
-    }
 
-    public PhotoAdapter(@NotNull List data, int maxNum) {
+
+    public PhotoAdapter(@NotNull List data, int maxNum,EditPostsActivity context) {
         super();
         this.data = data;
         this.maxNum = maxNum;
         this.ADD_ITEM = 7;
         this.PIC_ITEM = 8;
-    }
-
-    // $FF: synthetic method
-    public void setOnItemClickListener(OnItemClickListener var1) {
-        this.onItemClickListener = var1;
+        this.mEditPostsActivity=context;
     }
 
 
-    public class AddViewHolder extends RecyclerView.ViewHolder {
-        public AddViewHolder(@NotNull View itemView) {
+
+    public class AddViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private MyRecyclerItemClickListener mMmyRecyclerItemClickListener;
+
+        public AddViewHolder(@NotNull View itemView,MyRecyclerItemClickListener myRecyclerItemClickListener) {
             super(itemView);
+            mMmyRecyclerItemClickListener  = myRecyclerItemClickListener;
+            itemView.setOnClickListener(this);
+        }
 
+
+        @Override
+        public void onClick(View v) {
+            //test
+            Toast.makeText(mEditPostsActivity,"ViewHolder", Toast.LENGTH_SHORT).show();
+
+            if(myRecyclerItemClickListener != null){
+                mMmyRecyclerItemClickListener.onItemClick(v,getPosition());
+            }
         }
     }
 
@@ -163,12 +178,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-    public interface OnItemClickListener {
-        void onItemAddClick(int var1);
 
-        void onItemDelClick(int var1);
-
-        void onItemPicClick(int var1);
+    public void setMyRecyclerItemClickListener(MyRecyclerItemClickListener listener) {
+        this.myRecyclerItemClickListener = listener;
     }
+
+
 }
 

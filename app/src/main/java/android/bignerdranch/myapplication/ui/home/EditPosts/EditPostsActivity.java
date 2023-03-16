@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
+import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.User_Information_Edit.UserImageChange;
 import android.bignerdranch.myapplication.ui.home.Posts;
 import android.bignerdranch.myapplication.R;
@@ -35,6 +36,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -73,7 +75,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 //目前能实现的是：点击“添加图片”的按钮后，能够一张一张地添加图片，最多显示9张。但是不可以删除图片，重新进入内容编辑界面即可让所有已添加的图片消失。同时也不能点击图片进行图片详情预览。
-public class EditPostsActivity extends BaseActivity implements PhotoAdapter.OnItemClickListener {
+public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.OnItemClickListener*/ {
 
     private Posts mPosts;
     private User_Information user_information;
@@ -240,7 +242,7 @@ public class EditPostsActivity extends BaseActivity implements PhotoAdapter.OnIt
      * author wang
      * *@param view
      */
-    private void createPopupWindow() {
+    public void createPopupWindow() {
         if(popupView==null){
             popupView = getLayoutInflater().inflate(R.layout.dialog,null);
         }
@@ -322,9 +324,22 @@ public class EditPostsActivity extends BaseActivity implements PhotoAdapter.OnIt
     private void createAdapter(){
         gridManager = new GridLayoutManager(EditPostsActivity.this,3);
         photo_recyclerView.setLayoutManager(gridManager);
-        photoadapter = new PhotoAdapter(imagePathList,9);
+        photoadapter = new PhotoAdapter(imagePathList,9,EditPostsActivity.this);
+        photoadapter.setMyRecyclerItemClickListener(new MyRecyclerItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                //test
+                Log.d("test","Activity");
+
+                Toast.makeText(EditPostsActivity.this,"11111",Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
         photo_recyclerView.setAdapter(photoadapter);
-        itemClick();
+
+
     }
     /**
      * todo 点击图片进行放大预览    因为工具库无法导入而暂时寄咯
@@ -357,6 +372,9 @@ public class EditPostsActivity extends BaseActivity implements PhotoAdapter.OnIt
         add_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //test
+                Log.d("test","123button");
 
                 //权限检查
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
@@ -501,20 +519,6 @@ public class EditPostsActivity extends BaseActivity implements PhotoAdapter.OnIt
         }
     }
 
-    @Override
-    public void onItemAddClick(int var1) {
-
-    }
-
-    @Override
-    public void onItemDelClick(int position){
-
-    }
-
-    @Override
-    public void onItemPicClick(int var1) {
-
-    }
 
 
 }

@@ -155,20 +155,20 @@
         android:layout_height="450dp">
 
         <android.widget.EditText
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:id="@+id/posts_content_field"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:gravity="left|top"
             android:hint="请随意发挥..."
             android:inputType="textMultiLine"
             android:textSize="40px" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_weight="0.5"
+            android:layout_weight="4"
             android:id="@+id/photo_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="0dp"/>
 
 
     </LinearLayout>
@@ -193,29 +193,17 @@
             android:src="@drawable/release_button"
             android:scaleType="centerInside"/>
 
-        <Button
-            android:id="@+id/add_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="点击添加图片"
-            app:layout_constraintVertical_bias="0.1"
-            app:layout_constraintHorizontal_bias="0.05"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            app:layout_constraintVertical_bias="0.05"
-            app:layout_constraintHorizontal_bias="0.04"
             android:text="最多只能添加九张图片哦~~"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_button" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintVertical_bias="0.10"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
