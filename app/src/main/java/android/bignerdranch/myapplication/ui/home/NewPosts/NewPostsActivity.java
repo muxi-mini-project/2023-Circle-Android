@@ -376,6 +376,7 @@ public class NewPostsActivity extends BaseActivity implements PhotoAdapter.OnIte
         ReleaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                
                 File[] files = new File[9];
                 MultipartBody.Part[] parts = new MultipartBody.Part[9];
                 for (int i = 0; i < imagePathList.size(); i++) {
@@ -391,19 +392,20 @@ public class NewPostsActivity extends BaseActivity implements PhotoAdapter.OnIte
                     MultipartBody.Part type=MultipartBody.Part.createFormData("type","日常唠嗑");
                     MultipartBody.Part title=MultipartBody.Part.createFormData("title",EditTitle.getText().toString());
                     MultipartBody.Part content=MultipartBody.Part.createFormData("content",EditContent.getText().toString());
+                    MultipartBody.Part isAnonymity=MultipartBody.Part.createFormData("is_anonymity","0");
                     if (parts[0]==null){
                         file_have="no";
                     }
                     else {
                         file_have="yes";
                     }
-                    apiResult = mApi.publishPosts(getMyToken(), file_have, type, title, content
+                    apiResult = mApi.publishPosts(getMyToken(), file_have,isAnonymity, type, title, content
                             ,parts[0],parts[1],parts[2],parts[3],parts[4],parts[5],parts[6],parts[7],parts[8]);
                     apiResult.enqueue(new Callback<SimpleResult>() {
                         @Override
                         public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                             Toast.makeText(NewPostsActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                            finish();
+
                         }
 
                         @Override
@@ -411,6 +413,7 @@ public class NewPostsActivity extends BaseActivity implements PhotoAdapter.OnIte
                             Toast.makeText(NewPostsActivity.this, "请求失败！", Toast.LENGTH_SHORT).show();
                         }
                     });
+                    finish();
                 }
             }
         });

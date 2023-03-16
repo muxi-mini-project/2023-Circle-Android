@@ -29,7 +29,8 @@ public interface Api {
     @POST("post")
     @Multipart
     Call<SimpleResult> publishPosts(@Header("Authorization") String token, @Query("file_have") String file_have,
-                                          @Part MultipartBody.Part type, @Part MultipartBody.Part title, @Part MultipartBody.Part content
+                                          @Part MultipartBody.Part isAnonymity
+                                        ,@Part MultipartBody.Part type, @Part MultipartBody.Part title, @Part MultipartBody.Part content
                                         ,@Part MultipartBody.Part file0, @Part MultipartBody.Part file1, @Part MultipartBody.Part file2
                                         ,@Part MultipartBody.Part file3, @Part MultipartBody.Part file4, @Part MultipartBody.Part file5
                                         ,@Part MultipartBody.Part file6, @Part MultipartBody.Part file7, @Part MultipartBody.Part file8);
