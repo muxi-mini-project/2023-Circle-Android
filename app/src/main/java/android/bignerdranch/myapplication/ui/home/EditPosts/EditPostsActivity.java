@@ -367,7 +367,7 @@ public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.On
         EditContent = (EditText) findViewById(R.id.posts_content_field);
         EditTitle = (EditText) findViewById(R.id.posts_title_field);
 
-        //添加图片的按钮
+/*        //添加图片的按钮
         add_photo=(Button) findViewById(R.id.add_button);
         add_photo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -389,7 +389,7 @@ public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.On
                 //出现弹窗
                 createPopupWindow();
             }
-        });
+        });*/
 
         //创建recyclerview和adapter
         photo_recyclerView=(RecyclerView) findViewById(R.id.photo_recyclerView);
