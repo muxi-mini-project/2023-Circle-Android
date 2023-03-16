@@ -8,7 +8,7 @@ import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
-import android.bignerdranch.myapplication.ui.home.Posts;
+import android.bignerdranch.myapplication.ui.home.Posts.Posts;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -193,7 +193,7 @@ public class PostsDetailsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ComplexResult> call, Throwable t) {
-                Log.d("TAG", "评论详情：请求失败");
+                Log.d("TAG", "帖子详情：请求失败");
             }
         });
 

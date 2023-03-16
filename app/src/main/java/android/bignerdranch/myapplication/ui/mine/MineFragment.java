@@ -12,10 +12,10 @@ import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.bignerdranch.myapplication.User_Information_Edit.Activity_User_Information;
-import android.bignerdranch.myapplication.ui.home.PostsAdapter;
-import android.bignerdranch.myapplication.ui.home.Posts;
+import android.bignerdranch.myapplication.ui.home.Posts.PostsAdapter;
+import android.bignerdranch.myapplication.ui.home.Posts.Posts;
 import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
-import android.bignerdranch.myapplication.ui.home.PostsLab;
+import android.bignerdranch.myapplication.ui.home.Posts.PostsLab;
 import android.bignerdranch.myapplication.ui.home.SearchBox;
 import android.bignerdranch.myapplication.ui.mine.UserListAbout.Fans.FansActivity;
 import android.bignerdranch.myapplication.ui.mine.UserListAbout.Follower.FollowerActivity;
@@ -30,7 +30,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 

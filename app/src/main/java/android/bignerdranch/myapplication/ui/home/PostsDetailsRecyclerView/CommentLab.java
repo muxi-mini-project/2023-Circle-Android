@@ -1,11 +1,7 @@
 package android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView;
 
-import android.bignerdranch.myapplication.ui.home.Posts;
-import android.bignerdranch.myapplication.ui.home.PostsLab;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class CommentLab {
 

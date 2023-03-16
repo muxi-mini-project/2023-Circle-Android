@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ui.home.EditPosts;
+package android.bignerdranch.myapplication.ui.home.NewPosts;
 
 import android.annotation.SuppressLint;
 import android.bignerdranch.myapplication.R;
@@ -16,7 +16,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import kotlin.Metadata;
 import kotlin.jvm.internal.Intrinsics;
 
 public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

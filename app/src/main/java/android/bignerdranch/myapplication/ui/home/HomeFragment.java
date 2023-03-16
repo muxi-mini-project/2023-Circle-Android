@@ -9,7 +9,10 @@ import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
-import android.bignerdranch.myapplication.ui.home.EditPosts.EditPostsActivity;
+import android.bignerdranch.myapplication.ui.home.NewPosts.NewPostsActivity;
+import android.bignerdranch.myapplication.ui.home.Posts.Posts;
+import android.bignerdranch.myapplication.ui.home.Posts.PostsAdapter;
+import android.bignerdranch.myapplication.ui.home.Posts.PostsLab;
 import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,7 +44,6 @@ public class HomeFragment extends BaseFragment {
     private PostsAdapter mPostsAdapter;
     private ImageButton newPostsBtn;
 
-    private RadioGroup mRadioGroup;
     private RadioButton mRecButton;
     private RadioButton mFollowButton;
     private RadioButton mNewestButton;
@@ -69,13 +70,12 @@ public class HomeFragment extends BaseFragment {
         newPostsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = EditPostsActivity.newIntent(getActivity());
+                Intent intent = NewPostsActivity.newIntent(getActivity());
                 startActivity(intent);
             }
         });
 
         {
-            mRadioGroup = (RadioGroup) view.findViewById(R.id.home_radio_group);
             mRecButton = (RadioButton) view.findViewById(R.id.radio_recommend_btn);
             mRecButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -163,7 +163,7 @@ public class HomeFragment extends BaseFragment {
         }
 
         if (mHomeRecyclerView.getItemDecorationCount()==0){
-            mHomeRecyclerView.addItemDecoration(new SpaceItemDecoration(20));//设置item之间的间隔为20
+            mHomeRecyclerView.addItemDecoration(new SpaceItemDecoration(40));//设置item之间的间隔为20
         }
         mPostsAdapter = new PostsAdapter(mList, mData, mToken, getActivity(), this);//将mList装载入Adapter中
         mHomeRecyclerView.setAdapter(mPostsAdapter);//给该recyclerview设置adapter

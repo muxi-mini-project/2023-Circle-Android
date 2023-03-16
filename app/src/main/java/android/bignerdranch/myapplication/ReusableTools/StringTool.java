@@ -8,7 +8,11 @@ import java.util.Date;
 public class StringTool {
     public static String getJsonString(JsonObject jsonObject,String key){
         String s;
-        s=jsonObject.getAsJsonPrimitive(key).toString().replaceAll("\"","");
+        if (jsonObject.getAsJsonPrimitive(key)!=null){
+            s=jsonObject.getAsJsonPrimitive(key).toString().replaceAll("\"","");
+        }else {
+            s=null;
+        }
         return s;
     }
     public static String getDateString(Date date){

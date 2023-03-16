@@ -69,10 +69,14 @@ public class ReminderAdapter extends RecyclerView.Adapter {
                 seekPost.enqueue(new Callback<ComplexResult>() {
                     @Override
                     public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
-                        reminder.setTitle(StringTool.getJsonString(response.body().getData(),"title"));
-                        reminder.setPersonName(StringTool.getJsonString(response.body().getData(),"author_name"));
-                        reminder.setProfile(StringTool.getJsonString(response.body().getData(),"avatar_path"));
-                        ((ReminderHolder) holder).bind(reminder);
+                        if (response.body()!=null){
+                            reminder.setTitle(StringTool.getJsonString(response.body().getData(),"title"));
+                            reminder.setPersonName(StringTool.getJsonString(response.body().getData(),"author_name"));
+                            reminder.setProfile(StringTool.getJsonString(response.body().getData(),"avatar_path"));
+                            ((ReminderHolder) holder).bind(reminder);
+                        }else {
+                            Log.d("TAG","Reminder，查找帖子：未收到返回体");
+                        }
                     }
 
                     @Override

@@ -6,12 +6,14 @@ public class ItemTypeDef {//用于recyclerview中多种item
     public static final int ITEM_POSTS = 2;
     public static final int ITEM_COMMENT = 3;
     public static final int ITEM_FOLLOWER = 4;
+    public static final int ITEM_PIC=5;
 
     public enum Type {
         SEARCH_BOX(ITEM_SEARCH_BOX),
         POSTS(ITEM_POSTS),
         COMMENT(ITEM_COMMENT),
-        FOLLOWER(ITEM_FOLLOWER);
+        FOLLOWER(ITEM_FOLLOWER),
+        PIC(ITEM_PIC);
         int code;
 
         Type(int code) {
@@ -28,6 +30,8 @@ public class ItemTypeDef {//用于recyclerview中多种item
                     return Type.COMMENT;
                 case ITEM_FOLLOWER:
                     return Type.FOLLOWER;
+                case ITEM_PIC:
+                    return Type.PIC;
             }
             return null;
         }

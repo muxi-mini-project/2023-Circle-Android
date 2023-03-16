@@ -125,10 +125,14 @@ public class Activity_User_Information extends BaseActivity {
                 } else {
                     Bitmap bitmap = u.getScaledBitmap(u.getFile().getPath(), Activity_User_Information.this);                                                 //缩放图片，以bitmap形式返回
                     profile_picture.setImageBitmap(bitmap);                      //为头像实例设置图片
-                    savePhotos(u.getFile().getPath());                           //保存图片到本地的                                 //学长代码中的网络请求好像是写在这里的                             //sharedPreference中
+                    savePhotos(u.getFile().getPath());                           //保存图片到本地的
+
+
                     File profile=new File(u.getFile().getPath());
                     MultipartBody.Part part=MultipartBody.Part.createFormData("file",fileName,
                             RequestBody.create(MediaType.parse("image/*"), profile));
+
+
                     Call<SimpleResult> apiResult=mApi.putMyProfile(getMyToken(),"yes",part);
                     apiResult.enqueue(new Callback<SimpleResult>() {
                         @Override
