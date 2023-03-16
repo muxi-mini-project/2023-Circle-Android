@@ -53,6 +53,9 @@ import android.widget.TextView;
 
 import android.widget.Toast;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,7 +64,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 //目前能实现的是：点击“添加图片”的按钮后，能够一张一张地添加图片，最多显示9张。但是不可以删除图片，重新进入内容编辑界面即可让所有已添加的图片消失。同时也不能点击图片进行图片详情预览。
-public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.OnItemClickListener*/ {
+public class NewPostsActivity extends BaseActivity {
 
     private Posts mPosts;
     private User_Information user_information;
@@ -112,7 +115,7 @@ public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.On
     /*  针对低版本的SDK */
     private void TakePhoto_low() {
         String fileName=Math.random()*100+".jpg";   //生成一个随机的filename
-        File file = new File(EditPostsActivity.this.getFilesDir(), fileName);
+        File file = new File(NewPostsActivity.this.getFilesDir(), fileName);
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
@@ -127,11 +130,11 @@ public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.On
     /*针对android6.0后的所有版本，使用FileProvider来处理uri*/
     private void TakePhoto_high() {
         String fileName=Math.random()*100+".jpg";      //生成一个随机的filename（每张图片的filename不可重复）
-        File file = new File(EditPostsActivity.this.getFilesDir(), fileName);
+        File file = new File(NewPostsActivity.this.getFilesDir(), fileName);
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
-        Uri uri = FileProvider.getUriForFile(EditPostsActivity.this, "com.bignerdranch.android.myapplication.fileprovider", file);
+        Uri uri = FileProvider.getUriForFile(NewPostsActivity.this, "com.bignerdranch.android.myapplication.fileprovider", file);
         mFilePath=file.getPath();                   //获得路径
         Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent1.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -308,9 +311,9 @@ public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.On
      * todo 创建适配器
      */
     private void createAdapter(){
-        gridManager = new GridLayoutManager(EditPostsActivity.this,3);
+        gridManager = new GridLayoutManager(NewPostsActivity.this,3);
         photo_recyclerView.setLayoutManager(gridManager);
-        photoadapter = new PhotoAdapter(imagePathList,9,EditPostsActivity.this);
+        photoadapter = new PhotoAdapter(imagePathList,9, NewPostsActivity.this);
         photoadapter.setMyRecyclerItemClickListener(new MyRecyclerItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -318,7 +321,7 @@ public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.On
                 //test
                 Log.d("test","Activity");
 
-                Toast.makeText(EditPostsActivity.this,"11111",Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewPostsActivity.this,"11111",Toast.LENGTH_SHORT).show();
 
 
             }
@@ -336,7 +339,7 @@ public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.On
 
 
     public static Intent newIntent(Context packageContext) {
-        return new Intent(packageContext, EditPostsActivity.class);
+        return new Intent(packageContext, NewPostsActivity.class);
     }
 
     @Override
@@ -407,22 +410,46 @@ public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.On
         ReleaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                
+                File[] files = new File[9];
+                MultipartBody.Part[] parts = new MultipartBody.Part[9];
+                for (int i = 0; i < imagePathList.size(); i++) {
+                    files[i] = new File(imagePathList.get(i));
+                    parts[i] = MultipartBody.Part.createFormData("file", files[i].getName(),
+                            RequestBody.create(MediaType.parse("image/*"), files[i]));
+                }
+
                 if (EditContent.getText().toString().trim().equals("")) {
-                    Toast.makeText(EditPostsActivity.this, "请输入内容", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewPostsActivity.this, "请输入内容", Toast.LENGTH_SHORT).show();
                 } else {
-                    Call<SimpleResult> apiResult = mApi.publishPostsNotPic(getMyToken(), "no", "日常唠嗑", EditTitle.getText().toString(), EditContent.getText().toString());
+
+                    Call<SimpleResult> apiResult;
+                    String file_have;
+                    MultipartBody.Part type=MultipartBody.Part.createFormData("type","日常唠嗑");
+                    MultipartBody.Part title=MultipartBody.Part.createFormData("title",EditTitle.getText().toString());
+                    MultipartBody.Part content=MultipartBody.Part.createFormData("content",EditContent.getText().toString());
+                    MultipartBody.Part isAnonymity=MultipartBody.Part.createFormData("is_anonymity","0");
+                    if (parts[0]==null){
+                        file_have="no";
+                    }
+                    else {
+                        file_have="yes";
+                    }
+                    apiResult = mApi.publishPosts(getMyToken(), file_have,isAnonymity, type, title, content
+                            ,parts[0],parts[1],parts[2],parts[3],parts[4],parts[5],parts[6],parts[7],parts[8]);
                     apiResult.enqueue(new Callback<SimpleResult>() {
                         @Override
                         public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                            Toast.makeText(EditPostsActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                            finish();
+                            Toast.makeText(NewPostsActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+
                         }
 
                         @Override
                         public void onFailure(Call<SimpleResult> call, Throwable t) {
-                            Toast.makeText(EditPostsActivity.this, "请求失败！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewPostsActivity.this, "请求失败！", Toast.LENGTH_SHORT).show();
                         }
                     });
+                    finish();
                 }
             }
         });
@@ -436,9 +463,9 @@ public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.On
         File file;
         String fileName=Math.random()*100+".jpg";    //来个随机的filename
         Intent intent2 = new Intent(Intent.ACTION_PICK);
-        file = new File(EditPostsActivity.this.getFilesDir(), fileName);
+        file = new File(NewPostsActivity.this.getFilesDir(), fileName);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            uri = FileProvider.getUriForFile(EditPostsActivity.this, "com.bignerdranch.android.myapplication.fileprovider", file);
+            uri = FileProvider.getUriForFile(NewPostsActivity.this, "com.bignerdranch.android.myapplication.fileprovider", file);
         }else{
             uri = Uri.fromFile(file);
         }
@@ -452,7 +479,7 @@ public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.On
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public  String handleImageOnKitKat(Uri uri) {
         String path = null;
-        if (DocumentsContract.isDocumentUri(EditPostsActivity.this, uri)) {
+        if (DocumentsContract.isDocumentUri(NewPostsActivity.this, uri)) {
             String docId = DocumentsContract.getDocumentId(uri);
             if (uri.getAuthority().equals("com.android.providers.media.documents")) {
                 String id = docId.split(":")[1];
@@ -475,7 +502,7 @@ public class EditPostsActivity extends BaseActivity /*implements PhotoAdapter.On
     @SuppressLint("Range")
     private String getImagePath(Uri uri, String selection) {
         String path = null;
-        Cursor cursor = EditPostsActivity.this.getContentResolver().query(uri, null, selection, null, null);
+        Cursor cursor = NewPostsActivity.this.getContentResolver().query(uri, null, selection, null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));

@@ -47,14 +47,6 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
                 }
         });
 
-        mTestButton = (Button) findViewById(R.id.test_button);
-        mTestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = SignInActivity.newIntent(MainActivity.this);
-                startActivity(intent);
-            }
-        });
     }
     private void TokenVerify(){
         Call<SimpleResult> apiResult = mApi.tokenVerify(getMyToken());

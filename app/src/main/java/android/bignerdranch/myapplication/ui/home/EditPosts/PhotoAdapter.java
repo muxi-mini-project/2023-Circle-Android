@@ -2,14 +2,12 @@ package android.bignerdranch.myapplication.ui.home.EditPosts;
 
 import android.annotation.SuppressLint;
 import android.bignerdranch.myapplication.R;
-import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -18,11 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import kotlin.Metadata;
 import kotlin.jvm.internal.Intrinsics;
 
 public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -31,7 +27,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private final int TAKE_PHOTO = 1;  //拍照
     private final int PICK_PHOTO = 2; //相册选取
 
-    private EditPostsActivity mEditPostsActivity;
+    private NewPostsActivity mNewPostsActivity;
 
     private MyRecyclerItemClickListener myRecyclerItemClickListener;
 
@@ -77,22 +73,22 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     //test
                     Log.d("test","onBindVIewholder");
 
-                    Toast.makeText(mEditPostsActivity,"onBindVIewholder", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mNewPostsActivity,"onBindVIewholder", Toast.LENGTH_SHORT).show();
 
 
 
                     //权限检查
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
-                        if (!mEditPostsActivity.checkPermission()) {
-                            mEditPostsActivity.requestPermissions(PICK_PHOTO);
+                        if (!mNewPostsActivity.checkPermission()) {
+                            mNewPostsActivity.requestPermissions(PICK_PHOTO);
                         }
-                        if (!mEditPostsActivity.checkPermission()) {
-                            mEditPostsActivity.requestPermissions(TAKE_PHOTO);
+                        if (!mNewPostsActivity.checkPermission()) {
+                            mNewPostsActivity.requestPermissions(TAKE_PHOTO);
                         }
                     }
 
                     //出现弹窗
-                    mEditPostsActivity.createPopupWindow();
+                    mNewPostsActivity.createPopupWindow();
                 }
             });
 
@@ -121,13 +117,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
 
-    public PhotoAdapter(@NotNull List data, int maxNum,EditPostsActivity context) {
+    public PhotoAdapter(@NotNull List data, int maxNum, NewPostsActivity context) {
         super();
         this.data = data;
         this.maxNum = maxNum;
         this.ADD_ITEM = 7;
         this.PIC_ITEM = 8;
-        this.mEditPostsActivity=context;
+        this.mNewPostsActivity=context;
     }
 
 
@@ -145,7 +141,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         @Override
         public void onClick(View v) {
             //test
-            Toast.makeText(mEditPostsActivity,"ViewHolder", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mNewPostsActivity,"ViewHolder", Toast.LENGTH_SHORT).show();
 
             if(myRecyclerItemClickListener != null){
                 mMmyRecyclerItemClickListener.onItemClick(v,getPosition());
