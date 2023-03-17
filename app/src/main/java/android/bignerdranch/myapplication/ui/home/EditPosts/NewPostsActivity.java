@@ -62,7 +62,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
+//注释
 //目前能实现的是：点击“添加图片”的按钮后，能够一张一张地添加图片，最多显示9张。但是不可以删除图片，重新进入内容编辑界面即可让所有已添加的图片消失。同时也不能点击图片进行图片详情预览。
 public class NewPostsActivity extends BaseActivity {
 
