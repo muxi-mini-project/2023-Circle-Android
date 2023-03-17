@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ui.home;
+package android.bignerdranch.myapplication.ui.home.Posts;
 
 import java.util.ArrayList;
 import java.util.List;

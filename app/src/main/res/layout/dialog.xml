@@ -2,15 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dialog"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:background="@color/white"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
         android:elevation="4dp"
         android:background="@color/white"
-        android:layout_marginBottom="0.5dp"
-        android:padding="10dp"
+        android:layout_marginBottom="1dp"
         android:textSize="50px"
         android:id="@+id/take_photo"
         android:layout_weight="1"
@@ -21,9 +19,8 @@
     <TextView
         android:elevation="4dp"
         android:background="@color/white"
-        android:layout_marginBottom="0.5dp"
-        android:layout_marginTop="0.5dp"
-        android:padding="10dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginTop="1dp"
         android:textSize="50px"
         android:gravity="center"
         android:layout_weight="1"
@@ -34,9 +31,8 @@
     <TextView
         android:elevation="4dp"
         android:background="@color/white"
-        android:layout_marginTop="0.5dp"
+        android:layout_marginTop="1dp"
         android:textSize="50px"
-        android:padding="10dp"
         android:gravity="center"
         android:layout_weight="1"
         android:text="取消"

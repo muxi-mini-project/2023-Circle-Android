@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 public class ReminderHolder extends RecyclerView.ViewHolder {
 
@@ -36,12 +37,15 @@ public class ReminderHolder extends RecyclerView.ViewHolder {
     public void bind(Reminder reminder) {
         mReminder = reminder;
         mPersonname.setText(mReminder.getPersonName());
-        mRemindercontent.setText(mReminder.getTitle());
+        mRemindercontent.setText("给你点赞："+mReminder.getTitle());
         mReminderdate.setText(mReminder.getDate());
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.drawable.recyangle)
+                .circleCropTransform();
         Glide.with(mContext)
                 .load("http://"+mReminder.getProfile())
-                .centerCrop()
+                .apply(options)
                 .into(mProfile);
-        //此处还差通知的具体内容
+
     }
 }

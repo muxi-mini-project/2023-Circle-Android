@@ -8,7 +8,7 @@ import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
-import android.bignerdranch.myapplication.ui.home.Posts;
+import android.bignerdranch.myapplication.ui.home.Posts.Posts;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,7 +60,7 @@ public class PostsDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle saveInstanceState) {
-        View view = inflater.inflate(R.layout.post_details, container, false);
+        View view = inflater.inflate(R.layout.layout_post_details, container, false);
 
         {
             mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
@@ -165,6 +165,7 @@ public class PostsDetailsFragment extends Fragment {
                     item.setTime(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));
                     item.setProfilePath(StringTool.getJsonString(response.body().getData(), "avatar_path"));
                     item.setID(StringTool.getJsonString(response.body().getData(), "ID"));
+                    item.setTitle(StringTool.getJsonString(response.body().getData(),"title"));
                     mList.add(item);
                 }//接收当前帖子的数据
 
@@ -192,7 +193,7 @@ public class PostsDetailsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ComplexResult> call, Throwable t) {
-                Log.d("TAG", "评论详情：请求失败");
+                Log.d("TAG", "帖子详情：请求失败");
             }
         });
 

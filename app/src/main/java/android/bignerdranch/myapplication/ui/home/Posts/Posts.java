@@ -1,26 +1,26 @@
-package android.bignerdranch.myapplication.ui.home;
+package android.bignerdranch.myapplication.ui.home.Posts;
 
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
 public class Posts extends BaseItem {
+    private final String CreateTime;//发布时间
     private String publisherId;//发布者id
     private String PostsId;
     private String Name;//发布者的昵称
     private boolean follow;//是否关注发布者
     private String title;
     private String content;//发布内容
-    private String CreateTime;//发布时间
     private String UpdatedTime;//最近一次更新时间
     private boolean likes;//是否点赞
     private String likesNumber;//点赞数
     private String commentNumber;//评论数
     private String profilePath;
-
-
+    private List<String> picPaths;
     //构造器
     public Posts(String publisherName, String publishTime, String content) {
         this.Name = publisherName;
@@ -30,10 +30,23 @@ public class Posts extends BaseItem {
 
     //空构造器
     public Posts() {
+        picPaths = new ArrayList<>();
         CreateTime = new Date().toString();
         UpdatedTime = CreateTime;
         likesNumber = "0";
         commentNumber = "0";
+    }
+
+    public List<String> getPicPaths() {
+        return picPaths;
+    }
+
+    public void setPicPaths(List<String> picPaths) {
+        this.picPaths = picPaths;
+    }
+
+    public void addPicPath(String picPath) {
+        picPaths.add(picPath);
     }
 
     public int typeCode() {
@@ -118,7 +131,7 @@ public class Posts extends BaseItem {
 
     @Override
     public void setTitle(String title) {
-        this.title=title;
+        this.title = title;
     }
 
     public boolean isLikes() {

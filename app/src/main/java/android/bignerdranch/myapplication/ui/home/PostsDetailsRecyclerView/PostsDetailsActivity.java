@@ -2,14 +2,9 @@ package android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView;
 
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.R;
-import android.bignerdranch.myapplication.ui.home.Posts;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -27,10 +22,7 @@ public class PostsDetailsActivity extends BaseActivity {
 
     public static Intent newIntent(Context packageContext,String postsId) {
         Intent intent = new Intent(packageContext, PostsDetailsActivity.class);
-
         intent.putExtra(EXTRA_POSTS_ID,postsId);
-        Log.d("TAG","将id传递给PostsDetailsActivity"+postsId);
-
         return intent;
     }
 
@@ -44,7 +36,7 @@ public class PostsDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.post_details);
+        setContentView(R.layout.layout_post_details);
 
 
         postsId=getIntent().getStringExtra(EXTRA_POSTS_ID);

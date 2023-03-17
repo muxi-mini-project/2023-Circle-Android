@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ui.home;
+package android.bignerdranch.myapplication.ui.home.Posts;
 
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
@@ -7,17 +7,23 @@ import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
-import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
+import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
+import android.bignerdranch.myapplication.ReusableTools.StringTool;
+import android.bignerdranch.myapplication.ui.home.Posts.Picture.PicAdapter;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,29 +34,35 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostsHolder extends BaseHolder implements View.OnClickListener {
 
-    private TextView mNameView;
-    private TextView mDateView;
-    private TextView mContent;
-    private TextView mTitle;
-    private ImageButton mIsFollow;
-    private ImageButton mIsLikes;
-    private TextView mLikesNum;
-    private TextView mCommentNum;
+    private final RecyclerView mPicRecyclerview;
+    private PicAdapter mPicAdapter;
+
+    private final TextView mNameView;
+    private final TextView mDateView;
+    private final TextView mContent;
+    private final TextView mTitle;
+    private final ImageButton mIsFollow;
+    private final ImageButton mIsLikes;
+    private final TextView mLikesNum;
+    private final TextView mCommentNum;
 
 
-    private ImageView mProfile;
+    private final ImageView mProfile;
 
-    private Retrofit mRetrofit;
-    private Api mApi;
+    private final Retrofit mRetrofit;
+    private final Api mApi;
 
     private Context mContext;
 
     private Posts mPosts;
-    private String mToken;
+    private final String mToken;
 
     public PostsHolder(View itemView, ItemTypeDef.Type type, MyRecyclerItemClickListener myRecyclerItemClickListener
             , String token, Context context) {
         super(itemView, type, myRecyclerItemClickListener);
+
+        mPicRecyclerview = itemView.findViewById(R.id.recyclerview_pic);
+        mPicRecyclerview.setLayoutManager(new GridLayoutManager(mContext, 3));
 
         mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -60,15 +72,15 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         {
             mContext = context;
             mToken = token;//传入token
-            mNameView = (TextView) itemView.findViewById(R.id.publisher_name);
-            mDateView = (TextView) itemView.findViewById(R.id.publish_time);
-            mContent = (TextView) itemView.findViewById(R.id.publish_content);
-            mTitle=(TextView)itemView.findViewById(R.id.publish_title);
-            mIsFollow = (ImageButton) itemView.findViewById(R.id.is_followed_btn);
-            mIsLikes = (ImageButton) itemView.findViewById(R.id.is_likes_btn);
-            mLikesNum = (TextView) itemView.findViewById(R.id.likes_num);
-            mCommentNum = (TextView) itemView.findViewById(R.id.comment_num);
-            mProfile = (ImageView) itemView.findViewById(R.id.publish_head_portrait);
+            mNameView = itemView.findViewById(R.id.publisher_name);
+            mDateView = itemView.findViewById(R.id.publish_time);
+            mContent = itemView.findViewById(R.id.publish_content);
+            mTitle = itemView.findViewById(R.id.publish_title);
+            mIsFollow = itemView.findViewById(R.id.is_followed_btn);
+            mIsLikes = itemView.findViewById(R.id.is_likes_btn);
+            mLikesNum = itemView.findViewById(R.id.likes_num);
+            mCommentNum = itemView.findViewById(R.id.comment_num);
+            mProfile = itemView.findViewById(R.id.publish_head_portrait);
         }
 
 
@@ -87,19 +99,19 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         mIsFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if (!mPosts.isFollow()){
-                   followUser();
-               }else {
-                   delFollowUser();
-               }
+                if (!mPosts.isFollow()) {
+                    followUser();
+                } else {
+                    delFollowUser();
+                }
             }
         });
     }
 
-
     public void bind(BaseItem item, String id) {
         if (mPosts == null) {
             mPosts = (Posts) item;
+            setPostsFirstly();
         }
         Call<ComplexResult> seekPostsResult = mApi.seekPosts(id, mToken);
         //每次装载数据时都要通过网络请求更新帖子数据，如点赞数之类的
@@ -115,11 +127,7 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
                 isLikeResult.enqueue(new Callback<SimpleResult>() {
                     @Override
                     public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        if (response.body().getMsg().equals("yes")) {
-                            mPosts.setLikes(true);
-                        } else {
-                            mPosts.setLikes(false);
-                        }
+                        mPosts.setLikes(response.body().getMsg().equals("yes"));
                         setPosts();
                     }
 
@@ -130,21 +138,17 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
                 });
 
                 //获取是否关注数据
-                Call<SimpleResult> isFollowResult=mApi.getIsFollow(mToken,mPosts.getPublisherId());
+                Call<SimpleResult> isFollowResult = mApi.getIsFollow(mToken, mPosts.getPublisherId());
                 isFollowResult.enqueue(new Callback<SimpleResult>() {
                     @Override
                     public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        if (response.body().getMsg().equals("yes")) {
-                            mPosts.setFollow(true);
-                        } else {
-                            mPosts.setFollow(false);
-                        }
+                        mPosts.setFollow(response.body().getMsg().equals("yes"));
                         setPosts();
                     }
 
                     @Override
                     public void onFailure(Call<SimpleResult> call, Throwable t) {
-                        Log.d("TAG","是否关注：网络请求失败！");
+                        Log.d("TAG", "是否关注：网络请求失败！");
                     }
                 });
             }
@@ -172,19 +176,36 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         }
     }
 
-    private void setPosts() {
-        Glide.with(mContext)
-                .load("http://" + mPosts.getProfilePath())
-                .centerCrop()
-                .into(mProfile);//设置头像
+    //只在第一次加载帖子时调用一次
+    private void setPostsFirstly() {
+        mTitle.setText(mPosts.getTitle());
+        mContent.setText(mPosts.getContent());
         mNameView.setText(mPosts.getName());
         mDateView.setText(mPosts.getTime());
+        {
+            RequestOptions options = new RequestOptions()
+                    .placeholder(R.drawable.recyangle)
+                    .circleCropTransform();
+            Glide.with(mContext)
+                    .load("http://" + mPosts.getProfilePath())
+                    .apply(options)
+                    .into(mProfile);
+        }//设置头像
+        if (mPosts.getPicPaths()!=null){
+            if (mPicRecyclerview.getItemDecorationCount()==0){
+                mPicRecyclerview.addItemDecoration(new SpaceItemDecoration(10));
+            }
+            mPicAdapter=new PicAdapter(mPosts.getPicPaths(),mContext);
+            mPicRecyclerview.setAdapter(mPicAdapter);
+        }
+
+    }
+
+    private void setPosts() {
         mLikesNum.setText(mPosts.getLikesNumber());
         mCommentNum.setText(mPosts.getCommentNumber());
         setLikes(mPosts.isLikes());
         setFollow(mPosts.isFollow());
-        mTitle.setText(mPosts.getTitle());
-        mContent.setText(mPosts.getContent());
     }
 
     private void likePost() {
@@ -219,34 +240,34 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         });
     }
 
-    private void followUser(){
-        Call<SimpleResult> followResult=mApi.followUser(mToken,mPosts.getPublisherId());
+    private void followUser() {
+        Call<SimpleResult> followResult = mApi.followUser(mToken, mPosts.getPublisherId());
         followResult.enqueue(new Callback<SimpleResult>() {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                bind(mPosts,mPosts.getID());
-                Log.d("TAG","关注用户:"+mPosts.getPublisherId()+" "+"成功");
+                bind(mPosts, mPosts.getID());
+                Log.d("TAG", "关注用户:" + mPosts.getPublisherId() + " " + "成功");
             }
 
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable t) {
-                Log.d("TAG","关注用户：网络请求失败");
+                Log.d("TAG", "关注用户：网络请求失败");
             }
         });
     }
 
-    private void delFollowUser(){
-        Call<SimpleResult> followResult=mApi.delFollowUser(mToken,mPosts.getPublisherId());
+    private void delFollowUser() {
+        Call<SimpleResult> followResult = mApi.delFollowUser(mToken, mPosts.getPublisherId());
         followResult.enqueue(new Callback<SimpleResult>() {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                bind(mPosts,mPosts.getID());
-                Log.d("TAG","取消关注用户:"+mPosts.getPublisherId()+" "+"成功");
+                bind(mPosts, mPosts.getID());
+                Log.d("TAG", "取消关注用户:" + mPosts.getPublisherId() + " " + "成功");
             }
 
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable t) {
-                Log.d("TAG","取消关注用户：网络请求失败");
+                Log.d("TAG", "取消关注用户：网络请求失败");
             }
         });
     }

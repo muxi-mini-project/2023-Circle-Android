@@ -15,12 +15,14 @@
         android:requestLegacyExternalStorage="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:largeHeap="true"
+        android:hardwareAccelerated="false">
 
         <provider
             android:authorities="com.bignerdranch.android.myapplication.fileprovider"
@@ -32,6 +34,24 @@
             android:resource="@xml/files" />
         </provider>
 
+        <activity
+            android:name=".ui.mine.UserListAbout.SearchUser.SearchUserActivity"
+            android:exported="false">
+            <meta-data android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
+        <activity
+            android:name=".ui.mine.UserListAbout.Fans.FansActivity"
+            android:exported="false">
+            <meta-data android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
+        <activity
+            android:name=".ui.mine.UserListAbout.Follower.FollowerActivity"
+            android:exported="false">
+            <meta-data android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
         <activity
             android:name=".ui.home.PostsDetailsRecyclerView.PostsDetailsActivity"
             android:exported="false">
@@ -102,14 +122,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ReusableTools.User_Information_Edit.Activity_User_Information"
+            android:name=".User_Information_Edit.Activity_User_Information"
             android:exported="false">
             <meta-data
                 android:name="android.app.lip_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.home.EditPosts.NewPostsActivity"
+            android:name=".ui.home.NewPosts.NewPostsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lip_name"

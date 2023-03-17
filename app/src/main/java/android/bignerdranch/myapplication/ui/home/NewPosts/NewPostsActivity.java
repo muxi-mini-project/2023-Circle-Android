@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ui.home.EditPosts;
+package android.bignerdranch.myapplication.ui.home.NewPosts;
 
 import static android.content.ContentValues.TAG;
 
@@ -6,11 +6,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
-import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
-import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
-import android.bignerdranch.myapplication.ui.home.Posts;
 import android.bignerdranch.myapplication.R;
-import android.bignerdranch.myapplication.ReusableTools.User_Information_Edit.User_Information;
+import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
+import android.bignerdranch.myapplication.User_Information_Edit.User_Information;
+import android.bignerdranch.myapplication.ui.home.Posts.Posts;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +33,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -48,11 +49,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
-import android.widget.TextView;
-
-import android.widget.Toast;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -64,8 +60,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 //目前能实现的是：点击“添加图片”的按钮后，能够一张一张地添加图片，最多显示9张。但是不可以删除图片，重新进入内容编辑界面即可让所有已添加的图片消失。同时也不能点击图片进行图片详情预览。
-public class NewPostsActivity extends BaseActivity {
+public class NewPostsActivity extends BaseActivity implements PhotoAdapter.OnItemClickListener {
 
+    private final int TAKE_PHOTO = 1;  //拍照
+    private final int PICK_PHOTO = 2; //相册选取
     private Posts mPosts;
     private User_Information user_information;
     private Retrofit mRetrofit;
@@ -74,39 +72,32 @@ public class NewPostsActivity extends BaseActivity {
     private ImageButton ReleaseButton;
     private EditText EditTitle;
     private EditText EditContent;
-
     private TextView take_photo;
     private TextView choose_from_album;
     private TextView cancel;
     private Button add_photo;      //添加图片的按钮
-
-
     private PhotoAdapter photoadapter;
     private RecyclerView photo_recyclerView;
     private GridLayoutManager gridManager;
-    private ArrayList<String> imagePathList=new ArrayList<String>();  //存储所有的图片的路径，和photoadapter相联系
+    private ArrayList<String> imagePathList = new ArrayList<String>();  //存储所有的图片的路径，和photoadapter相联系
     private String mFilePath;      //存相机拍出来的照的路径
-
-
-    private final int TAKE_PHOTO = 1;  //拍照
-    private final int PICK_PHOTO = 2; //相册选取
-
     private PopupWindow popupWindow;
     private View popupView;
 
-
-
-
+    public static Intent newIntent(Context packageContext) {
+        return new Intent(packageContext, NewPostsActivity.class);
+    }
 
     /**
      * 调用相机
      */
-    public void StartCamera(){
+    public void StartCamera() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Log.d("Demo","进行到high");
-            TakePhoto_high();;
-        }else{
-            Log.d("Demo","进行到low");
+            Log.d("Demo", "进行到high");
+            TakePhoto_high();
+            ;
+        } else {
+            Log.d("Demo", "进行到low");
             TakePhoto_low();
         }
 
@@ -114,7 +105,7 @@ public class NewPostsActivity extends BaseActivity {
 
     /*  针对低版本的SDK */
     private void TakePhoto_low() {
-        String fileName=Math.random()*100+".jpg";   //生成一个随机的filename
+        String fileName = Math.random() * 100 + ".jpg";   //生成一个随机的filename
         File file = new File(NewPostsActivity.this.getFilesDir(), fileName);
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
@@ -129,43 +120,41 @@ public class NewPostsActivity extends BaseActivity {
 
     /*针对android6.0后的所有版本，使用FileProvider来处理uri*/
     private void TakePhoto_high() {
-        String fileName=Math.random()*100+".jpg";      //生成一个随机的filename（每张图片的filename不可重复）
+        String fileName = Math.random() * 100 + ".jpg";      //生成一个随机的filename（每张图片的filename不可重复）
         File file = new File(NewPostsActivity.this.getFilesDir(), fileName);
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
         Uri uri = FileProvider.getUriForFile(NewPostsActivity.this, "com.bignerdranch.android.myapplication.fileprovider", file);
-        mFilePath=file.getPath();                   //获得路径
+        mFilePath = file.getPath();                   //获得路径
         Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent1.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         startActivityForResult(intent1, TAKE_PHOTO);            //开启相机
     }
 
-
-
-
     /**
      * todo 对拍照、相册选择图片的返回结果进行处理
+     *
      * @param requestCode 返回码，用于确定是哪个 Activity 返回的数据
-     * @param resultCode 返回结果，一般如果操作成功返回的是 RESULT_OK
-     * @param data 返回对应 activity 返回的数据
+     * @param resultCode  返回结果，一般如果操作成功返回的是 RESULT_OK
+     * @param data        返回对应 activity 返回的数据
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             // 表示 调用照相机拍照返回
             case TAKE_PHOTO:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     try {
                         FileInputStream is = new FileInputStream(mFilePath);
                         // 把流解析成bitmap,此时就得到了清晰的原图
                         Bitmap imageBitmap = BitmapFactory.decodeStream(is);
-                        Bitmap newImageBitmap = scaleBitmap(imageBitmap,(float)0.5); //压缩图片
+                        Bitmap newImageBitmap = scaleBitmap(imageBitmap, (float) 0.5); //压缩图片
                         imagePathList.add(mFilePath);                  //将排出的照片的路径存入imagePathList中
                         photoadapter.notifyDataSetChanged();           //与imagePathList相联系的photoadapter进行数据的刷新，使得添加的图片能够显示在recyclerview中
 
-                                          //此处调用接口把图片上传到服务器
+                        //此处调用接口把图片上传到服务器
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -173,16 +162,16 @@ public class NewPostsActivity extends BaseActivity {
                 break;
             //从相册中选择图片返回
             case PICK_PHOTO:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     try {
                         Uri uri = data.getData();              //获得uri
-                        Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
-                        Bitmap newImageBitmap = scaleBitmap(imageBitmap,(float)0.5); //压缩图片
-                        String path=handleImageOnKitKat(uri);            //通过这个方法获得相册中选择的图片的图片路径
+                        Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                        Bitmap newImageBitmap = scaleBitmap(imageBitmap, (float) 0.5); //压缩图片
+                        String path = handleImageOnKitKat(uri);            //通过这个方法获得相册中选择的图片的图片路径
                         imagePathList.add(path);                         //将得到的照片的路径存入imagePathList中
                         photoadapter.notifyDataSetChanged();             //与imagePathList相联系的photoadapter进行数据的刷新，使得添加的图片能够显示在recyclerview中
 
-                                          //此处调用接口把图片上传到服务器
+                        //此处调用接口把图片上传到服务器
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -191,9 +180,9 @@ public class NewPostsActivity extends BaseActivity {
         }
     }
 
-
     /**
      * todo  uri 转 file 没用到？或许网络请求的时候可以用到，通过uri转换成file形式（看后端需要接收什么数据）
+     *
      * @param uri
      * @return
      */
@@ -201,7 +190,7 @@ public class NewPostsActivity extends BaseActivity {
         String[] filePc = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, filePc, null, null, null);
         cursor.moveToFirst();
-        Log.i(TAG, "UriToFile: 22"+cursor);
+        Log.i(TAG, "UriToFile: 22" + cursor);
         int col = cursor.getColumnIndex(filePc[0]);
         String pic = cursor.getString(col);
         cursor.close();
@@ -210,6 +199,7 @@ public class NewPostsActivity extends BaseActivity {
 
     /**
      * todo 压缩图片
+     *
      * @param origin
      * @param ratio
      * @return
@@ -231,13 +221,13 @@ public class NewPostsActivity extends BaseActivity {
      * author wang
      * *@param view
      */
-    public void createPopupWindow() {
-        if(popupView==null){
-            popupView = getLayoutInflater().inflate(R.layout.dialog,null);
+    private void createPopupWindow() {
+        if (popupView == null) {
+            popupView = getLayoutInflater().inflate(R.layout.dialog, null);
         }
-        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
+        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
 //        popupWindow.showAsDropDown(view, view.getWidth(),view.getHeight());
-        popupWindow.showAtLocation(findViewById(R.id.layout_editposts), Gravity.BOTTOM,0,0);  //底部显示弹窗
+        popupWindow.showAtLocation(findViewById(R.id.layout_editposts), Gravity.BOTTOM, 0, 0);  //底部显示弹窗
         popupWindow.setBackgroundDrawable(getResources().getDrawable(R.color.white));
 
         setAlpha(0.3f);
@@ -288,16 +278,6 @@ public class NewPostsActivity extends BaseActivity {
     }
 
     /**
-     * todo 自定义方法，遮罩层
-     * @param f
-     */
-    private void setAlpha(float f) {
-        WindowManager.LayoutParams lp =getWindow().getAttributes();
-        lp.alpha = f;
-        getWindow().setAttributes(lp);
-    }
-
-    /**
      * todo handler
      */
 
@@ -306,30 +286,28 @@ public class NewPostsActivity extends BaseActivity {
      * todo 上传图片(api)
      */
 
+    /**
+     * todo 自定义方法，遮罩层
+     *
+     * @param f
+     */
+    private void setAlpha(float f) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = f;
+        getWindow().setAttributes(lp);
+    }
 
     /**
      * todo 创建适配器
      */
-    private void createAdapter(){
-        gridManager = new GridLayoutManager(NewPostsActivity.this,3);
+    private void createAdapter() {
+        gridManager = new GridLayoutManager(NewPostsActivity.this, 3);
         photo_recyclerView.setLayoutManager(gridManager);
-        photoadapter = new PhotoAdapter(imagePathList,9, NewPostsActivity.this);
-        photoadapter.setMyRecyclerItemClickListener(new MyRecyclerItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-
-                //test
-                Log.d("test","Activity");
-
-                Toast.makeText(NewPostsActivity.this,"11111",Toast.LENGTH_SHORT).show();
-
-
-            }
-        });
+        photoadapter = new PhotoAdapter(imagePathList, 9);
         photo_recyclerView.setAdapter(photoadapter);
-
-
+        itemClick();
     }
+
     /**
      * todo 点击图片进行放大预览    因为工具库无法导入而暂时寄咯
      */
@@ -337,18 +315,10 @@ public class NewPostsActivity extends BaseActivity {
         /**省略**/
     }
 
-
-    public static Intent newIntent(Context packageContext) {
-        return new Intent(packageContext, NewPostsActivity.class);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPosts = new Posts();
-        user_information = User_Information.getUser_information();
         setContentView(R.layout.layout_editposts);
-
 
 
         BackButton = (ImageButton) findViewById(R.id.backbutton_editposts);
@@ -356,17 +326,14 @@ public class NewPostsActivity extends BaseActivity {
         EditContent = (EditText) findViewById(R.id.posts_content_field);
         EditTitle = (EditText) findViewById(R.id.posts_title_field);
 
-/*        //添加图片的按钮
-        add_photo=(Button) findViewById(R.id.add_button);
+        //添加图片的按钮
+        add_photo = (Button) findViewById(R.id.add_button);
         add_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //test
-                Log.d("test","123button");
-
                 //权限检查
-                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!checkPermission()) {
                         requestPermissions(PICK_PHOTO);
                     }
@@ -374,14 +341,13 @@ public class NewPostsActivity extends BaseActivity {
                         requestPermissions(TAKE_PHOTO);
                     }
                 }
-
                 //出现弹窗
                 createPopupWindow();
             }
-        });*/
+        });
 
         //创建recyclerview和adapter
-        photo_recyclerView=(RecyclerView) findViewById(R.id.photo_recyclerView);
+        photo_recyclerView = (RecyclerView) findViewById(R.id.photo_recyclerView);
         createAdapter();
 
         //返回键的监听器，记得填起来
@@ -418,11 +384,9 @@ public class NewPostsActivity extends BaseActivity {
                     parts[i] = MultipartBody.Part.createFormData("file", files[i].getName(),
                             RequestBody.create(MediaType.parse("image/*"), files[i]));
                 }
-
                 if (EditContent.getText().toString().trim().equals("")) {
                     Toast.makeText(NewPostsActivity.this, "请输入内容", Toast.LENGTH_SHORT).show();
                 } else {
-
                     Call<SimpleResult> apiResult;
                     String file_have;
                     MultipartBody.Part type=MultipartBody.Part.createFormData("type","日常唠嗑");
@@ -456,17 +420,16 @@ public class NewPostsActivity extends BaseActivity {
     }
 
 
-
     //打开相册的方法
     private void ChoosePhoto() {
         Uri uri;
         File file;
-        String fileName=Math.random()*100+".jpg";    //来个随机的filename
+        String fileName = Math.random() * 100 + ".jpg";    //来个随机的filename
         Intent intent2 = new Intent(Intent.ACTION_PICK);
         file = new File(NewPostsActivity.this.getFilesDir(), fileName);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             uri = FileProvider.getUriForFile(NewPostsActivity.this, "com.bignerdranch.android.myapplication.fileprovider", file);
-        }else{
+        } else {
             uri = Uri.fromFile(file);
         }
         intent2.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, uri);
@@ -477,7 +440,7 @@ public class NewPostsActivity extends BaseActivity {
 
     //高版本下获得从相册中选择的图片的路径的方法（低版本现在也没啥人用了，就不写了）
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public  String handleImageOnKitKat(Uri uri) {
+    public String handleImageOnKitKat(Uri uri) {
         String path = null;
         if (DocumentsContract.isDocumentUri(NewPostsActivity.this, uri)) {
             String docId = DocumentsContract.getDocumentId(uri);
@@ -532,6 +495,20 @@ public class NewPostsActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onItemAddClick(int var1) {
+
+    }
+
+    @Override
+    public void onItemDelClick(int position) {
+
+    }
+
+    @Override
+    public void onItemPicClick(int var1) {
+
+    }
 
 
 }
