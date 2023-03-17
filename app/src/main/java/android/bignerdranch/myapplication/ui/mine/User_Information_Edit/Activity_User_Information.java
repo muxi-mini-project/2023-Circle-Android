@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ReusableTools.User_Information_Edit;
+package android.bignerdranch.myapplication.ui.mine.User_Information_Edit;
 
 
 import android.Manifest;

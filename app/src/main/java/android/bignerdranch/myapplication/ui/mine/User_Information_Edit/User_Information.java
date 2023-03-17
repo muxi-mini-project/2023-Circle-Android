@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ReusableTools.User_Information_Edit;
+package android.bignerdranch.myapplication.ui.mine.User_Information_Edit;
 
 public class User_Information {
     private String mUser_Name_Title;

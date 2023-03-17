@@ -2,7 +2,7 @@ package android.bignerdranch.myapplication.ui.mine;
 
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.R;
-import android.bignerdranch.myapplication.ReusableTools.User_Information_Edit.User_Information;
+import android.bignerdranch.myapplication.ui.mine.User_Information_Edit.User_Information;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

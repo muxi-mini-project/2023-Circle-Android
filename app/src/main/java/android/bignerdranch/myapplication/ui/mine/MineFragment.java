@@ -10,7 +10,7 @@ import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
-import android.bignerdranch.myapplication.ReusableTools.User_Information_Edit.Activity_User_Information;
+import android.bignerdranch.myapplication.ui.mine.User_Information_Edit.Activity_User_Information;
 import android.bignerdranch.myapplication.ui.home.PostsAdapter;
 import android.bignerdranch.myapplication.ui.home.Posts;
 import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
