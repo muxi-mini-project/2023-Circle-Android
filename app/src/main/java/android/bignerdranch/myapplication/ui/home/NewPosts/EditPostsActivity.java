@@ -10,8 +10,6 @@ import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.User_Information_Edit.User_Information;
-import android.bignerdranch.myapplication.ui.home.Posts.Posts;
-
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -66,22 +64,24 @@ public class EditPostsActivity extends BaseActivity {
 
     private final int TAKE_PHOTO = 1;  //拍照
     private final int PICK_PHOTO = 2; //相册选取
-    private Posts mPosts;
     private User_Information user_information;
     private Retrofit mRetrofit;
     private Api mApi;
     private ImageButton BackButton;
-    private ImageButton ReleaseButton;
+
+    private Button anonymityButton;
+    private String isAnonymityStr="0";
+
+    private Button ReleaseButton;
     private EditText EditTitle;
     private EditText EditContent;
     private TextView take_photo;
     private TextView choose_from_album;
     private TextView cancel;
-    private Button add_photo;      //添加图片的按钮
     private PhotoAdapter photoadapter;
     private RecyclerView photo_recyclerView;
     private GridLayoutManager gridManager;
-    private ArrayList<String> imagePathList = new ArrayList<String>();  //存储所有的图片的路径，和photoadapter相联系
+    private final ArrayList<String> imagePathList = new ArrayList<String>();  //存储所有的图片的路径，和photoadapter相联系
     private String mFilePath;      //存相机拍出来的照的路径
     private PopupWindow popupWindow;
     private View popupView;
@@ -97,7 +97,6 @@ public class EditPostsActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Log.d("Demo", "进行到high");
             TakePhoto_high();
-            ;
         } else {
             Log.d("Demo", "进行到low");
             TakePhoto_low();
@@ -336,8 +335,10 @@ public class EditPostsActivity extends BaseActivity {
         setContentView(R.layout.layout_editposts);
 
 
+        anonymityButton=(Button) findViewById(R.id.is_anonymity);
+        anonymityButton.setBackgroundResource(R.drawable.anonymity_button_not);
         BackButton = (ImageButton) findViewById(R.id.backbutton_editposts);
-        ReleaseButton = (ImageButton) findViewById(R.id.releasebutton_editposts);
+        ReleaseButton = (Button) findViewById(R.id.releasebutton_editposts);
         EditContent = (EditText) findViewById(R.id.posts_content_field);
         EditTitle = (EditText) findViewById(R.id.posts_title_field);
 
@@ -345,6 +346,22 @@ public class EditPostsActivity extends BaseActivity {
         //创建recyclerview和adapter
         photo_recyclerView = (RecyclerView) findViewById(R.id.photo_recyclerView);
         createAdapter();
+
+        anonymityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isAnonymityStr.equals("0")){
+                    anonymityButton.setBackgroundResource(R.drawable.anonymity_button_1);
+                    isAnonymityStr="1";
+                    Log.d("TAG","isAnonymity=\"1\"");
+                }
+                else {
+                    anonymityButton.setBackgroundResource(R.drawable.anonymity_button_not);
+                    isAnonymityStr="0";
+                    Log.d("TAG","isAnonymity=\"0\"");
+                }
+            }
+        });
 
         //返回键的监听器，记得填起来
         BackButton.setOnClickListener(new View.OnClickListener() {
@@ -388,7 +405,8 @@ public class EditPostsActivity extends BaseActivity {
                     MultipartBody.Part type = MultipartBody.Part.createFormData("type", "日常唠嗑");
                     MultipartBody.Part title = MultipartBody.Part.createFormData("title", EditTitle.getText().toString());
                     MultipartBody.Part content = MultipartBody.Part.createFormData("content", EditContent.getText().toString());
-                    MultipartBody.Part isAnonymity = MultipartBody.Part.createFormData("is_anonymity", "0");
+                    MultipartBody.Part isAnonymity = MultipartBody.Part.createFormData("is_anonymity", isAnonymityStr);
+                    Log.d("TAG","创建isAnonymity Part："+isAnonymityStr);
                     if (parts[0] == null) {
                         file_have = "no";
                     } else {

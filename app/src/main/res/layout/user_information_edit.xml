@@ -5,12 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="20dp">
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:background="#FF8C37"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:elevation="4dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:background="#FF8C37">
 
         <TextView
             android:id="@+id/textView3"
@@ -24,20 +30,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:background="@color/white"
             android:id="@+id/back_btn"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.4"
-            app:layout_constraintWidth_percent="0.1"
+            app:layout_constraintHeight_percent="0.6"
+            app:layout_constraintWidth_percent="0.05"
             app:layout_constraintVertical_bias="0.5"
             app:layout_constraintHorizontal_bias="0.03"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/back_button1" />
+            android:background="@mipmap/back_button1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

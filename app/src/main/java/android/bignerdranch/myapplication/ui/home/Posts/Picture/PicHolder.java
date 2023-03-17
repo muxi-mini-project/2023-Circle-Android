@@ -5,6 +5,7 @@ import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -21,7 +22,7 @@ public class PicHolder extends BaseHolder {
         super(itemView, type, myRecyclerItemClickListener);
 
         mContext=context;
-        mImageView=itemView.findViewById(R.id.added_photo);
+        mImageView=itemView.findViewById(R.id.pic_image);
     }
 
     public String getPath() {

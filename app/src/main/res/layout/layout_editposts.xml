@@ -1,174 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_editposts"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:background="#FF8C37"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/white"
-        android:elevation="4dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:background="#FF8C37"
+        android:elevation="4dp">
 
         <TextView
-            android:text="内容编辑"
-            android:textSize="60px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="内容编辑"
+            android:textSize="60px"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintVertical_bias="0.5"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintVertical_bias="0.5" />
 
         <ImageButton
-            android:background="@color/white"
             android:id="@+id/backbutton_editposts"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.4"
-            app:layout_constraintWidth_percent="0.1"
-            app:layout_constraintVertical_bias="0.5"
-            app:layout_constraintHorizontal_bias="0.03"
-            android:scaleType="centerCrop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.4"
+            app:layout_constraintHorizontal_bias="0.03"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/back_button1" />
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintWidth_percent="0.1"
+            android:background="@mipmap/back_button1"/>
 
+        <Button
+            android:id="@+id/is_anonymity"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:textSize="12dp"
+            android:text="匿名发布"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.6"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.15" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <LinearLayout
-        android:background="@color/white"
-        android:elevation="4dp"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:elevation="4dp">
 
         <TextView
-            android:layout_weight="4"
-            android:text="选择标签:"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"/>
+            android:layout_weight="4"
+            android:gravity="center"
+            android:text="选择标签:" />
 
         <RadioGroup
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <RadioButton
-                android:layout_gravity="center"
-                android:layout_weight="1"
                 android:id="@+id/label1"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_label"
                 android:button="@null"
+                android:gravity="center"
                 android:text="日常唠嗑"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:background="@drawable/selector_label"
-                android:layout_width="0dp"
-                android:layout_height="25dp"
-                android:layout_margin="4dp"/>
+                android:textColor="@color/white" />
 
             <RadioButton
-                android:layout_gravity="center"
-                android:layout_weight="1"
                 android:id="@+id/label2"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_label"
                 android:button="@null"
+                android:gravity="center"
                 android:text="学术问询"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:background="@drawable/selector_label"
-                android:layout_width="0dp"
-                android:layout_height="25dp"
-                android:layout_margin="4dp"/>
+                android:textColor="@color/white" />
 
             <RadioButton
-                android:layout_gravity="center"
-                android:layout_weight="1"
                 android:id="@+id/label3"
-                android:button="@null"
-                android:text="帮忙互助"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:background="@drawable/selector_label"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_margin="4dp"/>
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_label"
+                android:button="@null"
+                android:gravity="center"
+                android:text="帮忙互助"
+                android:textColor="@color/white" />
 
             <RadioButton
-                android:layout_gravity="center"
-                android:layout_weight="1"
                 android:id="@+id/label4"
-                android:button="@null"
-                android:text="寻人捞物"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:background="@drawable/selector_label"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_margin="4dp"/>
+                android:layout_gravity="center"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_label"
+                android:button="@null"
+                android:gravity="center"
+                android:text="寻人捞物"
+                android:textColor="@color/white" />
         </RadioGroup>
-
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:elevation="4dp"
-        android:background="@color/white"
-        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:elevation="4dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="3"
             android:gravity="center"
-            android:text="请输入标题:"
-            android:layout_weight="3"/>
+            android:text="请输入标题:" />
 
         <android.widget.EditText
             android:id="@+id/posts_title_field"
-            android:layout_weight="1"
-            android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white" />
 
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginTop="8dp"
-        android:elevation="4dp"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="450dp">
+        android:layout_height="450dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:orientation="vertical">
 
         <android.widget.EditText
-            android:layout_weight="1"
             android:id="@+id/posts_content_field"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="left|top"
             android:hint="请随意发挥..."
             android:inputType="textMultiLine"
             android:textSize="40px" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_weight="4"
             android:id="@+id/photo_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp"
+            android:layout_weight="4" />
 
 
     </LinearLayout>
@@ -177,31 +193,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/releasebutton_editposts"
-            android:layout_width="100dp"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/white"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:elevation="4dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.6"
-            app:layout_constraintWidth_percent="0.15"
-            app:layout_constraintHorizontal_bias="0.95"
-            android:src="@drawable/release_button"
-            android:scaleType="centerInside"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            tools:layout_editor_absoluteX="0dp">
+
+            <Button
+                android:id="@+id/releasebutton_editposts"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:background="@drawable/recyangle2"
+                android:backgroundTint="#FF8C37"
+                android:text="发布"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="最多只能添加九张图片哦~~"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintHorizontal_bias="0.04"
-            app:layout_constraintVertical_bias="0.10"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.10" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

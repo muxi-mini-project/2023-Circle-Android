@@ -48,6 +48,8 @@ public class HomeFragment extends BaseFragment {
     private RadioButton mFollowButton;
     private RadioButton mNewestButton;
 
+    private int t=1;
+
     private Retrofit mRetrofit;
     private Api mApi;
 
@@ -80,7 +82,8 @@ public class HomeFragment extends BaseFragment {
             mRecButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    upDateUI(1);
+                    t = 1;
+                    upDateUI();
                 }
             });
 
@@ -88,7 +91,8 @@ public class HomeFragment extends BaseFragment {
             mFollowButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    upDateUI(2);
+                    t = 2;
+                    upDateUI();
                 }
             });
 
@@ -96,17 +100,18 @@ public class HomeFragment extends BaseFragment {
             mNewestButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    upDateUI(3);
+                    t = 3;
+                    upDateUI();
                 }
             });
         }//设置RadioButton
 
-        upDateUI(1);
+        upDateUI();
 
         return view;
     }
 
-    private void upDateUI(int t) {
+    private void upDateUI() {
         {
             mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -131,9 +136,9 @@ public class HomeFragment extends BaseFragment {
                 apiResultCall = mApi.followPost(mToken);
                 break;
             case 3:
-                apiResultCall=mApi.newestPost(mToken,0,10);
+                apiResultCall = mApi.newestPost(mToken, 0, 10);
         }
-        if (apiResultCall!=null){
+        if (apiResultCall != null) {
             apiResultCall.enqueue(new Callback<SimpleResult>() {
                 @Override
                 public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -162,7 +167,7 @@ public class HomeFragment extends BaseFragment {
             mList.add(e);
         }
 
-        if (mHomeRecyclerView.getItemDecorationCount()==0){
+        if (mHomeRecyclerView.getItemDecorationCount() == 0) {
             mHomeRecyclerView.addItemDecoration(new SpaceItemDecoration(40));//设置item之间的间隔为20
         }
         mPostsAdapter = new PostsAdapter(mList, mData, mToken, getActivity(), this);//将mList装载入Adapter中

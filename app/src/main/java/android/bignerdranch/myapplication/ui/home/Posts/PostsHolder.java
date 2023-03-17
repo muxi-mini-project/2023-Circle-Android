@@ -14,7 +14,6 @@ import android.bignerdranch.myapplication.ui.home.Posts.Picture.PicAdapter;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,8 +34,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PostsHolder extends BaseHolder implements View.OnClickListener {
 
     private final RecyclerView mPicRecyclerview;
-    private PicAdapter mPicAdapter;
-
     private final TextView mNameView;
     private final TextView mDateView;
     private final TextView mContent;
@@ -45,17 +42,13 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
     private final ImageButton mIsLikes;
     private final TextView mLikesNum;
     private final TextView mCommentNum;
-
-
     private final ImageView mProfile;
-
     private final Retrofit mRetrofit;
     private final Api mApi;
-
-    private Context mContext;
-
-    private Posts mPosts;
     private final String mToken;
+    private PicAdapter mPicAdapter;
+    private Context mContext;
+    private Posts mPosts;
 
     public PostsHolder(View itemView, ItemTypeDef.Type type, MyRecyclerItemClickListener myRecyclerItemClickListener
             , String token, Context context) {
@@ -191,11 +184,11 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
                     .apply(options)
                     .into(mProfile);
         }//设置头像
-        if (mPosts.getPicPaths()!=null){
-            if (mPicRecyclerview.getItemDecorationCount()==0){
+        if (mPosts.getPicPaths() != null) {
+            if (mPicRecyclerview.getItemDecorationCount() == 0) {
                 mPicRecyclerview.addItemDecoration(new SpaceItemDecoration(10));
             }
-            mPicAdapter=new PicAdapter(mPosts.getPicPaths(),mContext);
+            mPicAdapter = new PicAdapter(mPosts.getPicPaths(), mContext);
             mPicRecyclerview.setAdapter(mPicAdapter);
         }
 

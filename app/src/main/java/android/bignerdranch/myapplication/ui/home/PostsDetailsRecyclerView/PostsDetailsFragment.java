@@ -160,6 +160,12 @@ public class PostsDetailsFragment extends Fragment {
             @Override
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
                 {
+                    if (!StringTool.getJsonString(response.body().getData(),"file_path1").equals("")){
+                        for (int i=1;!StringTool.getJsonString(response.body().getData(),"file_path"+i).equals("");i++){
+                            Log.d("TAG","file_path"+i);
+                            item.addPicPath(StringTool.getJsonString(response.body().getData(),"file_path"+i));
+                        }
+                    }
                     item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));
                     item.setContent(StringTool.getJsonString(response.body().getData(), "content"));
                     item.setTime(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));
@@ -204,7 +210,6 @@ public class PostsDetailsFragment extends Fragment {
         for (Comment e : commentLab.getComments()) {
             mList.add(e);
         }
-
         mPostsDetailsAdapter = new PostsDetailsAdapter(mList, getContext(), mToken, data);//将mList装载入Adapter中
         mPostsDetailsRecyclerView.setAdapter(mPostsDetailsAdapter);//给该recyclerview设置adapter
         mPostsDetailsAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {

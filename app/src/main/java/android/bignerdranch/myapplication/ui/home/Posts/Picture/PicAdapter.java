@@ -27,7 +27,7 @@ public class PicAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public PicHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PicHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_added_photo,
+        return new PicHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture,
                 parent, false),ItemTypeDef.Type.PIC,mMyRecyclerItemClickListener,mContext);
     }
 
