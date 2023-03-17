@@ -1,8 +1,7 @@
 package android.bignerdranch.myapplication.ui.mine;
 
-import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.R;
-import android.bignerdranch.myapplication.ui.mine.User_Information_Edit.User_Information;
+import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import androidx.fragment.app.FragmentManager;
 
 
 public class MineActivity extends BaseActivity {
-    private User_Information mUser=User_Information.getUser_information();
 
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, MineActivity.class);

@@ -1,4 +1,5 @@
-package android.bignerdranch.myapplication.ui.mine.User_Information_Edit;
+package android.bignerdranch.myapplication.User_Information_Edit;
+
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -76,12 +77,12 @@ public class UserImageChange {
     /**
      * 调用相机
      */
-    public void StartCamera(){
+    public void StartCamera() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Log.d("Demo","进行到high");
+            Log.d("Demo", "进行到high");
             TakePhoto_high();   //高版本的SDK相机的调用方法
-        }else{
-            Log.d("Demo","进行到low");
+        } else {
+            Log.d("Demo", "进行到low");
             TakePhoto_low();   //低版本的SDK相机的调用方法
         }
 
@@ -122,16 +123,13 @@ public class UserImageChange {
         file = new File(activity.getFilesDir(), fileName);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             uri = FileProvider.getUriForFile(activity, "com.bignerdranch.android.myapplication.fileprovider", file);   //高版本，使用FileProvider
-        }else{
+        } else {
             uri = Uri.fromFile(file);     //低版本，直接得到uri
         }
         intent2.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, uri);
         intent2.setDataAndType(uri, "image/*");
         activity.startActivityForResult(intent2, PICK_PHOTO);
     }
-
-
-
 
 
     /**
@@ -147,7 +145,7 @@ public class UserImageChange {
     //高版本获得image的path的方法
     //image分别有三种形式：documents、media（多媒体）、contents，分三种情况获得image的path
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)   //作用是让以下代码编译通过
-    public  String handleImageOnKitKat(Uri uri) {
+    public String handleImageOnKitKat(Uri uri) {
         String path = null;
         if (DocumentsContract.isDocumentUri(activity, uri)) {
             String docId = DocumentsContract.getDocumentId(uri);
@@ -185,35 +183,35 @@ public class UserImageChange {
     }
 
     //缩放图片
-    private static Bitmap getScaledBitmap(String path, int destWidth, int destHeight){
+    private static Bitmap getScaledBitmap(String path, int destWidth, int destHeight) {
         BitmapFactory.Options options = new BitmapFactory.Options();  //options可以获得bitmap的数据并进行处理
         options.inJustDecodeBounds = true;           //decodeFile时不返回bitmap
-        BitmapFactory.decodeFile(path,options);      //decode是解码的意思，通过path找到图像，并进行解码，把数据存入option中
+        BitmapFactory.decodeFile(path, options);      //decode是解码的意思，通过path找到图像，并进行解码，把数据存入option中
         float srcWidth = options.outWidth;           //src代表原本的图像，通过option把图像的宽高放到srcWidth和srcHeight中
         float srcHeight = options.outHeight;
 
         int inSampleSize = 1;                        //缩放比例
 
         //dest即为destination，目标图像大小，要把原图像的大小缩放为目标图像的大小
-        if(srcHeight>destHeight||srcWidth>destWidth){
-            float ww = srcWidth/destWidth;           //宽度比例
-            float hh = srcHeight/destHeight;         //高度比例
-            inSampleSize = Math.round(hh>ww?hh:ww);  //取宽高比例中最大的那个设为缩放比例
+        if (srcHeight > destHeight || srcWidth > destWidth) {
+            float ww = srcWidth / destWidth;           //宽度比例
+            float hh = srcHeight / destHeight;         //高度比例
+            inSampleSize = Math.round(hh > ww ? hh : ww);  //取宽高比例中最大的那个设为缩放比例
         }
 
         options = new BitmapFactory.Options();       //覆盖之前的options，decodeFile时返回bitmap
         options.inSampleSize = inSampleSize;
-        return BitmapFactory.decodeFile(path,options);
+        return BitmapFactory.decodeFile(path, options);
     }
 
 
-    public static Bitmap getScaledBitmap(String path, Activity activity){        //同名方法，重载
+    public static Bitmap getScaledBitmap(String path, Activity activity) {        //同名方法，重载
         Point size = new Point();                                                //通过point来获得目标宽高
         activity.getWindowManager().getDefaultDisplay().getSize(size);
-        return getScaledBitmap(path,size.x,size.y);
+        return getScaledBitmap(path, size.x, size.y);
     }
 
-    public File getFile(){
+    public File getFile() {
         return file;
     }
 

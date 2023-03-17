@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ui.home.EditPosts;
+package android.bignerdranch.myapplication.ui.home.NewPosts;
 
 import android.annotation.SuppressLint;
 import android.bignerdranch.myapplication.R;
@@ -27,12 +27,12 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private final int TAKE_PHOTO = 1;  //拍照
     private final int PICK_PHOTO = 2; //相册选取
 
-    private NewPostsActivity mNewPostsActivity;
+    private EditPostsActivity mEditPostsActivity;
 
     private MyRecyclerItemClickListener myRecyclerItemClickListener;
 
 
-    private List data=null;
+    private List data = null;
     private final int maxNum;
 
     public final int getADD_ITEM() {
@@ -42,6 +42,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public final int getPIC_ITEM() {
         return this.PIC_ITEM;
     }
+
     @NotNull
     public RecyclerView.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         Intrinsics.checkNotNullParameter(parent, "parent");
@@ -49,18 +50,19 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (viewType == this.ADD_ITEM) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_item, parent, false);
             Intrinsics.checkNotNullExpressionValue(view, "view");
-            return (RecyclerView.ViewHolder)(new AddViewHolder(view,myRecyclerItemClickListener));
+            return (RecyclerView.ViewHolder) (new AddViewHolder(view, myRecyclerItemClickListener));
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
             Intrinsics.checkNotNullExpressionValue(view, "view");
-            return (RecyclerView.ViewHolder)(new PicViewHolder(view));
+            return (RecyclerView.ViewHolder) (new PicViewHolder(view));
         }
     }
 
 
-
     public int getItemCount() {
-        if(data!=null){return this.data.size() < this.maxNum ? this.data.size() + 1 : this.data.size();}
+        if (data != null) {
+            return this.data.size() < this.maxNum ? this.data.size() + 1 : this.data.size();
+        }
         return 0;
     }
 
@@ -71,24 +73,23 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 public void onClick(View it) {
 
                     //test
-                    Log.d("test","onBindVIewholder");
+                    Log.d("test", "onBindVIewholder");
 
-                    Toast.makeText(mNewPostsActivity,"onBindVIewholder", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(mEditPostsActivity, "onBindVIewholder", Toast.LENGTH_SHORT).show();
 
 
                     //权限检查
-                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
-                        if (!mNewPostsActivity.checkPermission()) {
-                            mNewPostsActivity.requestPermissions(PICK_PHOTO);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (!mEditPostsActivity.checkPermission()) {
+                            mEditPostsActivity.requestPermissions(PICK_PHOTO);
                         }
-                        if (!mNewPostsActivity.checkPermission()) {
-                            mNewPostsActivity.requestPermissions(TAKE_PHOTO);
+                        if (!mEditPostsActivity.checkPermission()) {
+                            mEditPostsActivity.requestPermissions(TAKE_PHOTO);
                         }
                     }
 
                     //出现弹窗
-                    mNewPostsActivity.createPopupWindow();
+                    mEditPostsActivity.createPopupWindow();
                 }
             });
 
@@ -101,7 +102,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         } else {
 
-            Glide.with(holder.itemView.getContext()).load((String)this.data.get(position)).into(((PicViewHolder)holder).getPic());
+            Glide.with(holder.itemView.getContext()).load((String) this.data.get(position)).into(((PicViewHolder) holder).getPic());
 
         }
 
@@ -116,24 +117,22 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-
-    public PhotoAdapter(@NotNull List data, int maxNum, NewPostsActivity context) {
+    public PhotoAdapter(@NotNull List data, int maxNum, EditPostsActivity context) {
         super();
         this.data = data;
         this.maxNum = maxNum;
         this.ADD_ITEM = 7;
         this.PIC_ITEM = 8;
-        this.mNewPostsActivity=context;
+        this.mEditPostsActivity = context;
     }
-
 
 
     public class AddViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private MyRecyclerItemClickListener mMmyRecyclerItemClickListener;
 
-        public AddViewHolder(@NotNull View itemView,MyRecyclerItemClickListener myRecyclerItemClickListener) {
+        public AddViewHolder(@NotNull View itemView, MyRecyclerItemClickListener myRecyclerItemClickListener) {
             super(itemView);
-            mMmyRecyclerItemClickListener  = myRecyclerItemClickListener;
+            mMmyRecyclerItemClickListener = myRecyclerItemClickListener;
             itemView.setOnClickListener(this);
         }
 
@@ -141,16 +140,16 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         @Override
         public void onClick(View v) {
             //test
-            Toast.makeText(mNewPostsActivity,"ViewHolder", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mEditPostsActivity, "ViewHolder", Toast.LENGTH_SHORT).show();
 
-            if(myRecyclerItemClickListener != null){
-                mMmyRecyclerItemClickListener.onItemClick(v,getPosition());
+            if (myRecyclerItemClickListener != null) {
+                mMmyRecyclerItemClickListener.onItemClick(v, getPosition());
             }
         }
     }
 
 
-    public  class PicViewHolder extends RecyclerView.ViewHolder {
+    public class PicViewHolder extends RecyclerView.ViewHolder {
         @NotNull
         private ImageView pic;
         @NotNull
@@ -168,17 +167,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public PicViewHolder(@NotNull View itemView) {
             super(itemView);
-            this.pic = (ImageView)itemView.findViewById(R.id.ivImage);
-            this.del = (ImageView)itemView.findViewById(R.id.ivDelete);
+            this.pic = (ImageView) itemView.findViewById(R.id.ivImage);
+            this.del = (ImageView) itemView.findViewById(R.id.ivDelete);
         }
     }
-
 
 
     public void setMyRecyclerItemClickListener(MyRecyclerItemClickListener listener) {
         this.myRecyclerItemClickListener = listener;
     }
-
-
 }
 

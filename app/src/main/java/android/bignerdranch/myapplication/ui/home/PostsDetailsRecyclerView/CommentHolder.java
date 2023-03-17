@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 
 public class CommentHolder extends BaseHolder {
@@ -24,27 +25,33 @@ public class CommentHolder extends BaseHolder {
 
     private Context mContext;
 
-    public CommentHolder(View itemView, ItemTypeDef.Type type,Context context) {
-        super(itemView,type);
+    public CommentHolder(View itemView, ItemTypeDef.Type type, Context context) {
+        super(itemView, type);
 
-        mContext=context;
+        mContext = context;
 
         mNameView = (TextView) itemView.findViewById(R.id.commenter_name);
         mDateView = (TextView) itemView.findViewById(R.id.comment_time);
         mContent = (TextView) itemView.findViewById(R.id.comment_content);
-        mProfile=(ImageButton) itemView.findViewById(R.id.profile_pic_comment);
+        mProfile = (ImageButton) itemView.findViewById(R.id.profile_pic_comment);
 
     }
 
     public void bind(BaseItem item) {
-        mComment =(Comment) item;
+        mComment = (Comment) item;
         mNameView.setText(mComment.getName());
         mDateView.setText(mComment.getTime());
-        Glide.with(mContext)
-                .load("http://" + mComment.getProfilePath())
-                .centerCrop()
-                .into(mProfile);//设置头像
+        {
+            RequestOptions options = new RequestOptions()
+                    .placeholder(R.drawable.recyangle)
+                    .circleCropTransform();
+            Glide.with(mContext)
+                    .load("http://" + mComment.getProfilePath())
+                    .apply(options)
+                    .into(mProfile);
+        }//设置头像
         mContent.setText(mComment.getContent());
     }
+
 
 }

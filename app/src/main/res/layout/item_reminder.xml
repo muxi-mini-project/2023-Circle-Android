@@ -13,7 +13,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:scaleType="centerInside"
-        android:src="@drawable/page_head"
+        android:background="@color/white"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintVertical_bias="0.5"
         app:layout_constraintBottom_toBottomOf="parent"

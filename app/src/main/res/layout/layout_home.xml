@@ -33,8 +33,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/recommend_btn"
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/radio_recommend_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -42,26 +42,29 @@
                     android:button="@null"
                     android:drawableBottom="@drawable/home_selector"
                     android:checked="true"
-                    android:text="推荐" />
+                    android:text="推荐"
+                    android:onClick="onRadioButtonClicked"/>
 
-                <RadioButton
-                    android:id="@+id/follow_btn"
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/radio_follow_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:button="@null"
                     android:text="关注"
+                    android:onClick="onRadioButtonClicked"
                     android:drawableBottom="@drawable/home_selector"/>
 
-                <RadioButton
-                    android:id="@+id/newest_btn"
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/radio_newest_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:button="@null"
                     android:text="最新"
+                    android:onClick="onRadioButtonClicked"
                     android:drawableBottom="@drawable/home_selector" />
 
             </RadioGroup>

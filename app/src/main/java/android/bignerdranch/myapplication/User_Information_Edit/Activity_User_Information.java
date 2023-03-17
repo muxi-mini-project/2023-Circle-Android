@@ -1,9 +1,15 @@
-package android.bignerdranch.myapplication.ui.mine.User_Information_Edit;
+package android.bignerdranch.myapplication.User_Information_Edit;
 
+;
 
 import android.Manifest;
-import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
+import android.bignerdranch.myapplication.ApiAbout.Api;
+import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
+import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
+import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
+import android.bignerdranch.myapplication.ReusableTools.StringTool;
+import android.bignerdranch.myapplication.User_Information_Edit.UserImageChange;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -11,10 +17,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.bignerdranch.myapplication.ApiAbout.Api;
-import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
-import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
-import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +28,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
+import java.io.File;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -34,8 +38,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import java.io.File;
 
 public class Activity_User_Information extends BaseActivity {
 
@@ -72,7 +74,7 @@ public class Activity_User_Information extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_information_edit);
-        user_information = User_Information.getUser_information();
+        user_information = new User_Information();
 
         mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -125,10 +127,14 @@ public class Activity_User_Information extends BaseActivity {
                 } else {
                     Bitmap bitmap = u.getScaledBitmap(u.getFile().getPath(), Activity_User_Information.this);                                                 //缩放图片，以bitmap形式返回
                     profile_picture.setImageBitmap(bitmap);                      //为头像实例设置图片
-                    savePhotos(u.getFile().getPath());                           //保存图片到本地的                                 //学长代码中的网络请求好像是写在这里的                             //sharedPreference中
+                    savePhotos(u.getFile().getPath());                           //保存图片到本地的
+
+
                     File profile=new File(u.getFile().getPath());
                     MultipartBody.Part part=MultipartBody.Part.createFormData("file",fileName,
                             RequestBody.create(MediaType.parse("image/*"), profile));
+
+
                     Call<SimpleResult> apiResult=mApi.putMyProfile(getMyToken(),"yes",part);
                     apiResult.enqueue(new Callback<SimpleResult>() {
                         @Override
@@ -173,7 +179,6 @@ public class Activity_User_Information extends BaseActivity {
                         System.out.println("网络请求失败！");
                     }
                 });
-                //学长代码中的网络请求好像是写在这里的
             } else {
                 Log.d("Demo", "结果无");
             }

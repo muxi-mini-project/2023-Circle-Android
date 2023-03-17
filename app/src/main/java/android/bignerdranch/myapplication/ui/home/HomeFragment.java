@@ -4,11 +4,15 @@ import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
+import android.bignerdranch.myapplication.ReusableTools.BaseFragment;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
-import android.bignerdranch.myapplication.ui.home.EditPosts.NewPostsActivity;
+import android.bignerdranch.myapplication.ui.home.NewPosts.EditPostsActivity;
+import android.bignerdranch.myapplication.ui.home.Posts.Posts;
+import android.bignerdranch.myapplication.ui.home.Posts.PostsAdapter;
+import android.bignerdranch.myapplication.ui.home.Posts.PostsLab;
 import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,9 +21,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,10 +39,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
     private RecyclerView mHomeRecyclerView;
     private PostsAdapter mPostsAdapter;
     private ImageButton newPostsBtn;
+
+    private RadioButton mRecButton;
+    private RadioButton mFollowButton;
+    private RadioButton mNewestButton;
 
     private Retrofit mRetrofit;
     private Api mApi;
@@ -62,17 +70,43 @@ public class HomeFragment extends Fragment {
         newPostsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = NewPostsActivity.newIntent(getActivity());
+                Intent intent = EditPostsActivity.newIntent(getActivity());
                 startActivity(intent);
             }
         });
 
-        upDateUI();
+        {
+            mRecButton = (RadioButton) view.findViewById(R.id.radio_recommend_btn);
+            mRecButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    upDateUI(1);
+                }
+            });
+
+            mFollowButton = (RadioButton) view.findViewById(R.id.radio_follow_btn);
+            mFollowButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    upDateUI(2);
+                }
+            });
+
+            mNewestButton = (RadioButton) view.findViewById(R.id.radio_newest_btn);
+            mNewestButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    upDateUI(3);
+                }
+            });
+        }//设置RadioButton
+
+        upDateUI(1);
 
         return view;
     }
 
-    private void upDateUI() {
+    private void upDateUI(int t) {
         {
             mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -88,26 +122,39 @@ public class HomeFragment extends Fragment {
             startDate = StringTool.getDateString(calendar.getTime());
             endDate = StringTool.getDateString(new Date());
         }//制作end和start时间字符串
-        Call<SimpleResult> apiResultCall = mApi.recPost(mToken, "日常唠嗑", endDate, startDate, 10, 0);
-        Log.d("TAG", endDate + " " + startDate);
-        apiResultCall.enqueue(new Callback<SimpleResult>() {
-            @Override
-            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                if (response.body() != null) {
-                    mData = response.body().getData();
+        Call<SimpleResult> apiResultCall = null;
+        switch (t) {
+            case 1:
+                apiResultCall = mApi.recPost(mToken, "日常唠嗑", endDate, startDate, 10, 0);
+                break;
+            case 2:
+                apiResultCall = mApi.followPost(mToken);
+                break;
+            case 3:
+                apiResultCall=mApi.newestPost(mToken,0,10);
+        }
+        if (apiResultCall!=null){
+            apiResultCall.enqueue(new Callback<SimpleResult>() {
+                @Override
+                public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                    if (response.body() != null) {
+                        mData = response.body().getData();
+                        for (String e : mData) {
+                            Log.d("TAG", e);
+                        }
+                    }
+                    setAdapterAbout();
                 }
-                setAdapterAbout();
 
-            }
-
-            @Override
-            public void onFailure(Call<SimpleResult> call, Throwable t) {
-                Toast.makeText(getActivity(), "网络请求异常！", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<SimpleResult> call, Throwable t) {
+                    Toast.makeText(getActivity(), "查询帖子id数组；网络请求异常！", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
-    private void setAdapterAbout() {
+    public void setAdapterAbout() {
         postsLab = PostsLab.get(mData.length);
         List<BaseItem> mList = new ArrayList<>();
         mList.add(new SearchBox());//在mList中加入搜索框
@@ -115,8 +162,10 @@ public class HomeFragment extends Fragment {
             mList.add(e);
         }
 
-        mHomeRecyclerView.addItemDecoration(new SpaceItemDecoration(20));//设置item之间的间隔为20
-        mPostsAdapter = new PostsAdapter(mList, mData, mToken, getActivity());//将mList装载入Adapter中
+        if (mHomeRecyclerView.getItemDecorationCount()==0){
+            mHomeRecyclerView.addItemDecoration(new SpaceItemDecoration(40));//设置item之间的间隔为20
+        }
+        mPostsAdapter = new PostsAdapter(mList, mData, mToken, getActivity(), this);//将mList装载入Adapter中
         mHomeRecyclerView.setAdapter(mPostsAdapter);//给该recyclerview设置adapter
 
         mPostsAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
@@ -128,4 +177,10 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void setData(String[] data) {
+        mData = data;
+    }
+
 }

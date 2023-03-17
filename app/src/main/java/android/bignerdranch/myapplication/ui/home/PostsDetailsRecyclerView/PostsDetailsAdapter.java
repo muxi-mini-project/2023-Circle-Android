@@ -9,7 +9,7 @@ import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
-import android.bignerdranch.myapplication.ui.home.PostsHolder;
+import android.bignerdranch.myapplication.ui.home.Posts.PostsHolder;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
