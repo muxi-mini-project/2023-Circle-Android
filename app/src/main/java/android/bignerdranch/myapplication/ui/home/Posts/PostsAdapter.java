@@ -98,7 +98,6 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
                             for (int i = 1; !StringTool.getJsonString(response.body().getData(), "file_path" + i).equals(""); i++) {
                                 item.addPicPath(StringTool.getJsonString(response.body().getData(), "file_path" + i));
                             }
-                            Log.d("TAG", "第" + position + "位：" + mList.get(position).getID());
                         } else {
                             Log.d("TAG", "查找帖子：未收到返回体");
                         }

@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -102,11 +103,16 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         mIsFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mPosts.isFollow()) {
-                    followUser();
-                } else {
-                    delFollowUser();
+                if (!mPosts.getPublisherId().equals("0")){
+                    if (!mPosts.isFollow()) {
+                        followUser();
+                    } else {
+                        delFollowUser();
+                    }
+                }else {
+                    Toast.makeText(mContext,"匿名用户无法关注",Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
     }

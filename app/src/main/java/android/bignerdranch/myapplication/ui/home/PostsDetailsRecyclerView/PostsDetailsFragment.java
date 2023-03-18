@@ -76,13 +76,15 @@ public class PostsDetailsFragment extends Fragment {
                 .findViewById(R.id.recyclerview_posts_details);
         mPostsDetailsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+
+
         mDeleteButton = (Button) view.findViewById(R.id.delete_button);
         mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog alertDialog2 = new AlertDialog.Builder(getContext())
                         .setTitle("确定删除这个帖子吗？")
-                        .setMessage("您可以稍作考虑")
+                        .setMessage("如果您是这个帖子的发布者的话，您可以稍作考虑；否则您没有权限这么做")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -90,8 +92,10 @@ public class PostsDetailsFragment extends Fragment {
                                 deleteResult.enqueue(new Callback<SimpleResult>() {
                                     @Override
                                     public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                                        Toast.makeText(getActivity(), "删除帖子成功！", Toast.LENGTH_SHORT).show();
-                                        onStop();
+                                        if (!response.body().getMsg().equals("没有权限.")){
+                                            Toast.makeText(getActivity(), "删除帖子成功！", Toast.LENGTH_SHORT).show();
+                                            getActivity().finish();
+                                        }
                                     }
 
                                     @Override

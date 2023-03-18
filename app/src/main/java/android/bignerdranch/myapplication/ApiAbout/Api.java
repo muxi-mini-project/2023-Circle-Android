@@ -45,6 +45,10 @@ public interface Api {
     Call<SimpleResult> commentPost(@Header("Authorization") String token, @Field("post_id") String postsId, @Field("private") boolean isPrivate,
                                    @Field("status") int one, @Field("content") String content);
 
+    //删除评论
+    @DELETE("post/comment")
+    Call<SimpleResult> delComment(@Header("Authorization")String token,@Query("comment_id")String commentId,@Query("post_id")String postId);
+
     //根据帖子id查询帖子的评论id数组
     @GET("post/comments/{post_id}")
     Call<SimpleResult> CommentOfPosts(@Header("Authorization") String token, @Path("post_id") String postId);
