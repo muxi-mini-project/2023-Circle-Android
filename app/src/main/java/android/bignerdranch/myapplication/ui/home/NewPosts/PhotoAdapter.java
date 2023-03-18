@@ -78,7 +78,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                     //test
                     Log.d("test", "onBindVIewholder");
-                    
+
 
                     //权限检查
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
