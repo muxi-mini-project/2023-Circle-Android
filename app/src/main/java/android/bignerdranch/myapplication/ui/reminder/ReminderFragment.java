@@ -83,7 +83,7 @@ public class ReminderFragment extends Fragment {
         List<Reminder> reminders = reminderLab.getReminders();
 
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(20));
-        mAdapter = new ReminderAdapter(reminders, mData, mToken, getActivity());
+        mAdapter = new ReminderAdapter(reminders, mData, mToken, this.getContext());
         mRecyclerView.setAdapter(mAdapter);
 
         mAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {

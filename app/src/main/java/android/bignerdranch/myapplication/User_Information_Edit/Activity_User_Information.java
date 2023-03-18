@@ -215,21 +215,8 @@ public class Activity_User_Information extends BaseActivity {
         mIsFemaleButton = (ImageButton) findViewById(R.id.isfemale);
         mUnselectedButton = (ImageButton) findViewById(R.id.unselected);
 
-        //初始化性别按钮的
-        if (user_information.getUserSex() == UserSex.Male) {
-            mIsMaleButton.setBackgroundResource(R.drawable.ismale_yes);
-            mIsFemaleButton.setBackgroundResource(R.drawable.isfemale_no);
-            mUnselectedButton.setBackgroundResource(R.drawable.unselected_no);
-        } else if (user_information.getUserSex() == UserSex.Female) {
-            mIsMaleButton.setBackgroundResource(R.drawable.ismale_no);
-            mIsFemaleButton.setBackgroundResource(R.drawable.isfemale_yes);
-            mUnselectedButton.setBackgroundResource(R.drawable.unselected_no);
-        } else if (user_information.getUserSex() == UserSex.Unselected) {
-            mIsMaleButton.setBackgroundResource(R.drawable.ismale_no);
-            mIsFemaleButton.setBackgroundResource(R.drawable.isfemale_no);
-            mUnselectedButton.setBackgroundResource(R.drawable.unselected_yes);
-        }
-        //初始化到此为止
+
+        setUserSex();
 
 
         mIsMaleButton.setOnClickListener(new View.OnClickListener() {
@@ -272,6 +259,14 @@ public class Activity_User_Information extends BaseActivity {
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
                 mUser_name_field.setText(StringTool.getJsonString(response.body().getData(), "Name"));
                 mSignature_field.setText(StringTool.getJsonString(response.body().getData(), "Signature"));
+                UserSex userSex=UserSex.Unselected;
+                switch (StringTool.getJsonString(response.body().getData(),"Gender")){
+                    case "Male":userSex=UserSex.Male;break;
+                    case "Female":userSex=UserSex.Female;break;
+                    case "Unselected":userSex=UserSex.Unselected;break;
+                }
+                user_information.setUserSex(userSex);
+                setUserSex();
                 String profile=StringTool.getJsonString(response.body().getData(),"AvatarPath");
                 Glide.with(Activity_User_Information.this)
                         .load("http://"+profile)
@@ -311,6 +306,23 @@ public class Activity_User_Information extends BaseActivity {
         });
 
 
+    }
+
+    private void setUserSex(){
+        //初始化性别按钮的
+        if (user_information.getUserSex() == UserSex.Male) {
+            mIsMaleButton.setBackgroundResource(R.drawable.ismale_yes);
+            mIsFemaleButton.setBackgroundResource(R.drawable.isfemale_no);
+            mUnselectedButton.setBackgroundResource(R.drawable.unselected_no);
+        } else if (user_information.getUserSex() == UserSex.Female) {
+            mIsMaleButton.setBackgroundResource(R.drawable.ismale_no);
+            mIsFemaleButton.setBackgroundResource(R.drawable.isfemale_yes);
+            mUnselectedButton.setBackgroundResource(R.drawable.unselected_no);
+        } else if (user_information.getUserSex() == UserSex.Unselected) {
+            mIsMaleButton.setBackgroundResource(R.drawable.ismale_no);
+            mIsFemaleButton.setBackgroundResource(R.drawable.isfemale_no);
+            mUnselectedButton.setBackgroundResource(R.drawable.unselected_yes);
+        }
     }
 
     private String getProfileType(String path) {

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
+import android.bignerdranch.myapplication.R;
+import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.content.Context;
@@ -45,35 +47,56 @@ public class ReminderAdapter extends RecyclerView.Adapter {
 
     @Override
     public ReminderHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 
-        return new ReminderHolder(layoutInflater, parent,mContext);
+        return new ReminderHolder((LayoutInflater.from(parent.getContext()).inflate(R.layout.item_reminder,
+                parent, false)), ItemTypeDef.Type.REMINDER,myRecyclerItemClickListener,mContext);
     }
 
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView")int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder mHolder, @SuppressLint("RecyclerView")int position) {
         Reminder reminder = mReminders.get(position);
+        ReminderHolder holder=(ReminderHolder) mHolder;
         {
             mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             mApi = mRetrofit.create(Api.class);
         }
+
         Call<ComplexResult> likesInformation= mApi.getLikeInformation(mData[position],mToken);
         likesInformation.enqueue(new Callback<ComplexResult>() {
             @Override
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
                 reminder.setId(mData[position]);
                 reminder.setPostID(StringTool.getJsonString(response.body().getData(),"post_id"));
+                reminder.setUserID(StringTool.getJsonString(response.body().getData(),"user_id"));
                 reminder.setDate(StringTool.getJsonString(response.body().getData(),"UpdatedAt"));
-                Call<ComplexResult> seekPost=mApi.seekPosts(reminder.getPostID(),mToken);
-                seekPost.enqueue(new Callback<ComplexResult>() {
+
+                Call<ComplexResult> userMsg=mApi.getUserMsg(reminder.getUserID(),mToken);
+                userMsg.enqueue(new Callback<ComplexResult>() {
                     @Override
                     public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
                         if (response.body()!=null){
-                            reminder.setTitle(StringTool.getJsonString(response.body().getData(),"title"));
-                            reminder.setPersonName(StringTool.getJsonString(response.body().getData(),"author_name"));
-                            reminder.setProfile(StringTool.getJsonString(response.body().getData(),"avatar_path"));
-                            ((ReminderHolder) holder).bind(reminder);
+                            reminder.setPersonName(StringTool.getJsonString(response.body().getData(),"Name"));
+                            reminder.setProfile(StringTool.getJsonString(response.body().getData(),"AvatarPath"));
+
+                            Call<ComplexResult> postMsg=mApi.seekPosts(reminder.getPostID(),mToken);
+                            postMsg.enqueue(new Callback<ComplexResult>() {
+                                @Override
+                                public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
+                                    if (response.body()!=null){
+                                        reminder.setTitle(StringTool.getJsonString(response.body().getData(),"title"));
+                                        Log.d("TAG",reminder.getPersonName());
+                                        holder.bind(reminder);
+                                    }
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<ComplexResult> call, Throwable t) {
+                                    Log.d("TAG","Reminder:查找用户帖子信息");
+                                }
+                            });
+
                         }else {
                             Log.d("TAG","Reminder，查找帖子：未收到返回体");
                         }

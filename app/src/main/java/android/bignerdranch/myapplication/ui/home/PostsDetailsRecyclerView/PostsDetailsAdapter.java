@@ -52,7 +52,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<BaseHolder> {
     public BaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (ItemTypeDef.Type.getItemTypeByCode(viewType)) {
             case COMMENT:
-                return new CommentHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment, parent, false), ItemTypeDef.Type.COMMENT,mContext);//创建新CommentHolder
+                return new CommentHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment, parent, false), ItemTypeDef.Type.COMMENT,mContext,mToken,mList.get(0).getID());//创建新CommentHolder
             case POSTS:
                 return new PostsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_posts_layout, parent, false), ItemTypeDef.Type.POSTS, myRecyclerItemClickListener, mToken, mContext);//创建一个新的PostsHolder
         }

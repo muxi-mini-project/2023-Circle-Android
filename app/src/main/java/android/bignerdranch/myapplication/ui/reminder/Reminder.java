@@ -3,7 +3,7 @@ package android.bignerdranch.myapplication.ui.reminder;
 public class Reminder {
     private String mId;                         //通知的编码
     private String mPostID;
-    private String mUserID;
+    private String mUserID;                     //通知发出者的id
     private String mPersonName;               //存储通知相关的对象
     private String mDate;                       //存储通知时间
     private String mTitle;                  //对应帖子的标题
