@@ -10,12 +10,13 @@ import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
+import android.bignerdranch.myapplication.ui.home.PersonalPage.PersonalPageActivity;
 import android.bignerdranch.myapplication.ui.home.Posts.Picture.PicAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -42,7 +43,7 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
     private final ImageButton mIsLikes;
     private final TextView mLikesNum;
     private final TextView mCommentNum;
-    private final ImageView mProfile;
+    private final ImageButton mProfile;
     private final Retrofit mRetrofit;
     private final Api mApi;
     private final String mToken;
@@ -62,6 +63,7 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
                 .build();
         mApi = mRetrofit.create(Api.class);
 
+
         {
             mContext = context;
             mToken = token;//传入token
@@ -75,6 +77,14 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
             mCommentNum = itemView.findViewById(R.id.comment_num);
             mProfile = itemView.findViewById(R.id.publish_head_portrait);
         }
+
+        mProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = PersonalPageActivity.newIntent(mContext, mPosts.getPublisherId());
+                mContext.startActivity(intent);
+            }
+        });
 
 
         mIsLikes.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +114,6 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
     public void bind(BaseItem item, String id) {
         if (mPosts == null) {
             mPosts = (Posts) item;
-            setPostsFirstly();
         }
         Call<ComplexResult> seekPostsResult = mApi.seekPosts(id, mToken);
         //每次装载数据时都要通过网络请求更新帖子数据，如点赞数之类的
@@ -169,7 +178,6 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         }
     }
 
-    //只在第一次加载帖子时调用一次
     private void setPostsFirstly() {
         mTitle.setText(mPosts.getTitle());
         mContent.setText(mPosts.getContent());
@@ -185,16 +193,18 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
                     .into(mProfile);
         }//设置头像
         if (mPosts.getPicPaths() != null) {
-            if (mPicRecyclerview.getItemDecorationCount() == 0) {
-                mPicRecyclerview.addItemDecoration(new SpaceItemDecoration(10));
+            if (mPicAdapter == null) {
+                if (mPicRecyclerview.getItemDecorationCount() == 0) {
+                    mPicRecyclerview.addItemDecoration(new SpaceItemDecoration(10));
+                }
+                mPicAdapter = new PicAdapter(mPosts.getPicPaths(), mContext);
+                mPicRecyclerview.setAdapter(mPicAdapter);
             }
-            mPicAdapter = new PicAdapter(mPosts.getPicPaths(), mContext);
-            mPicRecyclerview.setAdapter(mPicAdapter);
         }
-
     }
 
     private void setPosts() {
+        setPostsFirstly();
         mLikesNum.setText(mPosts.getLikesNumber());
         mCommentNum.setText(mPosts.getCommentNumber());
         setLikes(mPosts.isLikes());

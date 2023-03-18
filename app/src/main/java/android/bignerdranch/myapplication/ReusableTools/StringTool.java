@@ -11,7 +11,7 @@ public class StringTool {
         if (jsonObject.getAsJsonPrimitive(key)!=null){
             s=jsonObject.getAsJsonPrimitive(key).toString().replaceAll("\"","");
         }else {
-            s=null;
+            s="";
         }
         return s;
     }

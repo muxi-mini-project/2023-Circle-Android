@@ -32,13 +32,13 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
 
     private static Retrofit mRetrofit;
     private static Api mApi;
-    private List<BaseItem> mList;//该Adapter管理的Posts的List
+    private final List<BaseItem> mList;//该Adapter管理的Posts的List
     private MyRecyclerItemClickListener myRecyclerItemClickListener;
-    private String[] mData;
-    private String mToken;
-    private Context mContext;
+    private final String[] mData;
+    private final String mToken;
+    private final Context mContext;
 
-    private BaseFragment mFragment;
+    private final BaseFragment mFragment;
 
     public PostsAdapter(List<BaseItem> List, String[] data, String token, Context context, BaseFragment fragment) {
         mFragment = fragment;
@@ -59,8 +59,9 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
                 return new SearchBoxHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_box,
                         parent, false), ItemTypeDef.Type.SEARCH_BOX, mContext, mToken, mFragment);
             case POSTS:
-                return new PostsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_posts_layout,
+                PostsHolder holder=new PostsHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_posts_layout,
                         parent, false), ItemTypeDef.Type.POSTS, myRecyclerItemClickListener, mToken, mContext);
+                return holder;
             //在此处将token和context都传递给PostsHolder
         }
         return null;
@@ -68,6 +69,7 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
 
     public void onBindViewHolder(@NonNull BaseHolder holder, @SuppressLint("RecyclerView") int position) {
         if (holder.getType() == ItemTypeDef.Type.POSTS) {
+
             Posts item = (Posts) mList.get(position);
             PostsHolder postsHolder = (PostsHolder) holder;
             {
@@ -78,13 +80,12 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
             }
             //由于是初次启动，要先通过网络请求返回体得到数据并装载后再启动Holder
 
-            Log.d("TAG", mData[position - 1]);
             Call<ComplexResult> seekPostsResult = mApi.seekPosts(mData[position - 1], mToken);
             seekPostsResult.enqueue(new Callback<ComplexResult>() {
                 @Override
                 public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
                     {
-                        if (response.body()!=null){
+                        if (response.body() != null) {
                             item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));//用户名
                             item.setTitle(StringTool.getJsonString(response.body().getData(), "title"));//标题
                             item.setContent(StringTool.getJsonString(response.body().getData(), "content"));//内容
@@ -94,14 +95,12 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
                             item.setLikesNumber(StringTool.getJsonString(response.body().getData(), "likes"));//点赞数
                             item.setCommentNumber(StringTool.getJsonString(response.body().getData(), "comment_no"));
                             item.setPublisherId(StringTool.getJsonString(response.body().getData(), "author_id"));
-                            if (!StringTool.getJsonString(response.body().getData(),"file_path1").equals("")){
-                                for (int i=1;!StringTool.getJsonString(response.body().getData(),"file_path"+i).equals("");i++){
-                                    Log.d("TAG","file_path"+i);
-                                    item.addPicPath(StringTool.getJsonString(response.body().getData(),"file_path"+i));
-                                }
+                            for (int i = 1; !StringTool.getJsonString(response.body().getData(), "file_path" + i).equals(""); i++) {
+                                item.addPicPath(StringTool.getJsonString(response.body().getData(), "file_path" + i));
                             }
-                        }else {
-                            Log.d("TAG","查找帖子：未收到返回体");
+                            Log.d("TAG", "第" + position + "位：" + mList.get(position).getID());
+                        } else {
+                            Log.d("TAG", "查找帖子：未收到返回体");
                         }
                     }
                     //由于服务器给的帖子数据当中并没有这个帖子是否已经点赞的数据，所以要写一个嵌套请求
@@ -110,11 +109,7 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
                     isLikeResult.enqueue(new Callback<SimpleResult>() {
                         @Override
                         public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                            if (response.body().getMsg().equals("yes")) {
-                                item.setLikes(true);
-                            } else {
-                                item.setLikes(false);
-                            }
+                            item.setLikes(response.body().getMsg().equals("yes"));
                             postsHolder.bind(item, item.getID());//把此帖子的id传递给holder
                         }
 
@@ -147,7 +142,6 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
     public void setOnItemClickListener(MyRecyclerItemClickListener listener) {
         this.myRecyclerItemClickListener = listener;
     }
-
 
 
 }

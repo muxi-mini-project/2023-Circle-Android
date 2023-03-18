@@ -4,7 +4,9 @@ import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.User_Information_Edit.User_Information;
+import android.bignerdranch.myapplication.ui.home.PersonalPage.PersonalPageActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserListHolder extends RecyclerView.ViewHolder {
 
-    private ImageView mProfile;
+    private ImageButton mProfile;
     private TextView mUserName;
     private TextView mUserSignature;
     private ImageButton mIsFollow;
@@ -52,10 +54,18 @@ public class UserListHolder extends RecyclerView.ViewHolder {
         mContext = context;
         mToken = token;
 
-        mProfile = (ImageView) itemView.findViewById(R.id.profile);
+        mProfile = (ImageButton) itemView.findViewById(R.id.profile);
         mUserName = (TextView) itemView.findViewById(R.id.user_name);
         mUserSignature = (TextView) itemView.findViewById(R.id.user_signature);
         mIsFollow = (ImageButton) itemView.findViewById(R.id.is_followed_btn);
+
+        mProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= PersonalPageActivity.newIntent(mContext,mUser.getUserId());
+                mContext.startActivity(intent);
+            }
+        });
 
         mIsFollow.setOnClickListener(new View.OnClickListener() {
             @Override

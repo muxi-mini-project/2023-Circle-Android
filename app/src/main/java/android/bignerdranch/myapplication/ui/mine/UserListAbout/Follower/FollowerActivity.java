@@ -10,23 +10,38 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 public class FollowerActivity extends BaseActivity {
+
+    private static final String EXTRA_USER_ID =
+            "com.bignerdranch.android.huaxiaoquan.user_id";
+    private String mUserId;
+
+    public static Intent newIntent(Context packageContext, String userId) {
+        Intent intent = new Intent(packageContext, FollowerActivity.class);
+        intent.putExtra(EXTRA_USER_ID, userId);
+        return intent;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_user);
 
-        FragmentManager fragmentManager=getSupportFragmentManager();
-        Fragment fragment=fragmentManager.findFragmentById(R.id.layout_user);
+        mUserId = getIntent().getStringExtra(EXTRA_USER_ID);
 
-        if(fragment==null){
-            fragment=new FollowerFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.layout_user);
+
+        if (fragment == null) {
+            fragment = createFragment();
             fragmentManager.beginTransaction()
-                    .add(R.id.layout_user,fragment)
+                    .add(R.id.layout_user, fragment)
                     .commit();
         }
     }
-    public static Intent newIntent(Context packageContext) {
-        Intent intent = new Intent(packageContext, FollowerActivity.class);
-        return intent;
+
+    private Fragment createFragment() {
+        FollowerFragment fragment = new FollowerFragment();
+        fragment.setUserId(mUserId);
+        return fragment;
     }
 }

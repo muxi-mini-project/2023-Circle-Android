@@ -40,8 +40,13 @@ public class FollowerFragment extends Fragment {
 
     private TextView mTitle;
 
+    private String mUserId;
     private String mToken;
     private String[] mData;
+
+    public void setUserId(String userId) {
+        mUserId = userId;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,8 +72,7 @@ public class FollowerFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mApi = mRetrofit.create(Api.class);
-
-        Call<SimpleResult> getLikedMsg = mApi.getMyFollow(mToken);
+        Call<SimpleResult> getLikedMsg=mApi.getUserFollow(mUserId,mToken);
         getLikedMsg.enqueue(new Callback<SimpleResult>() {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {

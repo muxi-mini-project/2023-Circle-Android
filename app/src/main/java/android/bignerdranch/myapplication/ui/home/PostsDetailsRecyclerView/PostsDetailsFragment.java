@@ -6,8 +6,8 @@ import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
-import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
+import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ui.home.Posts.Posts;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -46,7 +46,7 @@ public class PostsDetailsFragment extends Fragment {
     private Retrofit mRetrofit;
     private Api mApi;
 
-    private List<BaseItem> mList = new ArrayList<>();
+    private final List<BaseItem> mList = new ArrayList<>();
 
     private String[] data;//评论id数组
     private String mPostsID;
@@ -129,18 +129,18 @@ public class PostsDetailsFragment extends Fragment {
                 if (mCommentEdit.getText().toString().trim().equals("")) {
                     Toast.makeText(getActivity(), "请输入评论！", Toast.LENGTH_SHORT).show();
                 } else {
-                    Call<SimpleResult> commentResult= mApi.commentPost(mToken,mPostsID,false,1,
+                    Call<SimpleResult> commentResult = mApi.commentPost(mToken, mPostsID, false, 1,
                             mCommentEdit.getText().toString());
                     commentResult.enqueue(new Callback<SimpleResult>() {
                         @Override
                         public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                            Toast.makeText(getActivity(),"评论成功！",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "评论成功！", Toast.LENGTH_SHORT).show();
                             mCommentEdit.setText("");
                         }
 
                         @Override
                         public void onFailure(Call<SimpleResult> call, Throwable t) {
-                            Log.d("TAG","评论失败");
+                            Log.d("TAG", "评论失败");
                         }
                     });
                 }
@@ -156,14 +156,14 @@ public class PostsDetailsFragment extends Fragment {
     private void upDateUI() {
         Posts item = new Posts();
         Call<ComplexResult> seekPostsResult = mApi.seekPosts(mPostsID, mToken);
+        Log.d("TAG","mPostsID"+mPostsID);
         seekPostsResult.enqueue(new Callback<ComplexResult>() {
             @Override
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
                 {
-                    if (!StringTool.getJsonString(response.body().getData(),"file_path1").equals("")){
-                        for (int i=1;!StringTool.getJsonString(response.body().getData(),"file_path"+i).equals("");i++){
-                            Log.d("TAG","file_path"+i);
-                            item.addPicPath(StringTool.getJsonString(response.body().getData(),"file_path"+i));
+                    if (!StringTool.getJsonString(response.body().getData(), "file_path1").equals("")) {
+                        for (int i = 1; !StringTool.getJsonString(response.body().getData(), "file_path" + i).equals(""); i++) {
+                            item.addPicPath(StringTool.getJsonString(response.body().getData(), "file_path" + i));
                         }
                     }
                     item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));
@@ -171,7 +171,7 @@ public class PostsDetailsFragment extends Fragment {
                     item.setTime(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));
                     item.setProfilePath(StringTool.getJsonString(response.body().getData(), "avatar_path"));
                     item.setID(StringTool.getJsonString(response.body().getData(), "ID"));
-                    item.setTitle(StringTool.getJsonString(response.body().getData(),"title"));
+                    item.setTitle(StringTool.getJsonString(response.body().getData(), "title"));
                     mList.add(item);
                 }//接收当前帖子的数据
 
