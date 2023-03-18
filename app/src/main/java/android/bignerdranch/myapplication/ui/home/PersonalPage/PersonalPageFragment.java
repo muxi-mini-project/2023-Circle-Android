@@ -1,4 +1,4 @@
-package android.bignerdranch.myapplication.ui.mine;
+package android.bignerdranch.myapplication.ui.home.PersonalPage;
 
 import android.annotation.SuppressLint;
 import android.bignerdranch.myapplication.ApiAbout.Api;
@@ -11,7 +11,6 @@ import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
-import android.bignerdranch.myapplication.User_Information_Edit.Activity_User_Information;
 import android.bignerdranch.myapplication.ui.home.Posts.Posts;
 import android.bignerdranch.myapplication.ui.home.Posts.PostsAdapter;
 import android.bignerdranch.myapplication.ui.home.Posts.PostsLab;
@@ -19,7 +18,6 @@ import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.Posts
 import android.bignerdranch.myapplication.ui.home.SearchBox;
 import android.bignerdranch.myapplication.ui.mine.UserListAbout.Fans.FansActivity;
 import android.bignerdranch.myapplication.ui.mine.UserListAbout.Follower.FollowerActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,14 +43,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MineFragment extends BaseFragment {
-    private LinearLayout mUserInformation;
+public class PersonalPageFragment extends BaseFragment {
     private RecyclerView mPostsRecyclerView;
     private PostsAdapter mPostsAdapter;
 
     private Retrofit mRetrofit;
     private Api mApi;
 
+    private String mUserId;
     private String[] mData;//帖子id数组
     private String token;
     private PostsLab postsLab;
@@ -66,6 +64,10 @@ public class MineFragment extends BaseFragment {
     private TextView mFollowNum;
     private TextView mFansNum;
 
+    public void setUserId(String userId) {
+        mUserId = userId;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle saveInstanceState) {
@@ -74,16 +76,6 @@ public class MineFragment extends BaseFragment {
         BaseActivity homeActivity = (BaseActivity) getActivity();//得到一个可以调用getMyToken的对象
         token = homeActivity.getMyToken();
 
-
-        mUserInformation = (LinearLayout) view
-                .findViewById(R.id.user_information);
-        mUserInformation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Activity_User_Information.class);
-                startActivity(intent);
-            }
-        });
 
         mUserName = (TextView) view.findViewById(R.id.user_name);
         mUserSignature = (TextView) view.findViewById(R.id.user_signature);
@@ -98,7 +90,7 @@ public class MineFragment extends BaseFragment {
                     .build();
             mApi = mRetrofit.create(Api.class);
         }
-        Call<ComplexResult> apiResult = mApi.getMyMsg(token);
+        Call<ComplexResult> apiResult = mApi.getUserMsg(mUserId, token);
         apiResult.enqueue(new Callback<ComplexResult>() {
             @SuppressLint("ResourceType")
             @Override
@@ -110,7 +102,7 @@ public class MineFragment extends BaseFragment {
                 mFansNum.setText(StringTool.getJsonString(response.body().getData(), "FollowerNo"));
                 profileUrl = StringTool.getJsonString(response.body().getData(), "AvatarPath");
                 Log.d("TAG", profileUrl);
-                Glide.with(MineFragment.this)
+                Glide.with(PersonalPageFragment.this)
                         .load("http://" + profileUrl
                         )
                         .error(R.mipmap.sign_in)
@@ -120,14 +112,14 @@ public class MineFragment extends BaseFragment {
 
             @Override
             public void onFailure(Call<ComplexResult> call, Throwable t) {
-                Log.d("TAG", "获取个人信息：网络请求失败！");
+                Log.d("TAG", "获取用户信息：网络请求失败！");
             }
         });
 
         mFollowNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = FollowerActivity.newIntent(getActivity(),"0");
+                Intent intent = FollowerActivity.newIntent(getActivity(),mUserId);
                 startActivity(intent);
             }
         });
@@ -135,7 +127,7 @@ public class MineFragment extends BaseFragment {
         mFansNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = FansActivity.newIntent(getActivity(),"0");
+                Intent intent = FansActivity.newIntent(getActivity(),mUserId);
                 startActivity(intent);
             }
         });
@@ -152,11 +144,7 @@ public class MineFragment extends BaseFragment {
     }
 
     private void upDateUI() {
-        mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        mApi = mRetrofit.create(Api.class);
-        Call<SimpleResult> apiResultCall = mApi.myPost(token);
+        Call<SimpleResult> apiResultCall = mApi.userPosts(mUserId, token);
         apiResultCall.enqueue(new Callback<SimpleResult>() {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -165,7 +153,6 @@ public class MineFragment extends BaseFragment {
                     setAdapterAbout();
                 }
             }
-
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable t) {
                 Toast.makeText(getActivity(), "网络请求异常！", Toast.LENGTH_SHORT).show();

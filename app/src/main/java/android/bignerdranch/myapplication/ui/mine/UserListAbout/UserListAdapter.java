@@ -49,7 +49,6 @@ public class UserListAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 
-        Log.d("TAG","创建Holder");
         return new UserListHolder(layoutInflater, parent, mContext, mToken);
     }
 

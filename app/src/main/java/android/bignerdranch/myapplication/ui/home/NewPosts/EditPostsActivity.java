@@ -393,6 +393,7 @@ public class EditPostsActivity extends BaseActivity {
                 File[] files = new File[9];
                 MultipartBody.Part[] parts = new MultipartBody.Part[9];
                 for (int i = 0; i < imagePathList.size(); i++) {
+                    Log.d("TAG","imagePathList"+i+":"+imagePathList.get(i));
                     files[i] = new File(imagePathList.get(i));
                     parts[i] = MultipartBody.Part.createFormData("file", files[i].getName(),
                             RequestBody.create(MediaType.parse("image/*"), files[i]));
@@ -418,7 +419,6 @@ public class EditPostsActivity extends BaseActivity {
                         @Override
                         public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                             Toast.makeText(EditPostsActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-
                         }
 
                         @Override

@@ -40,8 +40,13 @@ public class FansFragment extends Fragment {
 
     private TextView mTitle;
 
+    private String mUserId;
     private String mToken;
     private String[] mData;
+
+    public void setUserId(String userid) {
+        mUserId = userid;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,8 +72,7 @@ public class FansFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mApi = mRetrofit.create(Api.class);
-
-        Call<SimpleResult> getLikedMsg = mApi.getMyFans(mToken);
+        Call<SimpleResult> getLikedMsg=mApi.getUserFans(mUserId,mToken);
         getLikedMsg.enqueue(new Callback<SimpleResult>() {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {

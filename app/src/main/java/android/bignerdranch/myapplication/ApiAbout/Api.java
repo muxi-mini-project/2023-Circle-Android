@@ -111,9 +111,17 @@ public interface Api {
     @GET("user/my_following")
     Call<SimpleResult> getMyFollow(@Header("Authorization") String token);
 
+    //查询他人关注id数组
+    @GET("user/{id}/user_following")
+    Call<SimpleResult> getUserFollow(@Path("id") String userId, @Header("Authorization") String token);
+
     //查询我的粉丝id数组
     @GET("user/my_followers")
     Call<SimpleResult> getMyFans(@Header("Authorization") String token);
+
+    //查询用户粉丝id数组
+    @GET("user/{id}/user_followers")
+    Call<SimpleResult> getUserFans(@Path("id") String userId, @Header("Authorization") String token);
 
     //查询帖子是否已赞
     @GET("post/whether_like")
@@ -138,6 +146,10 @@ public interface Api {
     //查询他人信息
     @GET("user/{id}/user_outline")
     Call<ComplexResult> getUserMsg(@Path("id") String userId, @Header("Authorization") String token);
+
+    //查询他人帖子信息id数组
+    @GET("user/{id}/user_post")
+    Call<SimpleResult> userPosts(@Path("id") String userId, @Header("Authorization") String token);
 
     //搜索用户
     @GET("user/search")

@@ -1,7 +1,5 @@
 package android.bignerdranch.myapplication.User_Information_Edit;
 
-;
-
 import android.Manifest;
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
@@ -9,7 +7,6 @@ import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseActivity;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
-import android.bignerdranch.myapplication.User_Information_Edit.UserImageChange;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -28,6 +25,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
 
 import okhttp3.MediaType;
@@ -44,6 +43,7 @@ public class Activity_User_Information extends BaseActivity {
     private static final int TAKE_PHOTO = 0X66;
     private static final int PICK_PHOTO = 0X88;
     public static SharedPreferences sharedPreferences;
+    private final String fileName = "IMG_head.jpg";
     private ImageButton BackBtn;
     private Button ConfirmBtn;
     private ImageButton mIsMaleButton;
@@ -54,10 +54,9 @@ public class Activity_User_Information extends BaseActivity {
     private User_Information user_information;
     private Retrofit mRetrofit;
     private Api mApi;
-    private final String fileName = "IMG_head.jpg";
     private ImageButton profile_picture;
     private String path;
-    private UserImageChange u = new UserImageChange(Activity_User_Information.this);
+    private final UserImageChange u = new UserImageChange(Activity_User_Information.this);
 
     //在进入界面时头像的初始化
     //通过sharedPreferences中存储的image的path，将image以bitmap形式解码(decode)出来，并在头像位置上显示
@@ -125,21 +124,20 @@ public class Activity_User_Information extends BaseActivity {
                 if (u.getFile() == null || !u.getFile().exists()) {
                     profile_picture.setImageBitmap(null);
                 } else {
-                    Bitmap bitmap = u.getScaledBitmap(u.getFile().getPath(), Activity_User_Information.this);                                                 //缩放图片，以bitmap形式返回
+                    Bitmap bitmap = UserImageChange.getScaledBitmap(u.getFile().getPath(), Activity_User_Information.this);                                                 //缩放图片，以bitmap形式返回
                     profile_picture.setImageBitmap(bitmap);                      //为头像实例设置图片
                     savePhotos(u.getFile().getPath());                           //保存图片到本地的
 
-
-                    File profile=new File(u.getFile().getPath());
-                    MultipartBody.Part part=MultipartBody.Part.createFormData("file",fileName,
+                    File profile = new File(u.getFile().getPath());
+                    MultipartBody.Part part = MultipartBody.Part.createFormData("file", fileName,
                             RequestBody.create(MediaType.parse("image/*"), profile));
 
 
-                    Call<SimpleResult> apiResult=mApi.putMyProfile(getMyToken(),"yes",part);
+                    Call<SimpleResult> apiResult = mApi.putMyProfile(getMyToken(), "yes", part);
                     apiResult.enqueue(new Callback<SimpleResult>() {
                         @Override
                         public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                            Log.d("TAG",response.body().getMsg()+"相机");
+                            Log.d("TAG", response.body().getMsg() + "相机");
                         }
 
                         @Override
@@ -153,7 +151,7 @@ public class Activity_User_Information extends BaseActivity {
             } else if (requestCode == PICK_PHOTO) {
                 Uri uri = data.getData();
                 Activity_User_Information.this.revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                Log.d("TRy", uri.toString()+"url ");
+                Log.d("TRy", uri.toString() + "url ");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {    //高版本
                     path = u.handleImageOnKitKat(uri);                        //高版本获得path的方法
                 } else {
@@ -164,14 +162,14 @@ public class Activity_User_Information extends BaseActivity {
                 Log.d("相册", path);
                 profile_picture.setImageBitmap(bitmap);
                 savePhotos(path);
-                File profile=new File(path);
-                MultipartBody.Part part=MultipartBody.Part.createFormData("file",getProfileType(path),
+                File profile = new File(path);
+                MultipartBody.Part part = MultipartBody.Part.createFormData("file", getProfileType(path),
                         RequestBody.create(MediaType.parse("image/*"), profile));
-                Call<SimpleResult> apiResult=mApi.putMyProfile(getMyToken(),"yes",part);
+                Call<SimpleResult> apiResult = mApi.putMyProfile(getMyToken(), "yes", part);
                 apiResult.enqueue(new Callback<SimpleResult>() {
                     @Override
                     public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                        Log.d("TAG",response.body().getMsg()+"相册");
+                        Log.d("TAG", response.body().getMsg() + "相册");
                     }
 
                     @Override
@@ -274,6 +272,11 @@ public class Activity_User_Information extends BaseActivity {
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
                 mUser_name_field.setText(StringTool.getJsonString(response.body().getData(), "Name"));
                 mSignature_field.setText(StringTool.getJsonString(response.body().getData(), "Signature"));
+                String profile=StringTool.getJsonString(response.body().getData(),"AvatarPath");
+                Glide.with(Activity_User_Information.this)
+                        .load("http://"+profile)
+                        .centerCrop()
+                        .into(profile_picture);
             }
 
             @Override
@@ -309,7 +312,8 @@ public class Activity_User_Information extends BaseActivity {
 
 
     }
-    private String getProfileType(String path){
+
+    private String getProfileType(String path) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);

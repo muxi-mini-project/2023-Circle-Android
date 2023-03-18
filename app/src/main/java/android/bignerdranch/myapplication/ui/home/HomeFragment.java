@@ -130,13 +130,13 @@ public class HomeFragment extends BaseFragment {
         Call<SimpleResult> apiResultCall = null;
         switch (t) {
             case 1:
-                apiResultCall = mApi.recPost(mToken, "日常唠嗑", endDate, startDate, 10, 0);
+                apiResultCall = mApi.recPost(mToken, "日常唠嗑", endDate, startDate, 7, 0);
                 break;
             case 2:
                 apiResultCall = mApi.followPost(mToken);
                 break;
             case 3:
-                apiResultCall = mApi.newestPost(mToken, 0, 10);
+                apiResultCall = mApi.newestPost(mToken, 0, 7);
         }
         if (apiResultCall != null) {
             apiResultCall.enqueue(new Callback<SimpleResult>() {

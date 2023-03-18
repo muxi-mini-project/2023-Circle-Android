@@ -58,7 +58,6 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
                     intent = SignInActivity.newIntent(MainActivity.this);
                     Log.d("TAG",response.body().getMsg());
                 } else {
-
                     intent = NavigationBarActivity.newIntent(MainActivity.this);
                     Log.d("TAG",response.body().getMsg());
                 }

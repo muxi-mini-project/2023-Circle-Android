@@ -21,20 +21,12 @@ public class Posts extends BaseItem {
     private String commentNumber;//评论数
     private String profilePath;
     private List<String> picPaths;
-    //构造器
-    public Posts(String publisherName, String publishTime, String content) {
-        this.Name = publisherName;
-        this.content = content;
-        CreateTime = publishTime;
-    }
 
     //空构造器
     public Posts() {
         picPaths = new ArrayList<>();
         CreateTime = new Date().toString();
         UpdatedTime = CreateTime;
-        likesNumber = "0";
-        commentNumber = "0";
     }
 
     public List<String> getPicPaths() {
