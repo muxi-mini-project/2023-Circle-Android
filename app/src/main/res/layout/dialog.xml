@@ -3,7 +3,7 @@
     android:id="@+id/dialog"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:background="@color/white"
+    android:background="@color/lightgrey"
     android:orientation="vertical">
 
     <TextView

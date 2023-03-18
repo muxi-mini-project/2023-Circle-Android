@@ -22,9 +22,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1.25"
             android:orientation="vertical">
 
             <TextView
+                android:layout_marginLeft="10dp"
                 android:id="@+id/commenter_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -32,12 +34,32 @@
                 android:textSize="20dp"/>
 
             <TextView
+                android:layout_marginLeft="10dp"
                 android:id="@+id/comment_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/publish_time_text"
                 android:textSize="10dp"
                 android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="4">
+
+            <Button
+                android:id="@+id/delete_comment_button"
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:background="@drawable/recyangle2"
+                android:gravity="center"
+                android:text="删除"
+                android:textSize="15dp"
+                android:textColor="#FF3737"/>
+
 
         </LinearLayout>
 

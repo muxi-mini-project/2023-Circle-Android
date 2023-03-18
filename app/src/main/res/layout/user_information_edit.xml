@@ -9,7 +9,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="28dp"
+        android:layout_height="40dp"
         android:background="#FF8C37"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +22,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:text="编辑个人信息"
             android:textSize="60px"
             app:layout_constraintBottom_toBottomOf="parent"

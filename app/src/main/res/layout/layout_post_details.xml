@@ -38,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/posts_details_text"
+            android:textSize="50px"
             android:gravity="center"
             app:layout_constraintTop_toTopOf="parent"/>
 
@@ -70,6 +71,7 @@
         android:background="@color/white">
 
         <ImageView
+            android:layout_marginRight="10dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -81,7 +83,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="10"
-            android:hint="发表评论"/>
+            android:hint="发表评论"
+            android:layout_marginBottom="5dp"/>
 
         <Button
             android:id="@+id/comment_button"
