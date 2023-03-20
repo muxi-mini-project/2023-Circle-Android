@@ -170,6 +170,7 @@ public class PostsDetailsFragment extends Fragment {
                             item.addPicPath(StringTool.getJsonString(response.body().getData(), "file_path" + i));
                         }
                     }
+                    item.setPublisherId(StringTool.getJsonString(response.body().getData(),"author_id"));
                     item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));
                     item.setContent(StringTool.getJsonString(response.body().getData(), "content"));
                     item.setTime(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));

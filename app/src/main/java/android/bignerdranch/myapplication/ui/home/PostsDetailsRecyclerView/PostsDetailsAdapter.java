@@ -82,6 +82,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<BaseHolder> {
                     item.setTime(StringTool.getJsonString(response.body().getData(),"UpdatedAt"));
                     item.setPublisherID(StringTool.getJsonString(response.body().getData(),"user_id"));
                     item.setID(CommentData[position-1]);
+
                     Call<ComplexResult> userMsgResult=mApi.getUserMsg(item.getPublisherID(),mToken);
                     userMsgResult.enqueue(new Callback<ComplexResult>() {
                         @Override

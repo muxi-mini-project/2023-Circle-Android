@@ -16,6 +16,7 @@ import android.bignerdranch.myapplication.ui.home.Posts.PostsLab;
 import android.bignerdranch.myapplication.ui.home.PostsDetailsRecyclerView.PostsDetailsActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,6 +42,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class HomeFragment extends BaseFragment {
+
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mHomeRecyclerView;
     private PostsAdapter mPostsAdapter;
     private ImageButton newPostsBtn;
@@ -64,6 +68,7 @@ public class HomeFragment extends BaseFragment {
         BaseActivity homeActivity = (BaseActivity) getActivity();//得到一个可以调用getMyToken的对象
         mToken = homeActivity.getMyToken();
 
+        mSwipeRefreshLayout=(SwipeRefreshLayout) view.findViewById(R.id.recyclerview_swipe_refresh_layout);
         mHomeRecyclerView = (RecyclerView) view
                 .findViewById(R.id.recyclerview_home);
         mHomeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -179,6 +184,37 @@ public class HomeFragment extends BaseFragment {
                 Intent intent = PostsDetailsActivity.newIntent(getActivity()
                         , mPostsAdapter.getList().get(position).getID());
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void handlerDownPullUpdate(){
+//        mSwipeRefreshLayout.setColorSchemeResources();
+        //设置加载图标的颜色
+
+        mSwipeRefreshLayout.setEnabled(true);//设置可用
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {//刷新操作监听
+            @Override
+            public void onRefresh() {
+                //在这里面执行刷新数据的操作
+                /**
+                 * 当我们在顶部下拉的时候，这个方法就会被执行
+                 *  但是这个方法是MainThread是主线程，不可以执行耗时操作
+                 *  一般来说，我们请求数据要开一个线程去获取
+                 *  //这里面演示，直接添加数据
+                 */
+
+                //更新UI，我们假装卡3秒再添加数据
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        upDateUI();
+                        //这里做两件事，1.让刷新停止 2.更新列表
+                        mPostsAdapter.notifyDataSetChanged();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                },0);
             }
         });
     }

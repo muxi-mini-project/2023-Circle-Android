@@ -76,17 +76,23 @@
             android:layout_height="0dp"
             android:layout_weight="11">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_home"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/recyclerview_swipe_refresh_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             <ImageButton
                 android:id="@+id/new_posts_btn"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/recyclerview_home"
+                app:layout_constraintEnd_toEndOf="@+id/recyclerview_swipe_refresh_layout"
                 android:background="@mipmap/new_posts_button"
                 android:translationZ="1dp"
                 android:elevation="1dp"/>

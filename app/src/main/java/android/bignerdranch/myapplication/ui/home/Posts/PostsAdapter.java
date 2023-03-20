@@ -20,6 +20,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -85,22 +87,19 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
                 @Override
                 public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
                     {
-                        if (response.body() != null) {
-                            item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));//用户名
-                            item.setTitle(StringTool.getJsonString(response.body().getData(), "title"));//标题
-                            item.setContent(StringTool.getJsonString(response.body().getData(), "content"));//内容
-                            item.setTime(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));
-                            item.setProfilePath(StringTool.getJsonString(response.body().getData(), "avatar_path"));
-                            item.setID(StringTool.getJsonString(response.body().getData(), "ID"));//帖子id
-                            item.setLikesNumber(StringTool.getJsonString(response.body().getData(), "likes"));//点赞数
-                            item.setCommentNumber(StringTool.getJsonString(response.body().getData(), "comment_no"));
-                            item.setPublisherId(StringTool.getJsonString(response.body().getData(), "author_id"));
-                            for (int i = 1; !StringTool.getJsonString(response.body().getData(), "file_path" + i).equals(""); i++) {
-                                item.addPicPath(StringTool.getJsonString(response.body().getData(), "file_path" + i));
+                        JsonObject j=response.body().getData();
+                            item.setName(StringTool.getJsonString(j, "author_name"));//用户名
+                            item.setTitle(StringTool.getJsonString(j, "title"));//标题
+                            item.setContent(StringTool.getJsonString(j, "content"));//内容
+                            item.setTime(StringTool.getJsonString(j, "UpdatedAt"));
+                            item.setProfilePath(StringTool.getJsonString(j, "avatar_path"));
+                            item.setID(StringTool.getJsonString(j, "ID"));//帖子id
+                            item.setLikesNumber(StringTool.getJsonString(j, "likes"));//点赞数
+                            item.setCommentNumber(StringTool.getJsonString(j, "comment_no"));
+                            item.setPublisherId(StringTool.getJsonString(j, "author_id"));
+                            for (int i = 1; !StringTool.getJsonString(j, "file_path" + i).equals(""); i++) {
+                                item.addPicPath(StringTool.getJsonString(j, "file_path" + i));
                             }
-                        } else {
-                            Log.d("TAG", "查找帖子：未收到返回体");
-                        }
                     }
                     //由于服务器给的帖子数据当中并没有这个帖子是否已经点赞的数据，所以要写一个嵌套请求
                     //在这个请求完成后调用bind方法

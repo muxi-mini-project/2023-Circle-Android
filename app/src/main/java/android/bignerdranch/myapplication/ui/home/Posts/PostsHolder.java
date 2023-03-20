@@ -103,14 +103,14 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         mIsFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mPosts.getPublisherId().equals("0")){
+                if (!mPosts.getPublisherId().equals("0")) {
                     if (!mPosts.isFollow()) {
                         followUser();
                     } else {
                         delFollowUser();
                     }
-                }else {
-                    Toast.makeText(mContext,"匿名用户无法关注",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "匿名用户无法关注", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -118,9 +118,7 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
     }
 
     public void bind(BaseItem item, String id) {
-        if (mPosts == null) {
-            mPosts = (Posts) item;
-        }
+        mPosts = (Posts) item;
         Call<ComplexResult> seekPostsResult = mApi.seekPosts(id, mToken);
         //每次装载数据时都要通过网络请求更新帖子数据，如点赞数之类的
         seekPostsResult.enqueue(new Callback<ComplexResult>() {
