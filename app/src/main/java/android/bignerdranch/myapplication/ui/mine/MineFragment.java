@@ -12,6 +12,7 @@ import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListe
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.User_Information_Edit.Activity_User_Information;
+import android.bignerdranch.myapplication.User_Information_Edit.UserSex;
 import android.bignerdranch.myapplication.ui.home.Posts.Posts;
 import android.bignerdranch.myapplication.ui.home.Posts.PostsAdapter;
 import android.bignerdranch.myapplication.ui.home.Posts.PostsLab;
@@ -26,6 +27,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -61,6 +63,7 @@ public class MineFragment extends BaseFragment {
     private ImageView mProfile;
     private TextView mUserName;
     private TextView mUserSignature;
+    private ImageView mUserSex;
 
     private TextView mPostsNum;
     private TextView mFollowNum;
@@ -91,6 +94,7 @@ public class MineFragment extends BaseFragment {
         mFollowNum = (TextView) view.findViewById(R.id.follow_number);
         mFansNum = (TextView) view.findViewById(R.id.fans_number);
         mPostsNum = (TextView) view.findViewById(R.id.posts_number);
+        mUserSex=(ImageView) view.findViewById(R.id.user_sex);
 
         {
             mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
@@ -109,7 +113,7 @@ public class MineFragment extends BaseFragment {
                 mFollowNum.setText(StringTool.getJsonString(response.body().getData(), "FollowingNo"));
                 mFansNum.setText(StringTool.getJsonString(response.body().getData(), "FollowerNo"));
                 profileUrl = StringTool.getJsonString(response.body().getData(), "AvatarPath");
-                Log.d("TAG", profileUrl);
+                setUserSex(StringTool.getJsonString(response.body().getData(),"Gender"));
                 Glide.with(MineFragment.this)
                         .load("http://" + profileUrl
                         )
@@ -149,6 +153,14 @@ public class MineFragment extends BaseFragment {
         upDateUI();
 
         return view;
+    }
+
+    private void setUserSex(String userSex){
+            switch (userSex){
+                case "Male":mUserSex.setBackgroundResource(R.drawable.ismale_no);break;
+                case "Female":mUserSex.setBackgroundResource(R.drawable.isfemale_no);break;
+                case "Unselected":mUserSex.setBackgroundResource(R.drawable.unselected_no);break;
+            }
     }
 
     private void upDateUI() {

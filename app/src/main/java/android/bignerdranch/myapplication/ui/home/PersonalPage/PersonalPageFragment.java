@@ -59,6 +59,7 @@ public class PersonalPageFragment extends BaseFragment {
     private ImageView mProfile;
     private TextView mUserName;
     private TextView mUserSignature;
+    private ImageView mUserSex;
 
     private TextView mPostsNum;
     private TextView mFollowNum;
@@ -83,6 +84,7 @@ public class PersonalPageFragment extends BaseFragment {
         mFollowNum = (TextView) view.findViewById(R.id.follow_number);
         mFansNum = (TextView) view.findViewById(R.id.fans_number);
         mPostsNum = (TextView) view.findViewById(R.id.posts_number);
+        mUserSex=(ImageView)view.findViewById(R.id.user_sex);
 
         {
             mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
@@ -101,7 +103,7 @@ public class PersonalPageFragment extends BaseFragment {
                 mFollowNum.setText(StringTool.getJsonString(response.body().getData(), "FollowingNo"));
                 mFansNum.setText(StringTool.getJsonString(response.body().getData(), "FollowerNo"));
                 profileUrl = StringTool.getJsonString(response.body().getData(), "AvatarPath");
-                Log.d("TAG", profileUrl);
+                setUserSex(StringTool.getJsonString(response.body().getData(),"Gender"));
                 Glide.with(PersonalPageFragment.this)
                         .load("http://" + profileUrl
                         )
@@ -141,6 +143,14 @@ public class PersonalPageFragment extends BaseFragment {
         upDateUI();
 
         return view;
+    }
+
+    private void setUserSex(String userSex){
+        switch (userSex){
+            case "Male":mUserSex.setBackgroundResource(R.drawable.ismale_no);break;
+            case "Female":mUserSex.setBackgroundResource(R.drawable.isfemale_no);break;
+            default:mUserSex.setBackgroundResource(R.drawable.unselected_no);break;
+        }
     }
 
     private void upDateUI() {

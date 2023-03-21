@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
+import java.util.Set;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends BaseActivity {//继承了BaseActivity的透明任务栏，锁定竖屏
 
     Button mSignInButton;
-    Button mTestButton;
+    Button mSetUpButton;
 
     private Retrofit mRetrofit;
     private Api mApi;
@@ -45,6 +47,15 @@ public class MainActivity extends BaseActivity {//继承了BaseActivity的透明
                     TokenVerify();
                     System.out.println(getMyToken());
                 }
+        });
+
+        mSetUpButton=(Button) findViewById(R.id.set_up);
+        mSetUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this, SetUpActivity.class);
+                startActivity(intent);
+            }
         });
 
     }

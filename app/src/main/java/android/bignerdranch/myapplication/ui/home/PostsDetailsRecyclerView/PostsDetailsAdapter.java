@@ -74,7 +74,8 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<BaseHolder> {
                         .build();
                 mApi = mRetrofit.create(Api.class);
             }//初始化mRetrofit
-            Call<ComplexResult> seekCommentResult = mApi.seekComment(mToken, CommentData[position - 1]);
+//            Log.d("TAG",CommentData[position-1]);
+            Call<ComplexResult> seekCommentResult = mApi.seekComment(mToken, CommentData[position-1]);
             seekCommentResult.enqueue(new Callback<ComplexResult>() {
                 @Override
                 public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {

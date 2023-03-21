@@ -52,7 +52,8 @@ public class HomeFragment extends BaseFragment {
     private RadioButton mFollowButton;
     private RadioButton mNewestButton;
 
-    private int t=1;
+    private int t = 1;
+    private int index=0;
 
     private Retrofit mRetrofit;
     private Api mApi;
@@ -68,12 +69,12 @@ public class HomeFragment extends BaseFragment {
         BaseActivity homeActivity = (BaseActivity) getActivity();//得到一个可以调用getMyToken的对象
         mToken = homeActivity.getMyToken();
 
-        mSwipeRefreshLayout=(SwipeRefreshLayout) view.findViewById(R.id.recyclerview_swipe_refresh_layout);
-        mHomeRecyclerView = (RecyclerView) view
+
+        mHomeRecyclerView = view
                 .findViewById(R.id.recyclerview_home);
         mHomeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        newPostsBtn = (ImageButton) view.findViewById(R.id.new_posts_btn);
+        newPostsBtn = view.findViewById(R.id.new_posts_btn);
         newPostsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,9 +82,25 @@ public class HomeFragment extends BaseFragment {
                 startActivity(intent);
             }
         });
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_home);
+        mSwipeRefreshLayout.setEnabled(true);//设置可用
+        mSwipeRefreshLayout.setRefreshing(true);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {//刷新操作监听
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        index+=15;
+                        upDateUI();
+                    }
+                },0);
+            }
+        });
 
         {
-            mRecButton = (RadioButton) view.findViewById(R.id.radio_recommend_btn);
+            mRecButton = view.findViewById(R.id.radio_recommend_btn);
             mRecButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -92,7 +109,7 @@ public class HomeFragment extends BaseFragment {
                 }
             });
 
-            mFollowButton = (RadioButton) view.findViewById(R.id.radio_follow_btn);
+            mFollowButton = view.findViewById(R.id.radio_follow_btn);
             mFollowButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -101,7 +118,7 @@ public class HomeFragment extends BaseFragment {
                 }
             });
 
-            mNewestButton = (RadioButton) view.findViewById(R.id.radio_newest_btn);
+            mNewestButton = view.findViewById(R.id.radio_newest_btn);
             mNewestButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -135,13 +152,13 @@ public class HomeFragment extends BaseFragment {
         Call<SimpleResult> apiResultCall = null;
         switch (t) {
             case 1:
-                apiResultCall = mApi.recPost(mToken, "日常唠嗑", endDate, startDate, 7, 0);
+                apiResultCall = mApi.recPost(mToken, "日常唠嗑", endDate, startDate, 15, index);
                 break;
             case 2:
                 apiResultCall = mApi.followPost(mToken);
                 break;
             case 3:
-                apiResultCall = mApi.newestPost(mToken, 0, 7);
+                apiResultCall = mApi.newestPost(mToken, 0, 15);
         }
         if (apiResultCall != null) {
             apiResultCall.enqueue(new Callback<SimpleResult>() {
@@ -149,8 +166,9 @@ public class HomeFragment extends BaseFragment {
                 public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                     if (response.body() != null) {
                         mData = response.body().getData();
-                        for (String e : mData) {
-                            Log.d("TAG", e);
+                        if (mData.length==1){
+                            String msg=("没有更多帖子了\n重置帖子请返回初始界面重新进入");
+                            Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
                         }
                     }
                     setAdapterAbout();
@@ -186,38 +204,16 @@ public class HomeFragment extends BaseFragment {
                 startActivity(intent);
             }
         });
+
+        mPostsAdapter.notifyDataSetChanged();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private void handlerDownPullUpdate(){
-//        mSwipeRefreshLayout.setColorSchemeResources();
-        //设置加载图标的颜色
 
-        mSwipeRefreshLayout.setEnabled(true);//设置可用
+//
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {//刷新操作监听
-            @Override
-            public void onRefresh() {
-                //在这里面执行刷新数据的操作
-                /**
-                 * 当我们在顶部下拉的时候，这个方法就会被执行
-                 *  但是这个方法是MainThread是主线程，不可以执行耗时操作
-                 *  一般来说，我们请求数据要开一个线程去获取
-                 *  //这里面演示，直接添加数据
-                 */
 
-                //更新UI，我们假装卡3秒再添加数据
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        upDateUI();
-                        //这里做两件事，1.让刷新停止 2.更新列表
-                        mPostsAdapter.notifyDataSetChanged();
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                },0);
-            }
-        });
-    }
+
 
     @Override
     public void setData(String[] data) {

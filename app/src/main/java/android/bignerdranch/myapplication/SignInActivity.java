@@ -89,6 +89,7 @@ public class SignInActivity extends BaseActivity {
                         removeToken();
                         saveToken(token);
                         startActivity(intent);
+                        finish();
                     } else {
                         Toast.makeText(SignInActivity.this,"用户名或密码错误", Toast.LENGTH_SHORT).show();
                     }

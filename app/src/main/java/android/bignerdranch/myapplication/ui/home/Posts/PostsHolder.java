@@ -35,7 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostsHolder extends BaseHolder implements View.OnClickListener {
 
-    private final RecyclerView mPicRecyclerview;
+    private  RecyclerView mPicRecyclerview;
     private final TextView mNameView;
     private final TextView mDateView;
     private final TextView mContent;
@@ -197,12 +197,18 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
                     .into(mProfile);
         }//设置头像
         if (mPosts.getPicPaths() != null) {
-            if (mPicAdapter == null) {
-                if (mPicRecyclerview.getItemDecorationCount() == 0) {
-                    mPicRecyclerview.addItemDecoration(new SpaceItemDecoration(10));
-                }
+            if (mPicRecyclerview.getItemDecorationCount() == 0) {
+                mPicRecyclerview.addItemDecoration(new SpaceItemDecoration(10));
+            }
+
+            if (mPicRecyclerview.getAdapter() == null) {
                 mPicAdapter = new PicAdapter(mPosts.getPicPaths(), mContext);
-                mPicRecyclerview.setAdapter(mPicAdapter);
+
+            }
+            mPicAdapter.setPicPaths(mPosts.getPicPaths());
+            mPicAdapter.notifyDataSetChanged();
+            if (mPicRecyclerview.getAdapter() == null) {
+                mPicRecyclerview.setAdapter(mPicAdapter);//防止图片重复加载（叠一堆）
             }
         }
     }
