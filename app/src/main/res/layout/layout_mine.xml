@@ -41,7 +41,8 @@
                     android:gravity="center_vertical"
                     android:text="用户名"
                     android:textStyle="bold"
-                    android:textSize="30dp"/>
+                    android:textSize="30dp"
+                    android:textIsSelectable="true"/>
 
                 <TextView
                     android:id="@+id/user_signature"

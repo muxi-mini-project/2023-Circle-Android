@@ -63,7 +63,6 @@ public class PostsDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle saveInstanceState) {
         View view = inflater.inflate(R.layout.layout_post_details, container, false);
-
         {
             mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                     .addConverterFactory(GsonConverterFactory.create())

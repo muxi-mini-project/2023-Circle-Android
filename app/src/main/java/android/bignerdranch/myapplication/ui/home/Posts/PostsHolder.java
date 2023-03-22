@@ -217,7 +217,6 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
             mPicAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Toast.makeText(mContext,"点击",Toast.LENGTH_SHORT).show();
                     Intent intent= BigPicActivity.newIntent(mContext,mPosts.getPicPaths().get(position));
                     mContext.startActivity(intent);
                 }
