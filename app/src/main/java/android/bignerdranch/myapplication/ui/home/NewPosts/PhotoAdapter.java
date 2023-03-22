@@ -103,9 +103,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
 
         } else {
-
             Glide.with(holder.itemView.getContext()).load((String) this.data.get(position)).into(((PicViewHolder) holder).getPic());
-
         }
 
     }

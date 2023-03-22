@@ -16,11 +16,12 @@ import java.util.List;
 
 public class PicAdapter extends RecyclerView.Adapter {
 
-    private List<String> mPicPaths=new ArrayList<>();
+    private List<String> mPicPaths;
     private Context mContext;
     private MyRecyclerItemClickListener mMyRecyclerItemClickListener;
 
     public PicAdapter(List<String> picPaths, Context context){
+        mPicPaths=new ArrayList<>();
         for (String e:picPaths){
             mPicPaths.add(e);
         }
@@ -50,5 +51,9 @@ public class PicAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return mPicPaths.size();
+    }
+
+    public void setOnItemClickListener(MyRecyclerItemClickListener listener) {
+        this.mMyRecyclerItemClickListener = listener;
     }
 }

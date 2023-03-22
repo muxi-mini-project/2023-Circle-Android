@@ -35,6 +35,12 @@
         </provider>
 
         <activity
+            android:name=".ui.home.Posts.Picture.BigPicActivity"
+            android:exported="false">
+            <meta-data android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
+        <activity
             android:name=".SetUpActivity"
             android:exported="false">
             <meta-data android:name="android.app.lib_name"

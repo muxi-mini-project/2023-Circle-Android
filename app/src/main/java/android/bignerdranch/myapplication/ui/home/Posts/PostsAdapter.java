@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -97,6 +98,7 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
                             item.setLikesNumber(StringTool.getJsonString(j, "likes"));//点赞数
                             item.setCommentNumber(StringTool.getJsonString(j, "comment_no"));
                             item.setPublisherId(StringTool.getJsonString(j, "author_id"));
+                            item.setPicPaths(new ArrayList<>());//在此处重置PicPath，否则会出现刷新的时候图片重复显示
                             for (int i = 1; !StringTool.getJsonString(j, "file_path" + i).equals(""); i++) {
                                 item.addPicPath(StringTool.getJsonString(j, "file_path" + i));
                             }

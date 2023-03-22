@@ -129,7 +129,7 @@ public class Activity_User_Information extends BaseActivity {
                     savePhotos(u.getFile().getPath());                           //保存图片到本地的
 
                     File profile = new File(u.getFile().getPath());
-                    MultipartBody.Part part = MultipartBody.Part.createFormData("file", fileName,
+                    MultipartBody.Part part = MultipartBody.Part.createFormData("file", profile.getName(),
                             RequestBody.create(MediaType.parse("image/*"), profile));
 
 

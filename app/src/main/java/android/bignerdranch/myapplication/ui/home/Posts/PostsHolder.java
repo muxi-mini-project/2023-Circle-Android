@@ -1,5 +1,7 @@
 package android.bignerdranch.myapplication.ui.home.Posts;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
@@ -11,6 +13,7 @@ import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListe
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ui.home.PersonalPage.PersonalPageActivity;
+import android.bignerdranch.myapplication.ui.home.Posts.Picture.BigPicActivity;
 import android.bignerdranch.myapplication.ui.home.Posts.Picture.PicAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -210,6 +214,14 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
             if (mPicRecyclerview.getAdapter() == null) {
                 mPicRecyclerview.setAdapter(mPicAdapter);//防止图片重复加载（叠一堆）
             }
+            mPicAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Toast.makeText(mContext,"点击",Toast.LENGTH_SHORT).show();
+                    Intent intent= BigPicActivity.newIntent(mContext,mPosts.getPicPaths().get(position));
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 
