@@ -3,6 +3,7 @@ package android.bignerdranch.myapplication.ui.home.NewPosts;
 import android.annotation.SuppressLint;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
+import android.location.GnssAntennaInfo;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,8 +77,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View it) {
 
-                    //test
-                    Log.d("test", "onBindVIewholder");
 
 
                     //权限检查
@@ -103,9 +102,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
 
         } else {
-
             Glide.with(holder.itemView.getContext()).load((String) this.data.get(position)).into(((PicViewHolder) holder).getPic());
-
         }
 
     }
@@ -135,9 +132,9 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         @Override
         public void onClick(View v) {
             //test
-            Toast.makeText(mEditPostsActivity, "ViewHolder", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(mEditPostsActivity, "ViewHolder", Toast.LENGTH_SHORT).show();
 
-            if (myRecyclerItemClickListener != null) {
+            if (mListener != null) {
                 mListener.onItemClick(v, getPosition());
             }
         }
@@ -162,9 +159,9 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         @Override
         public void onClick(View v) {
             //test
-            Toast.makeText(mEditPostsActivity, "ViewHolder", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(mEditPostsActivity, "ViewHolder", Toast.LENGTH_SHORT).show();
 
-            if (myRecyclerItemClickListener != null) {
+            if (mListener != null) {
                 mListener.onItemClick(v, getPosition());
             }
         }

@@ -1,5 +1,7 @@
 package android.bignerdranch.myapplication.ui.home.Posts;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
@@ -11,6 +13,7 @@ import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListe
 import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ui.home.PersonalPage.PersonalPageActivity;
+import android.bignerdranch.myapplication.ui.home.Posts.Picture.BigPicActivity;
 import android.bignerdranch.myapplication.ui.home.Posts.Picture.PicAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +39,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostsHolder extends BaseHolder implements View.OnClickListener {
 
-    private final RecyclerView mPicRecyclerview;
+    private  RecyclerView mPicRecyclerview;
     private final TextView mNameView;
     private final TextView mDateView;
     private final TextView mContent;
@@ -103,14 +107,14 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         mIsFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mPosts.getPublisherId().equals("0")){
+                if (!mPosts.getPublisherId().equals("0")) {
                     if (!mPosts.isFollow()) {
                         followUser();
                     } else {
                         delFollowUser();
                     }
-                }else {
-                    Toast.makeText(mContext,"匿名用户无法关注",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "匿名用户无法关注", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -118,9 +122,7 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
     }
 
     public void bind(BaseItem item, String id) {
-        if (mPosts == null) {
-            mPosts = (Posts) item;
-        }
+        mPosts = (Posts) item;
         Call<ComplexResult> seekPostsResult = mApi.seekPosts(id, mToken);
         //每次装载数据时都要通过网络请求更新帖子数据，如点赞数之类的
         seekPostsResult.enqueue(new Callback<ComplexResult>() {
@@ -199,13 +201,26 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
                     .into(mProfile);
         }//设置头像
         if (mPosts.getPicPaths() != null) {
-            if (mPicAdapter == null) {
-                if (mPicRecyclerview.getItemDecorationCount() == 0) {
-                    mPicRecyclerview.addItemDecoration(new SpaceItemDecoration(10));
-                }
-                mPicAdapter = new PicAdapter(mPosts.getPicPaths(), mContext);
-                mPicRecyclerview.setAdapter(mPicAdapter);
+            if (mPicRecyclerview.getItemDecorationCount() == 0) {
+                mPicRecyclerview.addItemDecoration(new SpaceItemDecoration(10));
             }
+
+            if (mPicRecyclerview.getAdapter() == null) {
+                mPicAdapter = new PicAdapter(mPosts.getPicPaths(), mContext);
+
+            }
+            mPicAdapter.setPicPaths(mPosts.getPicPaths());
+            mPicAdapter.notifyDataSetChanged();
+            if (mPicRecyclerview.getAdapter() == null) {
+                mPicRecyclerview.setAdapter(mPicAdapter);//防止图片重复加载（叠一堆）
+            }
+            mPicAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Intent intent= BigPicActivity.newIntent(mContext,mPosts.getPicPaths().get(position));
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 

@@ -29,7 +29,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CommentHolder extends BaseHolder {
 
-
     private TextView mNameView;
     private TextView mDateView;
     private TextView mContent;

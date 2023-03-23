@@ -20,7 +20,6 @@ public class PicHolder extends BaseHolder {
 
     public PicHolder(View itemView, ItemTypeDef.Type type, MyRecyclerItemClickListener myRecyclerItemClickListener, Context context) {
         super(itemView, type, myRecyclerItemClickListener);
-
         mContext=context;
         mImageView=itemView.findViewById(R.id.pic_image);
     }
@@ -33,7 +32,8 @@ public class PicHolder extends BaseHolder {
         this.path = path;
     }
 
-    public void bind(){
+    public void bind(String Path){
+        path=Path;
         Glide.with(mContext)
                 .load("http://" + path)
                 .centerCrop()

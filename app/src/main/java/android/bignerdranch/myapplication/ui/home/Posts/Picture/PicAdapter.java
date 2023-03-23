@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PicAdapter extends RecyclerView.Adapter {
@@ -20,8 +21,18 @@ public class PicAdapter extends RecyclerView.Adapter {
     private MyRecyclerItemClickListener mMyRecyclerItemClickListener;
 
     public PicAdapter(List<String> picPaths, Context context){
-        mPicPaths=picPaths;
+        mPicPaths=new ArrayList<>();
+        for (String e:picPaths){
+            mPicPaths.add(e);
+        }
         mContext=context;
+    }
+    public void setPicPaths(List<String> picPaths){
+        mPicPaths.clear();
+        mPicPaths=new ArrayList<>();
+        for (String e:picPaths){
+            mPicPaths.add(e);
+        }
     }
 
     @NonNull
@@ -34,12 +45,15 @@ public class PicAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         holder=(PicHolder)holder;
-        ((PicHolder) holder).setPath(mPicPaths.get(position));
-        ((PicHolder) holder).bind();
+        ((PicHolder) holder).bind(mPicPaths.get(position));
     }
 
     @Override
     public int getItemCount() {
         return mPicPaths.size();
+    }
+
+    public void setOnItemClickListener(MyRecyclerItemClickListener listener) {
+        this.mMyRecyclerItemClickListener = listener;
     }
 }

@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PostsDetailsFragment extends Fragment {
     private RecyclerView mPostsDetailsRecyclerView;
     private PostsDetailsAdapter mPostsDetailsAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private ImageButton mBackBtn;
     private Button mDeleteButton;
@@ -46,7 +48,7 @@ public class PostsDetailsFragment extends Fragment {
     private Retrofit mRetrofit;
     private Api mApi;
 
-    private final List<BaseItem> mList = new ArrayList<>();
+    private List<BaseItem> mList=new ArrayList<>();
 
     private String[] data;//评论id数组
     private String mPostsID;
@@ -61,7 +63,6 @@ public class PostsDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle saveInstanceState) {
         View view = inflater.inflate(R.layout.layout_post_details, container, false);
-
         {
             mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -72,13 +73,23 @@ public class PostsDetailsFragment extends Fragment {
         BaseActivity homeActivity = (BaseActivity) getActivity();//得到一个可以调用getMyToken的对象
         mToken = homeActivity.getMyToken();
 
-        mPostsDetailsRecyclerView = (RecyclerView) view
+        mPostsDetailsRecyclerView = view
                 .findViewById(R.id.recyclerview_posts_details);
         mPostsDetailsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_posts_details);
+        mSwipeRefreshLayout.setEnabled(true);//设置可用
+        mSwipeRefreshLayout.setRefreshing(true);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mList.clear();
+                mList=new ArrayList<>();
+                upDateUI();
+            }
+        });
 
-
-        mDeleteButton = (Button) view.findViewById(R.id.delete_button);
+        mDeleteButton = view.findViewById(R.id.delete_button);
         mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +103,7 @@ public class PostsDetailsFragment extends Fragment {
                                 deleteResult.enqueue(new Callback<SimpleResult>() {
                                     @Override
                                     public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                                        if (!response.body().getMsg().equals("没有权限.")){
+                                        if (!response.body().getMsg().equals("没有权限.")) {
                                             Toast.makeText(getActivity(), "删除帖子成功！", Toast.LENGTH_SHORT).show();
                                             getActivity().finish();
                                         }
@@ -116,7 +127,7 @@ public class PostsDetailsFragment extends Fragment {
             }
         });
 
-        mBackBtn = (ImageButton) view.findViewById(R.id.back_btn);
+        mBackBtn = view.findViewById(R.id.back_btn);
         mBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,9 +135,9 @@ public class PostsDetailsFragment extends Fragment {
             }
         });
 
-        mCommentEdit = (EditText) view.findViewById(R.id.comment_reply_edit);
+        mCommentEdit = view.findViewById(R.id.comment_reply_edit);
 
-        mCommentBtn = (Button) view.findViewById(R.id.comment_button);
+        mCommentBtn = view.findViewById(R.id.comment_button);
         mCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +151,7 @@ public class PostsDetailsFragment extends Fragment {
                         public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                             Toast.makeText(getActivity(), "评论成功！", Toast.LENGTH_SHORT).show();
                             mCommentEdit.setText("");
+                            mSwipeRefreshLayout.setRefreshing(true);
                         }
 
                         @Override
@@ -159,8 +171,8 @@ public class PostsDetailsFragment extends Fragment {
 
     private void upDateUI() {
         Posts item = new Posts();
+
         Call<ComplexResult> seekPostsResult = mApi.seekPosts(mPostsID, mToken);
-        Log.d("TAG","mPostsID"+mPostsID);
         seekPostsResult.enqueue(new Callback<ComplexResult>() {
             @Override
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
@@ -170,6 +182,7 @@ public class PostsDetailsFragment extends Fragment {
                             item.addPicPath(StringTool.getJsonString(response.body().getData(), "file_path" + i));
                         }
                     }
+                    item.setPublisherId(StringTool.getJsonString(response.body().getData(), "author_id"));
                     item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));
                     item.setContent(StringTool.getJsonString(response.body().getData(), "content"));
                     item.setTime(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));
@@ -188,9 +201,7 @@ public class PostsDetailsFragment extends Fragment {
                         } else {
                             data = new String[0];
                         }
-                        if (data != null) {
-                            setAdapterAbout();
-                        }
+                        setAdapterAbout();
                     }
 
                     @Override
@@ -222,7 +233,8 @@ public class PostsDetailsFragment extends Fragment {
 
             }
         });
-
+        mPostsDetailsAdapter.notifyDataSetChanged();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 }
 
