@@ -201,10 +201,6 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
                     .into(mProfile);
         }//设置头像
         if (mPosts.getPicPaths() != null) {
-            if (mPicRecyclerview.getItemDecorationCount() == 0) {
-                mPicRecyclerview.addItemDecoration(new SpaceItemDecoration(10));
-            }
-
             if (mPicRecyclerview.getAdapter() == null) {
                 mPicAdapter = new PicAdapter(mPosts.getPicPaths(), mContext);
 
