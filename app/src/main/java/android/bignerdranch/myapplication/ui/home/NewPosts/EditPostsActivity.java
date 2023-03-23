@@ -315,9 +315,9 @@ public class EditPostsActivity extends BaseActivity {
             public void onItemClick(View view, int position) {
 
                 //test
-                Log.d("test", "Activity");
+                Log.d("test", "进入图片预览");
 
-                Toast.makeText(EditPostsActivity.this, "进入图片预览", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(EditPostsActivity.this, "进入图片预览", Toast.LENGTH_SHORT).show();
 
                 mimgLists = new ArrayList<>();
                 for(int i=0;i<imagePathList.size();i++){
