@@ -43,11 +43,15 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.previewlibrary.GPreviewBuilder;
+import com.previewlibrary.ZoomMediaLoader;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -82,6 +86,7 @@ public class EditPostsActivity extends BaseActivity {
     private RecyclerView photo_recyclerView;
     private GridLayoutManager gridManager;
     private final ArrayList<String> imagePathList = new ArrayList<String>();  //存储所有的图片的路径，和photoadapter相联系
+    private List<ImageViewInfo> mimgLists;  //预览的图片列表
     private String mFilePath;      //存相机拍出来的照的路径
     private PopupWindow popupWindow;
     private View popupView;
@@ -312,8 +317,21 @@ public class EditPostsActivity extends BaseActivity {
                 //test
                 Log.d("test", "Activity");
 
-                Toast.makeText(EditPostsActivity.this, "11111", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditPostsActivity.this, "进入图片预览", Toast.LENGTH_SHORT).show();
 
+                mimgLists = new ArrayList<>();
+                for(int i=0;i<imagePathList.size();i++){
+                    String url = imagePathList.get(i);
+                    mimgLists.add(new ImageViewInfo(url));
+                }
+                //图片预览（关键
+                GPreviewBuilder.from(EditPostsActivity.this)
+                        .setData(mimgLists)  //数据
+                        .setCurrentIndex(position)  //图片下标
+                        .setSingleFling(true)  //是否在黑屏区域点击返回
+                        .setDrag(false)  //是否禁用图片拖拽返回
+                        .setType(GPreviewBuilder.IndicatorType.Number)  //指示器类型
+                        .start();  //启动
 
             }
         });
@@ -332,6 +350,7 @@ public class EditPostsActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ZoomMediaLoader.getInstance().init(new ImagePreviewLoader());
         setContentView(R.layout.layout_editposts);
 
 
