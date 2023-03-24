@@ -16,6 +16,10 @@ import retrofit2.http.Query;
 
 public interface Api {
 
+    //获取版本号
+    @GET("version")
+    Call<SimpleResult> getNewestVersion();
+
     //登录验证
     @POST("login")
     @FormUrlEncoded
