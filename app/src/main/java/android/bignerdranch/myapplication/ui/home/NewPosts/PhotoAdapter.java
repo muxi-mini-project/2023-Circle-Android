@@ -3,6 +3,7 @@ package android.bignerdranch.myapplication.ui.home.NewPosts;
 import android.annotation.SuppressLint;
 import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
+import android.location.GnssAntennaInfo;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,7 +60,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
             Intrinsics.checkNotNullExpressionValue(view, "view");
-            return (RecyclerView.ViewHolder) (new PicViewHolder(view));
+            return (RecyclerView.ViewHolder) (new PicViewHolder(view,myRecyclerItemClickListener));
         }
     }
 
@@ -76,9 +77,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View it) {
 
-                    //test
-                    Log.d("test", "onBindVIewholder");
-                    
+
 
                     //权限检查
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -116,16 +115,16 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public void setMyRecyclerItemClickListener(MyRecyclerItemClickListener listener) {
-        this.myRecyclerItemClickListener = listener;
+    public void setMyRecyclerItemClickListener(MyRecyclerItemClickListener Listener) {
+        this.myRecyclerItemClickListener = Listener;
     }
 
     public class AddViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private MyRecyclerItemClickListener mMmyRecyclerItemClickListener;
+        private MyRecyclerItemClickListener mListener;
 
-        public AddViewHolder(@NotNull View itemView, MyRecyclerItemClickListener myRecyclerItemClickListener) {
+        public AddViewHolder(@NotNull View itemView, MyRecyclerItemClickListener Listener) {
             super(itemView);
-            mMmyRecyclerItemClickListener = myRecyclerItemClickListener;
+            mListener = Listener;
             itemView.setOnClickListener(this);
         }
 
@@ -133,24 +132,38 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         @Override
         public void onClick(View v) {
             //test
-            Toast.makeText(mEditPostsActivity, "ViewHolder", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(mEditPostsActivity, "ViewHolder", Toast.LENGTH_SHORT).show();
 
-            if (myRecyclerItemClickListener != null) {
-                mMmyRecyclerItemClickListener.onItemClick(v, getPosition());
+            if (mListener != null) {
+                mListener.onItemClick(v, getPosition());
             }
         }
     }
 
-    public class PicViewHolder extends RecyclerView.ViewHolder {
+    public class PicViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private MyRecyclerItemClickListener mListener;
         @NotNull
         private ImageView pic;
         @NotNull
         private ImageView del;
 
-        public PicViewHolder(@NotNull View itemView) {
+        public PicViewHolder(@NotNull View itemView,MyRecyclerItemClickListener Listener) {
             super(itemView);
+            mListener=Listener;
+            itemView.setOnClickListener(this);
             this.pic = (ImageView) itemView.findViewById(R.id.ivImage);
             this.del = (ImageView) itemView.findViewById(R.id.ivDelete);
+        }
+
+        @Override
+        public void onClick(View v) {
+            //test
+            //Toast.makeText(mEditPostsActivity, "ViewHolder", Toast.LENGTH_SHORT).show();
+
+            if (mListener != null) {
+                mListener.onItemClick(v, getPosition());
+            }
         }
 
         @NotNull
@@ -162,6 +175,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public ImageView getDel() {
             return this.del;
         }
+
     }
 }
 
