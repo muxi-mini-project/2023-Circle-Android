@@ -8,13 +8,21 @@ public class Reminder {
     private String mDate;                       //存储通知时间
     private String mTitle;                  //对应帖子的标题
     private String mProfile;
+    private String mContent;
 
     public Reminder() {
-
     }
 
 
 //getter and setter
+
+    public String getContent() {
+        return mContent;
+    }
+
+    public void setContent(String content) {
+        mContent = content;
+    }
 
     public String getProfile() {
         return mProfile;

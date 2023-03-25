@@ -10,6 +10,7 @@ public class StringTool {
         String s;
         if (jsonObject.getAsJsonPrimitive(key)!=null){
             s=jsonObject.getAsJsonPrimitive(key).toString().replaceAll("\"","");
+            s=s.replaceAll("\\n","\n");
         }else {
             s="";
         }

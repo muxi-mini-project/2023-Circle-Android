@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,9 +34,13 @@ public class ReminderFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private ReminderAdapter mAdapter;
+    private RadioButton mMyLikesBtn;
+    private RadioButton mCommentBtn;
 
     private String mToken;
     private String[] mData;
+
+    private int t=1;
 
 
     @Override
@@ -47,6 +52,24 @@ public class ReminderFragment extends Fragment {
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_reminder);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mMyLikesBtn=view.findViewById(R.id.radio_likes);
+        mMyLikesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                t=1;
+                updateUI();
+            }
+        });
+
+        mCommentBtn=view.findViewById(R.id.radio_comment);
+        mCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                t=2;
+                updateUI();
+            }
+        });
 
         updateUI();
 
@@ -60,8 +83,12 @@ public class ReminderFragment extends Fragment {
                 .build();
         mApi = mRetrofit.create(Api.class);
 
-        Call<SimpleResult> getLikedMsg = mApi.getMyLikedMsg(mToken);
-        getLikedMsg.enqueue(new Callback<SimpleResult>() {
+        Call<SimpleResult> getReminder=null;
+        switch (t){
+            case 1:getReminder= mApi.getMyLikedMsg(mToken);break;
+            case 2:getReminder= mApi.getCommentMsg(mToken);break;
+        }
+        getReminder.enqueue(new Callback<SimpleResult>() {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 if (response.body().getData() != null) {
@@ -83,7 +110,7 @@ public class ReminderFragment extends Fragment {
         List<Reminder> reminders = reminderLab.getReminders();
 
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(20));
-        mAdapter = new ReminderAdapter(reminders, mData, mToken, this.getContext());
+        mAdapter = new ReminderAdapter(reminders, mData, mToken, this.getContext(),t);
         mRecyclerView.setAdapter(mAdapter);
 
         mAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {

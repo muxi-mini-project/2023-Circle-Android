@@ -103,6 +103,14 @@ public interface Api {
     @GET("post/likes")
     Call<ComplexResult> getLikeInformation(@Query("id") String id, @Header("Authorization") String token);
 
+    //查询我被评论的信息id数组
+    @GET("user/replies")
+    Call<SimpleResult> getCommentMsg(@Header("Authorization")String token);
+
+    //根据id查询评论信息
+    @GET("post/comment")
+    Call<ComplexResult> getCommentInformation(@Query("id") String id, @Header("Authorization") String token);
+
     //根据id关注用户
     @POST("user/following")
     Call<SimpleResult> followUser(@Header("Authorization") String token, @Query("followed_id") String userId);
