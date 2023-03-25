@@ -111,7 +111,7 @@ public class PostsDetailsFragment extends Fragment {
 
                                     @Override
                                     public void onFailure(Call<SimpleResult> call, Throwable t) {
-                                        Log.d("TAG", "删除帖子：网络请求失败！");
+                                        Log.d("删除帖子", "网络请求失败！");
                                     }
                                 });
                             }
@@ -156,7 +156,7 @@ public class PostsDetailsFragment extends Fragment {
 
                         @Override
                         public void onFailure(Call<SimpleResult> call, Throwable t) {
-                            Log.d("TAG", "评论失败");
+                            Log.d("评论", "评论失败");
                         }
                     });
                 }
@@ -206,7 +206,7 @@ public class PostsDetailsFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<SimpleResult> call, Throwable t) {
-                        Log.d("TAG", "查找评论id数组：网络请求失败！");
+                        Log.d("查找评论id数组", "网络请求失败！");
                     }
                 });
 
@@ -214,7 +214,7 @@ public class PostsDetailsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ComplexResult> call, Throwable t) {
-                Log.d("TAG", "帖子详情：请求失败");
+                Log.d("帖子详情", "请求失败");
             }
         });
 

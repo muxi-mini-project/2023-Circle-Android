@@ -124,7 +124,7 @@ public class MineFragment extends BaseFragment {
 
             @Override
             public void onFailure(Call<ComplexResult> call, Throwable t) {
-                Log.d("TAG", "获取个人信息：网络请求失败！");
+                Log.d("获取个人信息", "网络请求失败！");
             }
         });
 

@@ -98,7 +98,7 @@ public class UserListHolder extends RecyclerView.ViewHolder {
 
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable t) {
-                Log.d("TAG","是否关注：网络请求失败！");
+                Log.d("是否关注","网络请求失败！");
             }
         });
 
@@ -131,12 +131,12 @@ public class UserListHolder extends RecyclerView.ViewHolder {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 bind(mUser);
-                Log.d("TAG", "关注用户:" + mUser.getUserId() + " " + "成功");
+                Log.d("关注用户",  mUser.getUserId() + " " + "成功");
             }
 
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable t) {
-                Log.d("TAG", "关注用户：网络请求失败");
+                Log.d("关注用户", "网络请求失败");
             }
         });
     }
@@ -147,7 +147,7 @@ public class UserListHolder extends RecyclerView.ViewHolder {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 bind(mUser);
-                Log.d("TAG", "取消关注用户:" + mUser.getUserId() + " " + "成功");
+                Log.d("取消关注用户",  mUser.getUserId() + " " + "成功");
             }
 
             @Override

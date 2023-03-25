@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -37,6 +38,7 @@ public class FansFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private UserListAdapter mAdapter;
+    private ImageButton mBackBtn;
 
     private TextView mTitle;
 
@@ -54,6 +56,14 @@ public class FansFragment extends Fragment {
 
         BaseActivity homeActivity = (BaseActivity) getActivity();//得到一个可以调用getMyToken的对象
         mToken = homeActivity.getMyToken();
+
+        mBackBtn=(ImageButton) view.findViewById(R.id.back_btn);
+        mBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
 
         mTitle=(TextView)view.findViewById(R.id.user_layout_title);
         mTitle.setText("粉丝");

@@ -80,7 +80,7 @@ public class SearchBoxHolder extends BaseHolder {
                             }
                             @Override
                             public void onFailure(Call<SimpleResult> call, Throwable t) {
-                                Log.d("TAG", "搜索帖子id数组：网络请求失败！");
+                                Log.d("搜索帖子id数组", "网络请求失败！");
                             }
                         });
                     }

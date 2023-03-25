@@ -95,14 +95,14 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<BaseHolder> {
 
                         @Override
                         public void onFailure(Call<ComplexResult> call, Throwable t) {
-                            Log.d("TAG","查找评论者用户信息：网络请求失败！");
+                            Log.d("查找评论者用户信息","网络请求失败！");
                         }
                     });
                 }
 
                 @Override
                 public void onFailure(Call<ComplexResult> call, Throwable t) {
-                    Log.d("TAG", "查找评论具体信息：网络请求失败");
+                    Log.d("查找评论具体信息", "网络请求失败");
                 }
             });
         }

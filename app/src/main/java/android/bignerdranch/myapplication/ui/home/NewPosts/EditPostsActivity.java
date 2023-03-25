@@ -426,7 +426,6 @@ public class EditPostsActivity extends BaseActivity {
                     MultipartBody.Part title = MultipartBody.Part.createFormData("title", EditTitle.getText().toString());
                     MultipartBody.Part content = MultipartBody.Part.createFormData("content", EditContent.getText().toString());
                     MultipartBody.Part isAnonymity = MultipartBody.Part.createFormData("is_anonymity", isAnonymityStr);
-                    Log.d("TAG","创建isAnonymity Part："+isAnonymityStr);
                     if (parts[0] == null) {
                         file_have = "no";
                     } else {

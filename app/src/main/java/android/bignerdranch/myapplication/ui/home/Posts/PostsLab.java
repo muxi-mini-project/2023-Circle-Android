@@ -11,6 +11,8 @@ public class PostsLab {
         mPostsList = mPosts;
     }
 
+
+    //创建一个初始的默认帖子 防止闪退 否则在网络请求还没有接收到返回时加载帖子界面会导致null闪退
     public static PostsLab get(int dataLength) {
         List<Posts> mPosts = new ArrayList<>();
         for (int i=0;i<dataLength;i++) {

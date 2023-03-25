@@ -99,7 +99,7 @@ public class ReminderFragment extends Fragment {
 
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable t) {
-                Log.d("TAG","查找点赞信息：网络请求失败！");
+                Log.d("查找点赞信息","网络请求失败！");
             }
         });
 

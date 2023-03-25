@@ -1,7 +1,5 @@
 package android.bignerdranch.myapplication.ui.home.Posts;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.bignerdranch.myapplication.ApiAbout.Api;
 import android.bignerdranch.myapplication.ApiAbout.ComplexResult;
 import android.bignerdranch.myapplication.ApiAbout.SimpleResult;
@@ -10,7 +8,6 @@ import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
-import android.bignerdranch.myapplication.ReusableTools.SpaceItemDecoration;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ui.home.PersonalPage.PersonalPageActivity;
 import android.bignerdranch.myapplication.ui.home.Posts.Picture.BigPicActivity;
@@ -23,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,7 +35,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PostsHolder extends BaseHolder implements View.OnClickListener {
 
-    private  RecyclerView mPicRecyclerview;
     private final TextView mNameView;
     private final TextView mDateView;
     private final TextView mContent;
@@ -52,6 +47,7 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
     private final Retrofit mRetrofit;
     private final Api mApi;
     private final String mToken;
+    private final RecyclerView mPicRecyclerview;
     private PicAdapter mPicAdapter;
     private Context mContext;
     private Posts mPosts;
@@ -95,7 +91,7 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
         mIsLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //改变mPosts，并再次加载posts
+                //改变mPosts
                 if (!mPosts.isLikes()) {
                     likePost();
                 } else {
@@ -200,20 +196,20 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
                     .apply(options)
                     .into(mProfile);
         }//设置头像
-        if (mPosts.getPicPaths() != null) {
-            if (mPicRecyclerview.getAdapter() == null) {
-                mPicAdapter = new PicAdapter(mPosts.getPicPaths(), mContext);
-
+        if (mPosts.getPicPaths() != null) {//判断这个帖子是否有图片
+            if (mPicRecyclerview.getAdapter() == null) {//判断是否是第一次创建这个帖子的PicAdapter
+                mPicAdapter = new PicAdapter(mPosts.getPicPaths(), mContext);//不写这个判断会导致帖子反复上下滑动时图片会叠层（一个图片反复显示几次）
             }
             mPicAdapter.setPicPaths(mPosts.getPicPaths());
             mPicAdapter.notifyDataSetChanged();
             if (mPicRecyclerview.getAdapter() == null) {
                 mPicRecyclerview.setAdapter(mPicAdapter);//防止图片重复加载（叠一堆）
             }
+            //#199到#207这几行代码 凝聚了我对recyclerview的全部理解
             mPicAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Intent intent= BigPicActivity.newIntent(mContext,mPosts.getPicPaths().get(position));
+                    Intent intent = BigPicActivity.newIntent(mContext, mPosts.getPicPaths().get(position));
                     mContext.startActivity(intent);
                 }
             });
@@ -234,12 +230,12 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 bind(mPosts, mPosts.getID());
-                Log.d("TAG", "点赞成功");
+                Log.d("点赞", "成功");
             }
 
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable t) {
-                Log.d("TAG", "点赞：网络请求失败");
+                Log.d("点赞", "网络请求失败");
             }
         });
     }
@@ -250,12 +246,12 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 bind(mPosts, mPosts.getID());
-                Log.d("TAG", "取消点赞成功");
+                Log.d("取消点赞", "成功");
             }
 
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable t) {
-                Log.d("TAG", "取消点赞：网络请求失败");
+                Log.d("取消点赞", "网络请求失败");
             }
         });
     }
@@ -266,12 +262,12 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 bind(mPosts, mPosts.getID());
-                Log.d("TAG", "关注用户:" + mPosts.getPublisherId() + " " + "成功");
+                Log.d("关注用户", mPosts.getPublisherId() + " " + "成功");
             }
 
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable t) {
-                Log.d("TAG", "关注用户：网络请求失败");
+                Log.d("关注用户", "网络请求失败");
             }
         });
     }
@@ -282,12 +278,12 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
             @Override
             public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                 bind(mPosts, mPosts.getID());
-                Log.d("TAG", "取消关注用户:" + mPosts.getPublisherId() + " " + "成功");
+                Log.d("取消关注用户", mPosts.getPublisherId() + " " + "成功");
             }
 
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable t) {
-                Log.d("TAG", "取消关注用户：网络请求失败");
+                Log.d("取消关注用户", "网络请求失败");
             }
         });
     }

@@ -44,6 +44,7 @@ public class Activity_User_Information extends BaseActivity {
     private static final int PICK_PHOTO = 0X88;
     public static SharedPreferences sharedPreferences;
     private final String fileName = "IMG_head.jpg";
+    private final UserImageChange u = new UserImageChange(Activity_User_Information.this);
     private ImageButton BackBtn;
     private Button ConfirmBtn;
     private ImageButton mIsMaleButton;
@@ -56,7 +57,25 @@ public class Activity_User_Information extends BaseActivity {
     private Api mApi;
     private ImageButton profile_picture;
     private String path;
-    private final UserImageChange u = new UserImageChange(Activity_User_Information.this);
+
+    public static int getStringLength(String value) {
+        int valueLength = 0;
+        String chinese = "[\u0391-\uFFE5]";
+        /* 获取字段值的长度，如果含中文字符，则每个中文字符长度为2，否则为1 */
+        for (int i = 0; i < value.length(); i++) {
+            /* 获取一个字符 */
+            String temp = value.substring(i, i + 1);
+            /* 判断是否为中文字符 */
+            if (temp.matches(chinese)) {
+                /* 中文字符长度为2 */
+                valueLength += 2;
+            } else {
+                /* 其他字符长度为1 */
+                valueLength += 1;
+            }
+        }
+        return valueLength;
+    }
 
     //在进入界面时头像的初始化
     //通过sharedPreferences中存储的image的path，将image以bitmap形式解码(decode)出来，并在头像位置上显示
@@ -157,14 +176,15 @@ public class Activity_User_Information extends BaseActivity {
                 } else {
                     path = u.handleImageBeforeKitKat(uri);                     //低版本获得path的方法
                 }
-
                 Bitmap bitmap = BitmapFactory.decodeFile(path);                 //解码，以bitmap形式输出
                 Log.d("相册", path);
                 profile_picture.setImageBitmap(bitmap);
                 savePhotos(path);
+
                 File profile = new File(path);
                 MultipartBody.Part part = MultipartBody.Part.createFormData("file", getProfileType(path),
                         RequestBody.create(MediaType.parse("image/*"), profile));
+
                 Call<SimpleResult> apiResult = mApi.putMyProfile(getMyToken(), "yes", part);
                 apiResult.enqueue(new Callback<SimpleResult>() {
                     @Override
@@ -259,17 +279,23 @@ public class Activity_User_Information extends BaseActivity {
             public void onResponse(Call<ComplexResult> call, Response<ComplexResult> response) {
                 mUser_name_field.setText(StringTool.getJsonString(response.body().getData(), "Name"));
                 mSignature_field.setText(StringTool.getJsonString(response.body().getData(), "Signature"));
-                UserSex userSex=UserSex.Unselected;
-                switch (StringTool.getJsonString(response.body().getData(),"Gender")){
-                    case "Male":userSex=UserSex.Male;break;
-                    case "Female":userSex=UserSex.Female;break;
-                    case "Unselected":userSex=UserSex.Unselected;break;
+                UserSex userSex = UserSex.Unselected;
+                switch (StringTool.getJsonString(response.body().getData(), "Gender")) {
+                    case "Male":
+                        userSex = UserSex.Male;
+                        break;
+                    case "Female":
+                        userSex = UserSex.Female;
+                        break;
+                    case "Unselected":
+                        userSex = UserSex.Unselected;
+                        break;
                 }
                 user_information.setUserSex(userSex);
                 setUserSex();
-                String profile=StringTool.getJsonString(response.body().getData(),"AvatarPath");
+                String profile = StringTool.getJsonString(response.body().getData(), "AvatarPath");
                 Glide.with(Activity_User_Information.this)
-                        .load("http://"+profile)
+                        .load("http://" + profile)
                         .centerCrop()
                         .into(profile_picture);
             }
@@ -288,19 +314,23 @@ public class Activity_User_Information extends BaseActivity {
                 if ((mUser_name_field.getText().toString().trim().equals(""))) {
                     Toast.makeText(Activity_User_Information.this, "请输入用户名", Toast.LENGTH_SHORT).show();
                 } else {
-                    Call<SimpleResult> apiResult2 = mApi.putMyMsg(getMyToken(), user_information.getUserSex().toString(), mUser_name_field.getText().toString(), mSignature_field.getText().toString());
-                    apiResult2.enqueue(new Callback<SimpleResult>() {
-                        @Override
-                        public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                            Toast.makeText(Activity_User_Information.this, "修改成功", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
+                    if (getStringLength(mUser_name_field.getText().toString()) >= 14) {
+                        Toast.makeText(Activity_User_Information.this, "用户名过长", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Call<SimpleResult> apiResult2 = mApi.putMyMsg(getMyToken(), user_information.getUserSex().toString(), mUser_name_field.getText().toString(), mSignature_field.getText().toString());
+                        apiResult2.enqueue(new Callback<SimpleResult>() {
+                            @Override
+                            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                                Toast.makeText(Activity_User_Information.this, "修改成功", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
 
-                        @Override
-                        public void onFailure(Call<SimpleResult> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<SimpleResult> call, Throwable t) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -308,7 +338,7 @@ public class Activity_User_Information extends BaseActivity {
 
     }
 
-    private void setUserSex(){
+    private void setUserSex() {
         //初始化性别按钮的
         if (user_information.getUserSex() == UserSex.Male) {
             mIsMaleButton.setBackgroundResource(R.drawable.ismale_yes);

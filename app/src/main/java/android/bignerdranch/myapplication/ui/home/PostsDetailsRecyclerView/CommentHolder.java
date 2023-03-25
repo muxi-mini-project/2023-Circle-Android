@@ -82,7 +82,7 @@ public class CommentHolder extends BaseHolder {
                                     }
                                     @Override
                                     public void onFailure(Call<SimpleResult> call, Throwable t) {
-                                        Log.d("TAG", "删除帖子：网络请求失败！");
+                                        Log.d("删除帖子", "网络请求失败！");
                                     }
                                 });
                             }

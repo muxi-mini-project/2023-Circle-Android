@@ -115,7 +115,7 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
 
                         @Override
                         public void onFailure(Call<SimpleResult> call, Throwable t) {
-                            Log.d("TAG", "是否点赞：网络请求失败！");
+                            Log.d("是否点赞", "网络请求失败！");
                         }
                     });
 
@@ -123,7 +123,7 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
 
                 @Override
                 public void onFailure(Call<ComplexResult> call, Throwable t) {
-                    Log.d("TAG", "网络请求失败");
+                    Log.d("查找帖子", "网络请求失败");
                 }
             });
         }

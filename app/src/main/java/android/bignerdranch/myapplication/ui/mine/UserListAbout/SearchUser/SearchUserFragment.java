@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -37,6 +38,7 @@ public class SearchUserFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private UserListAdapter mAdapter;
+    private ImageButton mBackBtn;
 
     private TextView mTitle;
 
@@ -55,6 +57,14 @@ public class SearchUserFragment extends Fragment {
 
         BaseActivity homeActivity = (BaseActivity) getActivity();//得到一个可以调用getMyToken的对象
         mToken = homeActivity.getMyToken();
+
+        mBackBtn=(ImageButton) view.findViewById(R.id.back_btn);
+        mBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
 
         mTitle = (TextView) view.findViewById(R.id.user_layout_title);
         mTitle.setText("用户查找");
@@ -81,14 +91,14 @@ public class SearchUserFragment extends Fragment {
                 if (response.body().getData() != null) {
                     mData = response.body().getData();
                 } else {
-                    Log.d("TAG", "没有查找到用户");
+                    Log.d("查找用户", "没有查找到用户");
                 }
                 setAdapterAbout();
             }
 
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable t) {
-                Log.d("TAG", "关键词查找用户id数组：网络请求失败！");
+                Log.d("查找用户", "网络请求失败！");
             }
         });
 

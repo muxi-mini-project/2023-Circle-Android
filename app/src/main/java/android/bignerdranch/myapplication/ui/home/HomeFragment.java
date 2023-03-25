@@ -176,7 +176,7 @@ public class HomeFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(Call<SimpleResult> call, Throwable t) {
-                    Toast.makeText(getActivity(), "查询帖子id数组；网络请求异常！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "查询帖子；网络请求异常！", Toast.LENGTH_SHORT).show();
                 }
             });
         }
