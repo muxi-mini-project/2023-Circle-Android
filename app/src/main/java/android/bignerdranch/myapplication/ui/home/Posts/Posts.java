@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Posts extends BaseItem {
-    private final String CreateTime;//发布时间
+    private String CreateTime;//发布时间
     private String publisherId;//发布者id
     private String PostsId;
     private String Name;//发布者的昵称
@@ -46,11 +46,11 @@ public class Posts extends BaseItem {
     }
 
     public String getTime() {
-        return UpdatedTime;
+        return CreateTime;
     }
 
     public void setTime(String time) {
-        this.UpdatedTime = time;
+        this.CreateTime = time;
     }
 
     public String getPublisherId() {

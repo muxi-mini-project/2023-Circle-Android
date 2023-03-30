@@ -72,7 +72,8 @@
         </activity>
         <activity
             android:name=".ui.home.PostsDetailsRecyclerView.PostsDetailsActivity"
-            android:exported="false">
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden|adjustResize">
             <meta-data android:name="android.app.lib_name"
                 android:value=""/>
         </activity>

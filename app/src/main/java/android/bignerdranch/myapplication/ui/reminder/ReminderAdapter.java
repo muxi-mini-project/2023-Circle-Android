@@ -72,7 +72,7 @@ public class ReminderAdapter extends RecyclerView.Adapter {
                 reminder.setId(mData[position]);
                 reminder.setPostID(StringTool.getJsonString(response.body().getData(), "post_id"));
                 reminder.setUserID(StringTool.getJsonString(response.body().getData(), "user_id"));
-                reminder.setDate(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));
+                reminder.setDate(StringTool.getJsonString(response.body().getData(), "CreatedAt"));
                 if (t == 2) {
                     reminder.setContent(StringTool.getJsonString(response.body().getData(), "content"));
                 }

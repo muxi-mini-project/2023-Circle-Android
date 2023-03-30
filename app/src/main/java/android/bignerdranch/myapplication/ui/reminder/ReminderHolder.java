@@ -18,10 +18,8 @@ public class ReminderHolder extends BaseHolder {
     private final TextView mPersonname;
     private final TextView mRemindercontent;
     private final TextView mReminderdate;
-
-    private Reminder mReminder;
-
     private final Context mContext;
+    private Reminder mReminder;
 
     public ReminderHolder(View itemView, ItemTypeDef.Type type, MyRecyclerItemClickListener myRecyclerItemClickListener,
                           Context context) {
@@ -36,9 +34,7 @@ public class ReminderHolder extends BaseHolder {
     }
 
     public void bind(Reminder reminder, int mInt) {
-        if (mReminder == null) {
-            mReminder = reminder;
-        }
+        mReminder = reminder;
         mPersonname.setText(mReminder.getPersonName());
         switch (mInt) {
             case 1:

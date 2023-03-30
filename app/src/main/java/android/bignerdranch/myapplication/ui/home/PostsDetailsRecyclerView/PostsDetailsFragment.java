@@ -48,12 +48,17 @@ public class PostsDetailsFragment extends Fragment {
     private Retrofit mRetrofit;
     private Api mApi;
 
-    private List<BaseItem> mList=new ArrayList<>();
+    private List<BaseItem> mList = new ArrayList<>();
 
     private String[] data;//评论id数组
     private String mPostsID;
     private String mToken;
 
+    public void refreshList() {
+        mList.clear();
+        mList = new ArrayList<>();
+        upDateUI();
+    }
 
     public void setPostsID(String id) {
         mPostsID = id;
@@ -79,13 +84,11 @@ public class PostsDetailsFragment extends Fragment {
 
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_posts_details);
         mSwipeRefreshLayout.setEnabled(true);//设置可用
-        mSwipeRefreshLayout.setRefreshing(true);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mList.clear();
-                mList=new ArrayList<>();
-                upDateUI();
+                refreshList();
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -151,7 +154,7 @@ public class PostsDetailsFragment extends Fragment {
                         public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
                             Toast.makeText(getActivity(), "评论成功！", Toast.LENGTH_SHORT).show();
                             mCommentEdit.setText("");
-                            mSwipeRefreshLayout.setRefreshing(true);
+                            refreshList();
                         }
 
                         @Override
@@ -185,7 +188,7 @@ public class PostsDetailsFragment extends Fragment {
                     item.setPublisherId(StringTool.getJsonString(response.body().getData(), "author_id"));
                     item.setName(StringTool.getJsonString(response.body().getData(), "author_name"));
                     item.setContent(StringTool.getJsonString(response.body().getData(), "content"));
-                    item.setTime(StringTool.getJsonString(response.body().getData(), "UpdatedAt"));
+                    item.setTime(StringTool.getJsonString(response.body().getData(), "CreatedAt"));
                     item.setProfilePath(StringTool.getJsonString(response.body().getData(), "avatar_path"));
                     item.setID(StringTool.getJsonString(response.body().getData(), "ID"));
                     item.setTitle(StringTool.getJsonString(response.body().getData(), "title"));
@@ -225,7 +228,7 @@ public class PostsDetailsFragment extends Fragment {
         for (Comment e : commentLab.getComments()) {
             mList.add(e);
         }
-        mPostsDetailsAdapter = new PostsDetailsAdapter(mList, getContext(), mToken, data);//将mList装载入Adapter中
+        mPostsDetailsAdapter = new PostsDetailsAdapter(mList, getContext(), mToken, data,this);//将mList装载入Adapter中
         mPostsDetailsRecyclerView.setAdapter(mPostsDetailsAdapter);//给该recyclerview设置adapter
         mPostsDetailsAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
             @Override

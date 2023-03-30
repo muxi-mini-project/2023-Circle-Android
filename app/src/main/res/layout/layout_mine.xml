@@ -3,14 +3,8 @@
     android:id="@+id/layout_mine"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="28dp"
-        android:background="@color/white"
-        android:translationZ="1dp"
-        android:elevation="1dp"/>
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"

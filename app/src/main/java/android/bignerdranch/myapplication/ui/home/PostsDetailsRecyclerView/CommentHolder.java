@@ -6,8 +6,10 @@ import android.bignerdranch.myapplication.R;
 import android.bignerdranch.myapplication.ReusableTools.BaseHolder;
 import android.bignerdranch.myapplication.ReusableTools.BaseItem;
 import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
+import android.bignerdranch.myapplication.ui.home.PersonalPage.PersonalPageActivity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,26 +31,29 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CommentHolder extends BaseHolder {
 
-    private TextView mNameView;
-    private TextView mDateView;
-    private TextView mContent;
-    private ImageButton mProfile;
-    private Button mDeleteButton;
+    private final TextView mNameView;
+    private final TextView mDateView;
+    private final TextView mContent;
+    private final ImageButton mProfile;
+    private final Button mDeleteButton;
 
     private Comment mComment;
-    private String mPostId;
-    private String mToken;
-    private Context mContext;
+    private final String mPostId;
+    private final String mToken;
+    private final Context mContext;
 
-    private Retrofit mRetrofit;
-    private Api mApi;
+    private final Retrofit mRetrofit;
+    private final Api mApi;
 
-    public CommentHolder(View itemView, ItemTypeDef.Type type, Context context,String token,String postId) {
+    private PostsDetailsFragment mFragment;
+
+    public CommentHolder(View itemView, ItemTypeDef.Type type, Context context, String token, String postId,PostsDetailsFragment fragment) {
         super(itemView, type);
 
-        mPostId=postId;
-        mToken=token;
+        mPostId = postId;
+        mToken = token;
         mContext = context;
+        mFragment=fragment;
 
         {
             mRetrofit = new Retrofit.Builder().baseUrl("http://43.138.61.49:8080/api/v1/")
@@ -57,12 +62,20 @@ public class CommentHolder extends BaseHolder {
             mApi = mRetrofit.create(Api.class);
         }
 
-        mNameView = (TextView) itemView.findViewById(R.id.commenter_name);
-        mDateView = (TextView) itemView.findViewById(R.id.comment_time);
-        mContent = (TextView) itemView.findViewById(R.id.comment_content);
-        mProfile = (ImageButton) itemView.findViewById(R.id.profile_pic_comment);
+        mNameView = itemView.findViewById(R.id.commenter_name);
+        mDateView = itemView.findViewById(R.id.comment_time);
+        mContent = itemView.findViewById(R.id.comment_content);
 
-        mDeleteButton = (Button) itemView.findViewById(R.id.delete_comment_button);
+        mProfile = itemView.findViewById(R.id.profile_pic_comment);
+        mProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = PersonalPageActivity.newIntent(mContext, mComment.getPublisherID());
+                mContext.startActivity(intent);
+            }
+        });
+
+        mDeleteButton = itemView.findViewById(R.id.delete_comment_button);
         mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,14 +85,16 @@ public class CommentHolder extends BaseHolder {
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Call<SimpleResult> deleteResult = mApi.delComment(mToken, mComment.getID(),mPostId);
+                                Call<SimpleResult> deleteResult = mApi.delComment(mToken, mComment.getID(), mPostId);
                                 deleteResult.enqueue(new Callback<SimpleResult>() {
                                     @Override
                                     public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
-                                        if (!response.body().getMsg().equals("没有权限.")){
+                                        if (!response.body().getMsg().equals("没有权限.")) {
                                             Toast.makeText(mContext, "删除评论成功！", Toast.LENGTH_SHORT).show();
+                                            mFragment.refreshList();
                                         }
                                     }
+
                                     @Override
                                     public void onFailure(Call<SimpleResult> call, Throwable t) {
                                         Log.d("删除帖子", "网络请求失败！");

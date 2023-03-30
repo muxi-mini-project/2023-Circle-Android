@@ -92,7 +92,7 @@ public class PostsAdapter extends RecyclerView.Adapter<BaseHolder> {
                             item.setName(StringTool.getJsonString(j, "author_name"));//用户名
                             item.setTitle(StringTool.getJsonString(j, "title"));//标题
                             item.setContent(StringTool.getJsonString(j, "content"));//内容
-                            item.setTime(StringTool.getJsonString(j, "UpdatedAt"));
+                            item.setTime(StringTool.getJsonString(j, "CreatedAt"));
                             item.setProfilePath(StringTool.getJsonString(j, "avatar_path"));
                             item.setID(StringTool.getJsonString(j, "ID"));//帖子id
                             item.setLikesNumber(StringTool.getJsonString(j, "likes"));//点赞数
