@@ -10,8 +10,8 @@ import android.bignerdranch.myapplication.ReusableTools.ItemTypeDef;
 import android.bignerdranch.myapplication.ReusableTools.MyRecyclerItemClickListener;
 import android.bignerdranch.myapplication.ReusableTools.StringTool;
 import android.bignerdranch.myapplication.ui.home.PersonalPage.PersonalPageActivity;
-import android.bignerdranch.myapplication.ui.home.Posts.Picture.BigPicActivity;
 import android.bignerdranch.myapplication.ui.home.Posts.Picture.PicAdapter;
+import android.bignerdranch.myapplication.ui.home.Posts.Picture.ViewPagerActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -209,7 +209,11 @@ public class PostsHolder extends BaseHolder implements View.OnClickListener {
             mPicAdapter.setOnItemClickListener(new MyRecyclerItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Intent intent = BigPicActivity.newIntent(mContext, mPosts.getPicPaths().get(position));
+                    String[] list=new String[mPosts.getPicPaths().size()];
+                    for (int i=0;i<mPosts.getPicPaths().size();i++){
+                        list[i]=mPosts.getPicPaths().get(i);
+                    }
+                    Intent intent = ViewPagerActivity.newIntent(mContext, list);
                     mContext.startActivity(intent);
                 }
             });
